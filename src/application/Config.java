@@ -13,4 +13,5 @@ public final class Config {
     public static final int SCREEN_HEIGHT = TILE_SIZE * COUNT_VERTICAL;
 
     public static final Color[] colorTiles = new Color[] {Color.GREEN, Color.BLACK};
+
 }

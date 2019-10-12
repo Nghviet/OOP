@@ -5,6 +5,9 @@ import application.Controller;
 import application.core.Enemy;
 import application.core.GameField;
 import application.core.enemy.AbstractEnemy;
+import application.core.tile.GameTile;
+import application.core.tile.MapTile;
+import application.core.tile.Path;
 import application.utility.Vector2;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -20,14 +23,25 @@ public class GameRenderer {
     }
 
     public void render() {
-        for(int i=0;i< Config.COUNT_HORIZONTAL;i++) for(int j=0;j<Config.COUNT_VERTICAL;j++) {
-            graphicsContext.setFill(Config.colorTiles[gameField.getColor(i,j)]);
-            graphicsContext.fillRect(i*Config.TILE_SIZE,j*Config.TILE_SIZE,
-                                          Config.TILE_SIZE,     Config.TILE_SIZE);
+        GameTile[][] map = gameField.getMap();
+
+        for(int x = 0;x < Config.COUNT_HORIZONTAL; x++) for(int y = 0;y < Config.COUNT_VERTICAL; y++) {
+            GameTile tile = map[x][y];
+            if(tile instanceof Path) {
+                graphicsContext.setFill(Color.BLACK);
+            }
+            else
+                if(tile instanceof MapTile) {
+                    graphicsContext.setFill(Color.GREEN);
+                }
+
+            Vector2 p = tile.getPosition();
+
+            graphicsContext.fillRect(p.getX()-Config.TILE_SIZE/2,p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE,Config.TILE_SIZE);
         }
 
-        graphicsContext.setFill(Color.RED);
 
+        graphicsContext.setFill(Color.RED);
         List<Enemy> enemies = gameField.getEnemies();
         for(Enemy enemy:enemies) {
             Vector2 pos = enemy.getPosition();
