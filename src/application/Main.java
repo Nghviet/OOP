@@ -24,7 +24,7 @@ public class Main extends Application {
         graphicsContext.setFontSmoothingType(FontSmoothingType.LCD);
 
         canvas.setOnKeyPressed(gameController::onKeyDown);
-
+        canvas.setOnMouseClicked(gameController::mouseOnKeyPressed);
         canvas.setOnMouseMoved(gameController::mouseController);
 
 

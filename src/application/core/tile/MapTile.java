@@ -1,5 +1,6 @@
 package application.core.tile;
 
+import application.core.tower.Tower;
 import application.utility.Vector2;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -9,22 +10,21 @@ public class MapTile implements GameTile {
     private Vector2 pos; // Center
     private boolean buildable;
 
-    private Object object;
+    private Tower tower;
 
     public MapTile(Vector2 pos) {
         this.pos = pos;
         buildable = true;
-        object = null;
+        tower = null;
     }
 
-    @Override
-    public boolean buildable() {
+    public boolean isBuildable() {
         return buildable;
     }
 
-    @Override
-    public void build() {
-
+    public void build(Tower tower) {
+        buildable = false;
+        this.tower = tower;
     }
 
     @Override

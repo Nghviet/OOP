@@ -1,11 +1,11 @@
 package application.core.enemy;
 
 import application.Config;
-import application.core.Enemy;
 import application.core.characteristic.Destroyable;
+import application.core.characteristic.Updatable;
 import application.utility.Vector2;
 import application.utility.Waypoints;
-public abstract class AbstractEnemy implements Enemy, Destroyable {
+public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
     private Vector2 pos;
     private Vector2 target;
     private int health;
@@ -41,14 +41,18 @@ public abstract class AbstractEnemy implements Enemy, Destroyable {
         this.pos = Waypoints.instance.getIndex(0);
         this.target = Waypoints.instance.getIndex(1);
         currentWaypoints = 1;
-        lastCall = System.nanoTime()/(1e8);
+        lastCall = System.nanoTime()/Config.timeDivide;
 
+    }
+
+    public void update() {
+        move();
     }
 
     public void move() {
         Vector2 dir = target.minus(pos);
         dir.normalize();
-        double currentTime = System.nanoTime()/(1e8);
+        double currentTime = System.nanoTime()/ Config.timeDivide;
         double deltaTime = currentTime - lastCall;
         lastCall = currentTime;
         pos = new Vector2(  pos.getX() + dir.getX() * deltaTime * speed ,
@@ -81,4 +85,8 @@ public abstract class AbstractEnemy implements Enemy, Destroyable {
         return 0;
     }
 
+    @Override
+    public Vector2 getPos() {
+        return pos;
+    }
 }

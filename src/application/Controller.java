@@ -51,12 +51,22 @@ public class Controller extends AnimationTimer {
         }
     }
 
+    public final void mouseOnKeyPressed(MouseEvent mouseEvent) {
+        MouseButton mouseButton = mouseEvent.getButton();
+        System.out.println(mX+" "+mY+" "+mouseButton+" "+gameField.isEmpty(mX,mY));
+
+        if(gameField.isEmpty(mX,mY) && mouseButton == MouseButton.PRIMARY) {
+            gameField.addTurret(mX,mY);
+            System.out.println("Added");
+        }
+    }
+
+
     public final void mouseController(MouseEvent mouseEvent) {
         MouseButton mouseButton = mouseEvent.getButton();
         int x = (int) mouseEvent.getX();
         int y = (int) mouseEvent.getY();
         mX = x;
         mY = y;
-        System.out.println(x+" "+y);
     }
 }

@@ -1,13 +1,14 @@
 package application.graphic;
 
 import application.Config;
-import application.Controller;
-import application.core.Enemy;
+import application.core.enemy.Enemy;
 import application.core.GameField;
-import application.core.enemy.AbstractEnemy;
 import application.core.tile.GameTile;
 import application.core.tile.MapTile;
 import application.core.tile.Path;
+import application.core.tower.AbstractTower;
+import application.core.tower.Bullet;
+import application.core.tower.Tower;
 import application.utility.Vector2;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -43,7 +44,6 @@ public class GameRenderer {
             graphicsContext.fillRect(p.getX()-Config.TILE_SIZE/2,p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE,Config.TILE_SIZE);
         }
 
-
         graphicsContext.setFill(Color.RED);
         List<Enemy> enemies = gameField.getEnemies();
         for(Enemy enemy:enemies) {
@@ -51,8 +51,23 @@ public class GameRenderer {
             graphicsContext.fillRect(pos.getX()-8,pos.getY()-8,16,16);
         }
 
-        //*UI
+        List<Tower> towers = gameField.getTowers();
+        graphicsContext.setFill(Color.BLUE);
+        if(towers !=null)
+        for(Tower tower:towers) {
+            Vector2 pos = tower.getPosition();
+            graphicsContext.fillRect(pos.getX()-8,pos.getY()-8,16,16);
+        }
 
-        graphicsContext.setFill();
+        graphicsContext.setFill(Color.YELLOW);
+        List<Bullet> bullets = gameField.getBullets();
+        for(Bullet bullet:bullets) {
+            Vector2 pos = bullet.getPosition();
+            graphicsContext.fillRect(pos.getX()-3,pos.getY()-3,6,6);
+        }
+
+        //*UI
+        graphicsContext.setFill(UIColor);
+        graphicsContext.fillRect(Config.SCREEN_WIDTH-Config.UI_HORIZONTAL,0,Config.UI_HORIZONTAL,Config.SCREEN_HEIGHT);
     }
 }

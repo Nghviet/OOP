@@ -1,27 +1,32 @@
 package application.core;
 
 import application.Config;
-import application.core.enemy.AbstractEnemy;
+import application.core.enemy.Enemy;
 import application.core.enemy.NormalEnemy;
 import application.core.tile.GameTile;
 import application.core.tile.MapTile;
 import application.core.tile.Path;
+import application.core.tower.AbstractTower;
+import application.core.tower.Bullet;
+import application.core.tower.NormalTower;
+import application.core.tower.Tower;
 import application.utility.Vector2;
 import application.utility.Waypoints;
 
-import javafx.application.Platform;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GameField {
     private List<Enemy> enemies;
+    private List<Tower> towers;
+    private List<Bullet> bullets;
     private GameTile[][] map;
-    private int[][] gameFieldStatus;
 
     public GameField() {
         this.enemies = new ArrayList<>();
-
+        this.towers = new ArrayList<>();
+        this.bullets = new ArrayList<>();
         this.map = new GameTile[Config.COUNT_HORIZONTAL][Config.COUNT_VERTICAL];
         for(int x = 0;x < Config.COUNT_HORIZONTAL;x++) for(int y = 0;y < Config.COUNT_VERTICAL;y++) {
             map[x][y] = new MapTile(new Vector2(x*Config.TILE_SIZE+Config.TILE_SIZE/2,y*Config.TILE_SIZE+Config.TILE_SIZE/2));
@@ -56,6 +61,8 @@ public class GameField {
 
     public void update() {
         for(Enemy enemy:enemies) enemy.move();
+        for(Tower tower:towers) tower.update();
+        for(Bullet bullet:bullets) bullet.move();
 
         int i = enemies.size() - 1;
         while(i>=0) {
@@ -63,17 +70,53 @@ public class GameField {
             if(enemy.isDestroyed()) enemies.remove(i);
             i--;
         }
+
+        i = bullets.size() - 1;
+        while(i>=0) {
+            Bullet bullet = bullets.get(i);
+            if(bullet.isDestroyed()) bullets.remove(i);
+            i--;
+        }
     }
 
     public void doSpawn() {
-        enemies.add(new NormalEnemy(10,1,1,10));
+        enemies.add(new NormalEnemy(10,1,1,3));
+    }
+
+    public void addBullet(Bullet bullet) {
+        bullets.add(bullet);
+    }
+
+    public void addTurret(int x,int y) {
+        x = (int) (x ) / Config.TILE_SIZE;
+        y = (int) (y ) / Config.TILE_SIZE;
+        System.out.println(x+" "+y);
+        Tower tower = new NormalTower(this,
+                new Vector2(x * Config.TILE_SIZE + Config.TILE_SIZE/2,y * Config.TILE_SIZE + Config.TILE_SIZE/2),
+                100,1,1);
+        towers.add(tower);
+    }
+
+    public boolean isEmpty(int x,int y) {
+        x = (int) (x ) / Config.TILE_SIZE;
+        y = (int) (y ) / Config.TILE_SIZE;
+        if((map[x][y] instanceof MapTile) && ((MapTile)map[x][y]).isBuildable()) return true;
+        return false;
     }
 
     public List<Enemy> getEnemies() {
         return enemies;
     }
 
+    public List<Tower> getTowers() {
+        return towers;
+    }
+
     public GameTile[][] getMap() {
         return map;
+    }
+
+    public List<Bullet> getBullets() {
+        return bullets;
     }
 }
