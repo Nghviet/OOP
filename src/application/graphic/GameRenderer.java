@@ -17,9 +17,12 @@ import java.util.List;
 public class GameRenderer {
     private final GraphicsContext graphicsContext;
     private final GameField gameField;
+    private Color UIColor;
+
     public GameRenderer(GraphicsContext graphicsContext,GameField gameField) {
         this.graphicsContext = graphicsContext;
         this.gameField = gameField;
+        UIColor = Color.rgb(96,96,96);
     }
 
     public void render() {
@@ -47,5 +50,9 @@ public class GameRenderer {
             Vector2 pos = enemy.getPosition();
             graphicsContext.fillRect(pos.getX()-8,pos.getY()-8,16,16);
         }
+
+        //*UI
+
+        graphicsContext.setFill();
     }
 }

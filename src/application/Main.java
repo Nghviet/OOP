@@ -25,10 +25,12 @@ public class Main extends Application {
 
         canvas.setOnKeyPressed(gameController::onKeyDown);
 
+        canvas.setOnMouseMoved(gameController::mouseController);
+
 
         primaryStage.setResizable(false);
         primaryStage.setTitle(Config.NAME);
-        primaryStage.setOnCloseRequest(null);
+        primaryStage.setOnCloseRequest(gameController::closeHandle);
         primaryStage.setScene(new Scene(new StackPane(canvas)));
         primaryStage.show();
 

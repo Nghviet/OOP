@@ -66,7 +66,6 @@ public class GameField {
     }
 
     public void doSpawn() {
-        System.out.println("Spawning");
         enemies.add(new NormalEnemy(10,1,1,10));
     }
 

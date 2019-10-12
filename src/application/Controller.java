@@ -3,14 +3,13 @@ package application;
 import application.core.GameField;
 import application.graphic.GameRenderer;
 
-import application.utility.Waypoints;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
 
 public class Controller extends AnimationTimer {
@@ -18,12 +17,15 @@ public class Controller extends AnimationTimer {
     private GraphicsContext graphicsContext;
     private GameRenderer gameRenderer;
     private GameField gameField;
+    //Mouse handler
+    private boolean haveBuilding;
+    private int mX,mY;
 
     public Controller(GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
         this.gameField = new GameField();
         gameRenderer = new GameRenderer(graphicsContext,gameField);
-        System.out.println(Waypoints.instance.size());
+        haveBuilding = false;
     }
 
     @Override
@@ -43,13 +45,18 @@ public class Controller extends AnimationTimer {
     }
 
     public final void onKeyDown(KeyEvent keyEvent) {
-        System.out.println(keyEvent);
         KeyCode keyCode = keyEvent.getCode();
         if(keyCode == KeyCode.S) {
-            System.out.println("S");
             gameField.doSpawn();
         }
-
     }
 
+    public final void mouseController(MouseEvent mouseEvent) {
+        MouseButton mouseButton = mouseEvent.getButton();
+        int x = (int) mouseEvent.getX();
+        int y = (int) mouseEvent.getY();
+        mX = x;
+        mY = y;
+        System.out.println(x+" "+y);
+    }
 }
