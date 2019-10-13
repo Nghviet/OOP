@@ -16,17 +16,43 @@ import javafx.scene.paint.Color;
 import java.util.List;
 
 public class GameRenderer {
-    private final GraphicsContext graphicsContext;
-    private final GameField gameField;
+    private GraphicsContext graphicsContext;
+    private GameField gameField;
     private Color UIColor;
 
-    public GameRenderer(GraphicsContext graphicsContext,GameField gameField) {
+    public GameRenderer(GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
-        this.gameField = gameField;
+        this.gameField = null;
         UIColor = Color.rgb(96,96,96);
     }
 
+    public void setGameField(GameField gameField) {
+        this.gameField = gameField;
+    }
+
     public void render() {
+        switch(Config.UI_CUR) {
+            case Config.UI_START: {
+                startRender();
+                break;
+            }
+            case Config.UI_PLAYING: {
+                gameRender();
+                break;
+            }
+            case Config.UI_PAUSE: {
+                pauseRender();
+                break;
+            }
+        }
+    }
+
+    private void startRender() {
+        graphicsContext.setFill(Color.LIGHTBLUE);
+        graphicsContext.fillRect(Config.SCREEN_WIDTH/2-100,Config.SCREEN_HEIGHT/2-50,200,100);
+    }
+
+    private void gameRender() {
         GameTile[][] map = gameField.getMap();
 
         for(int x = 0;x < Config.COUNT_HORIZONTAL; x++) for(int y = 0;y < Config.COUNT_VERTICAL; y++) {
@@ -35,9 +61,9 @@ public class GameRenderer {
                 graphicsContext.setFill(Color.BLACK);
             }
             else
-                if(tile instanceof MapTile) {
-                    graphicsContext.setFill(Color.GREEN);
-                }
+            if(tile instanceof MapTile) {
+                graphicsContext.setFill(Color.GREEN);
+            }
 
             Vector2 p = tile.getPosition();
 
@@ -54,10 +80,10 @@ public class GameRenderer {
         List<Tower> towers = gameField.getTowers();
         graphicsContext.setFill(Color.BLUE);
         if(towers !=null)
-        for(Tower tower:towers) {
-            Vector2 pos = tower.getPosition();
-            graphicsContext.fillRect(pos.getX()-8,pos.getY()-8,16,16);
-        }
+            for(Tower tower:towers) {
+                Vector2 pos = tower.getPosition();
+                graphicsContext.fillRect(pos.getX()-8,pos.getY()-8,16,16);
+            }
 
         graphicsContext.setFill(Color.YELLOW);
         List<Bullet> bullets = gameField.getBullets();
@@ -69,5 +95,11 @@ public class GameRenderer {
         //*UI
         graphicsContext.setFill(UIColor);
         graphicsContext.fillRect(Config.SCREEN_WIDTH-Config.UI_HORIZONTAL,0,Config.UI_HORIZONTAL,Config.SCREEN_HEIGHT);
+    }
+
+    private void pauseRender() {
+        gameRender();
+        graphicsContext.setFill(Color.LIGHTBLUE);
+        graphicsContext.fillRect(Config.SCREEN_WIDTH/2-100,Config.SCREEN_HEIGHT/2-50,200,100);
     }
 }

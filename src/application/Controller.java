@@ -23,14 +23,19 @@ public class Controller extends AnimationTimer {
 
     public Controller(GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
-        this.gameField = new GameField();
-        gameRenderer = new GameRenderer(graphicsContext,gameField);
+        this.gameField = null;
+        gameRenderer = new GameRenderer(graphicsContext);
         haveBuilding = false;
+    }
+
+    public void initGame() {
+        gameField = new GameField();
+        gameRenderer.setGameField(gameField);
     }
 
     @Override
     public void handle(long now) {
-        gameField.update();
+        if(Config.UI_CUR == Config.UI_PLAYING) gameField.update();
         gameRenderer.render();
     }
 
@@ -46,18 +51,59 @@ public class Controller extends AnimationTimer {
 
     public final void onKeyDown(KeyEvent keyEvent) {
         KeyCode keyCode = keyEvent.getCode();
-        if(keyCode == KeyCode.S) {
+        if(keyCode == KeyCode.S && Config.UI_CUR == Config.UI_PLAYING) {
             gameField.doSpawn();
+        }
+        else
+        if(keyCode == KeyCode.ESCAPE && Config.UI_CUR == Config.UI_PLAYING) {
+            System.out.println("Pause");
+            Config.UI_CUR = Config.UI_PAUSE;
+        }
+        else
+        if(keyCode == KeyCode.ESCAPE && Config.UI_CUR == Config.UI_PAUSE) {
+            System.out.println("Unpause");
+            Config.UI_CUR = Config.UI_PLAYING;
         }
     }
 
     public final void mouseOnKeyPressed(MouseEvent mouseEvent) {
-        MouseButton mouseButton = mouseEvent.getButton();
-        System.out.println(mX+" "+mY+" "+mouseButton+" "+gameField.isEmpty(mX,mY));
+        switch(Config.UI_CUR) {
+            case Config.UI_START: {
+                startMouse(mouseEvent);
+                break;
+            }
+            case Config.UI_PLAYING: {
+                playingMouse(mouseEvent);
+                break;
+            }
+        }
+    }
 
-        if(gameField.isEmpty(mX,mY) && mouseButton == MouseButton.PRIMARY) {
+    public void startMouse(MouseEvent mouseEvent) {
+        MouseButton mouseButton = mouseEvent.getButton();
+        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=100 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=50) {
+            System.out.println("Init");
+            Config.UI_CUR = Config.UI_PLAYING;
+            System.out.println(Config.UI_CUR);
+            initGame();
+        }
+    }
+
+    public void playingMouse(MouseEvent mouseEvent) {
+        MouseButton mouseButton = mouseEvent.getButton();
+
+        if(mX <= Config.GAME_WIDTH && gameField.isEmpty(mX,mY) && mouseButton == MouseButton.PRIMARY) {
             gameField.addTurret(mX,mY);
-            System.out.println("Added");
+        }
+    }
+
+    public void pauseMouse(MouseEvent mouseEvent) {
+        MouseButton mouseButton = mouseEvent.getButton();
+        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=100 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=50) {
+            System.out.println("Unpause");
+            Config.UI_CUR = Config.UI_PLAYING;
+            System.out.println(Config.UI_CUR);
+            initGame();
         }
     }
 
