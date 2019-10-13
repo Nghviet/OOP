@@ -4,6 +4,7 @@ import application.Config;
 import application.core.GameEntity;
 import application.core.enemy.Enemy;
 import application.utility.Vector2;
+import javafx.scene.paint.Color;
 
 public class Bullet implements GameEntity {
     private Vector2 position;
@@ -14,7 +15,9 @@ public class Bullet implements GameEntity {
     private boolean isDestroyed;
     private double lastCall;
 
-    public Bullet(Vector2 position, Enemy target, int damage, double speed) {
+    private Color color;
+
+    public Bullet(Vector2 position, Enemy target, int damage, double speed,Color color) {
         this.position = position;
         this.target = target;
         this.damage = damage;
@@ -22,6 +25,7 @@ public class Bullet implements GameEntity {
 
         isDestroyed = false;
         lastCall = System.nanoTime()/ Config.timeDivide;
+        this.color = color;
     }
 
     public void move() {
@@ -57,4 +61,9 @@ public class Bullet implements GameEntity {
         return isDestroyed;
     }
 
+    public void resetTimer() {
+        lastCall = System.nanoTime()/ Config.timeDivide;
+    }
+
+    public Color getColor(){return color;}
 }

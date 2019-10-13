@@ -1,4 +1,6 @@
-package application.utility;
+package application.core.tile;
+
+import application.utility.Vector2;
 
 import java.util.ArrayList;
 import java.util.List;

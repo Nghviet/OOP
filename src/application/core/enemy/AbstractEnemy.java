@@ -3,8 +3,9 @@ package application.core.enemy;
 import application.Config;
 import application.core.characteristic.Destroyable;
 import application.core.characteristic.Updatable;
+import application.core.player.Player;
 import application.utility.Vector2;
-import application.utility.Waypoints;
+import application.core.tile.Waypoints;
 public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
     private Vector2 pos;
     private Vector2 target;
@@ -17,11 +18,14 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
     private double lastCall;
     private boolean destroyed = false;
 
+    private Player player;
+
     @Override
     public void doDamage(int damage) {
-
         health -= damage *(5 - armor);
         if(health<=0) {
+            System.out.println("Add reward:"+reward);
+            player.addReward(reward);
             destroyed = true;
             doDestroy();
         }
@@ -32,7 +36,7 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
         return pos;
     }
 
-    public AbstractEnemy(int health, int armor, int reward, int speed) {
+    public AbstractEnemy(int health, int armor, int reward, int speed, Player player) {
         this.health = health;
         this.armor = armor;
         this.reward = reward;
@@ -43,6 +47,7 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
         currentWaypoints = 1;
         lastCall = System.nanoTime()/Config.timeDivide;
 
+        this.player = player;
     }
 
     public void update() {
@@ -64,6 +69,7 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
         currentWaypoints++;
         if(currentWaypoints == Waypoints.instance.size()){
             destroyed = true;
+            player.doDamage();
             doDestroy();
             return;
         }
@@ -88,5 +94,13 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
     @Override
     public Vector2 getPos() {
         return pos;
+    }
+
+    public void resetTimer() {
+        lastCall = System.nanoTime()/ Config.timeDivide;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

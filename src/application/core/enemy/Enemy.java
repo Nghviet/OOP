@@ -1,6 +1,7 @@
 package application.core.enemy;
 
 import application.core.GameEntity;
+import application.core.player.Player;
 import application.utility.Vector2;
 
 public interface Enemy extends GameEntity {
@@ -12,4 +13,8 @@ public interface Enemy extends GameEntity {
     public Vector2 getPos();
 
     public boolean isDestroyed();
+
+    public void resetTimer();
+
+    public void setPlayer(Player player);
 }

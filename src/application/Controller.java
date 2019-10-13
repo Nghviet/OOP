@@ -1,6 +1,11 @@
 package application;
 
 import application.core.GameField;
+import application.core.tile.Spawner;
+import application.core.tower.NormalTower;
+import application.core.tower.RangerTower;
+import application.core.tower.RapidTower;
+import application.core.tower.Tower;
 import application.graphic.GameRenderer;
 
 import javafx.animation.AnimationTimer;
@@ -12,30 +17,48 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Controller extends AnimationTimer {
 
     private GraphicsContext graphicsContext;
     private GameRenderer gameRenderer;
     private GameField gameField;
+    private Spawner spawner;
     //Mouse handler
     private boolean haveBuilding;
-    private int mX,mY;
+    public int mX,mY;
+    public Tower curTower;
 
     public Controller(GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
         this.gameField = null;
-        gameRenderer = new GameRenderer(graphicsContext);
+        gameRenderer = new GameRenderer(graphicsContext,this);
         haveBuilding = false;
+        curTower = null;
     }
 
     public void initGame() {
         gameField = new GameField();
         gameRenderer.setGameField(gameField);
+        List<Integer> enemy = new ArrayList<>();
+        List<Integer> delay = new ArrayList<>();
+        for(int i=0;i<10;i++) {
+            enemy.add(0);
+            delay.add(i);
+        }
+        spawner = new Spawner(enemy,delay,gameField);
+
     }
 
     @Override
     public void handle(long now) {
-        if(Config.UI_CUR == Config.UI_PLAYING) gameField.update();
+        if(Config.UI_CUR == Config.UI_PLAYING)
+        {
+            spawner.update();
+            gameField.update();
+        }
         gameRenderer.render();
     }
 
@@ -49,6 +72,8 @@ public class Controller extends AnimationTimer {
         System.exit(0);
     }
 
+
+    //Keyboard handling
     public final void onKeyDown(KeyEvent keyEvent) {
         KeyCode keyCode = keyEvent.getCode();
         if(keyCode == KeyCode.S && Config.UI_CUR == Config.UI_PLAYING) {
@@ -63,9 +88,12 @@ public class Controller extends AnimationTimer {
         if(keyCode == KeyCode.ESCAPE && Config.UI_CUR == Config.UI_PAUSE) {
             System.out.println("Unpause");
             Config.UI_CUR = Config.UI_PLAYING;
+            gameField.resetTimer();
         }
     }
 
+
+    //Mouse handling
     public final void mouseOnKeyPressed(MouseEvent mouseEvent) {
         switch(Config.UI_CUR) {
             case Config.UI_START: {
@@ -74,6 +102,10 @@ public class Controller extends AnimationTimer {
             }
             case Config.UI_PLAYING: {
                 playingMouse(mouseEvent);
+                break;
+            }
+            case Config.UI_PAUSE: {
+                pauseMouse(mouseEvent);
                 break;
             }
         }
@@ -91,10 +123,41 @@ public class Controller extends AnimationTimer {
 
     public void playingMouse(MouseEvent mouseEvent) {
         MouseButton mouseButton = mouseEvent.getButton();
+        if(!gameField.isComplete())
+        {
+            //
+            if(Math.abs(mX - (Config.GAME_WIDTH + Config.UI_HORIZONTAL/2)) <= Config.TILE_SIZE/2)
+            {
+                if(Math.abs(mY-(20+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2) {
+                    if(gameField.getPlayerMoney() >= NormalTower.instance.getPrice()) curTower = new NormalTower(gameField,null);
+                    System.out.println("Normal");
+                }
+                if(Math.abs(mY -(60+Config.TILE_SIZE/2))<=Config.TILE_SIZE/2) {
+                    if(gameField.getPlayerMoney() >= RangerTower.instance.getPrice()) curTower = new RangerTower(gameField,null);
+                    System.out.println("Ranger");
+                }
+            }
 
-        if(mX <= Config.GAME_WIDTH && gameField.isEmpty(mX,mY) && mouseButton == MouseButton.PRIMARY) {
-            gameField.addTurret(mX,mY);
+            if(Math.abs(mX - (Config.GAME_WIDTH + Config.UI_HORIZONTAL/2 + 40)) <= Config.TILE_SIZE/2)
+            {
+                if(Math.abs(mY-(20+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2) {
+                    if(gameField.getPlayerMoney() >= NormalTower.instance.getPrice()) curTower = new RapidTower(gameField,null);
+                    System.out.println("Rapid");
+                }
+            }
+            //
+            if(mX <= Config.GAME_WIDTH && gameField.isEmpty(mX,mY) && mouseButton == MouseButton.PRIMARY && curTower != null) {
+                gameField.addTurret(mX,mY,curTower);
+                gameField.charge(curTower.getPrice());
+                curTower = null;
+            }
         }
+        else {
+            if(Math.abs(mX-Config.SCREEN_WIDTH/2)<=100 && Math.abs(mY-Config.SCREEN_HEIGHT/2-20)<=50) {
+                Config.UI_CUR = Config.UI_START;
+            }
+        }
+
     }
 
     public void pauseMouse(MouseEvent mouseEvent) {
@@ -103,10 +166,9 @@ public class Controller extends AnimationTimer {
             System.out.println("Unpause");
             Config.UI_CUR = Config.UI_PLAYING;
             System.out.println(Config.UI_CUR);
-            initGame();
+            gameField.resetTimer();
         }
     }
-
 
     public final void mouseController(MouseEvent mouseEvent) {
         MouseButton mouseButton = mouseEvent.getButton();
