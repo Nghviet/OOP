@@ -1,7 +1,7 @@
 package application;
 
 import application.core.GameField;
-import application.core.tile.Spawner;
+import application.core.spawner.Spawner;
 import application.core.tower.NormalTower;
 import application.core.tower.RangerTower;
 import application.core.tower.RapidTower;
@@ -46,7 +46,7 @@ public class Controller extends AnimationTimer {
         List<Integer> delay = new ArrayList<>();
         for(int i=0;i<10;i++) {
             enemy.add(0);
-            delay.add(i);
+            delay.add(i+1);
         }
         spawner = new Spawner(enemy,delay,gameField);
 
@@ -141,7 +141,7 @@ public class Controller extends AnimationTimer {
             if(Math.abs(mX - (Config.GAME_WIDTH + Config.UI_HORIZONTAL/2 + 40)) <= Config.TILE_SIZE/2)
             {
                 if(Math.abs(mY-(20+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2) {
-                    if(gameField.getPlayerMoney() >= NormalTower.instance.getPrice()) curTower = new RapidTower(gameField,null);
+                    if(gameField.getPlayerMoney() >= RapidTower.instance.getPrice()) curTower = new RapidTower(gameField,null);
                     System.out.println("Rapid");
                 }
             }

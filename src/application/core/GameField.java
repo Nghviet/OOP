@@ -14,8 +14,11 @@ import application.core.tower.Tower;
 import application.utility.Vector2;
 import application.core.tile.Waypoints;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class GameField {
     private List<Enemy> enemies;
@@ -154,5 +157,18 @@ public class GameField {
 
     public void charge(int charge){
         player.buy(charge);
+    }
+
+
+    public GameField(File file) throws FileNotFoundException {
+        Scanner scanner = new Scanner(file);
+        /*
+        File structure:
+            Integer n -> number of waypoints
+            Next n pair<Integer,Integer> position
+
+            Integer wave -> numberOfWave
+            Each wave have data for number of monsters,type and respective timer
+         */
     }
 }

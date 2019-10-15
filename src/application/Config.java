@@ -17,8 +17,8 @@ public final class Config {
     public static final int SCREEN_WIDTH = GAME_WIDTH + UI_HORIZONTAL;
     public static final int SCREEN_HEIGHT = TILE_SIZE * COUNT_VERTICAL;
 
-    public static final Color[] colorTiles = new Color[] {Color.GREEN, Color.BLACK};
-    public static final double timeDivide = 1e8;
+    public static Color[] colorTiles = new Color[] {Color.GREEN, Color.BLACK};
+    public static double timeDivide = 1e8;
 
     //UI CONTROL
     public static volatile int UI_CUR = 1;

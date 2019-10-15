@@ -1,13 +1,15 @@
-package application.core.tile;
+package application.core.spawner;
 import application.Config;
 import application.core.GameField;
 import application.core.enemy.*;
 import application.core.player.Player;
+import application.core.tile.GameTile;
+import application.core.tile.Waypoints;
 import application.utility.Vector2;
 
 import java.util.List;
 
-public class Spawner implements GameTile {
+public class Spawner {
 
     private Vector2 pos;
 
@@ -50,7 +52,7 @@ public class Spawner implements GameTile {
         }
     }
 
-    @Override
+
     public Vector2 getPosition() {
         return pos;
     }
