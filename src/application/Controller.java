@@ -2,6 +2,7 @@ package application;
 
 import application.core.GameField;
 import application.core.spawner.Spawner;
+import application.core.spawner.Wave;
 import application.core.tower.NormalTower;
 import application.core.tower.RangerTower;
 import application.core.tower.RapidTower;
@@ -17,8 +18,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Controller extends AnimationTimer {
 
@@ -39,6 +44,8 @@ public class Controller extends AnimationTimer {
         curTower = null;
     }
 
+    //Game init
+
     public void initGame() {
         gameField = new GameField();
         gameRenderer.setGameField(gameField);
@@ -48,10 +55,35 @@ public class Controller extends AnimationTimer {
             enemy.add(0);
             delay.add(i+1);
         }
-        spawner = new Spawner(enemy,delay,gameField);
+        Wave t = new Wave(gameField,enemy,10,0);
+        List<Wave> w = new ArrayList<>();
+        for(int i=0;i<10;i++) w.add(t);
+        spawner = new Spawner(gameField,w);
+    }
+
+    public void initGame(File file) throws FileNotFoundException {
+        Scanner scanner = new Scanner(file);
+        /*      File format
+            Integer n: number of waypoints
+            Next n pair of Integer : waypoints
+         */
+
+        List<Integer> pX = new ArrayList<>();
+        List<Integer> pY = new ArrayList<>();
+
+        int n = scanner.nextInt();
+        for(int i=0;i<n;i++) {
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            pX.add(x);
+            pY.add(y);
+        }
+
+        gameField = new GameField(pX,pY);
 
     }
 
+    //Update handler
     @Override
     public void handle(long now) {
         if(Config.UI_CUR == Config.UI_PLAYING)
@@ -81,12 +113,10 @@ public class Controller extends AnimationTimer {
         }
         else
         if(keyCode == KeyCode.ESCAPE && Config.UI_CUR == Config.UI_PLAYING) {
-            System.out.println("Pause");
             Config.UI_CUR = Config.UI_PAUSE;
         }
         else
         if(keyCode == KeyCode.ESCAPE && Config.UI_CUR == Config.UI_PAUSE) {
-            System.out.println("Unpause");
             Config.UI_CUR = Config.UI_PLAYING;
             gameField.resetTimer();
         }
@@ -113,8 +143,7 @@ public class Controller extends AnimationTimer {
 
     public void startMouse(MouseEvent mouseEvent) {
         MouseButton mouseButton = mouseEvent.getButton();
-        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=100 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=50) {
-            System.out.println("Init");
+        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=133 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=25) {
             Config.UI_CUR = Config.UI_PLAYING;
             System.out.println(Config.UI_CUR);
             initGame();
@@ -130,11 +159,9 @@ public class Controller extends AnimationTimer {
             {
                 if(Math.abs(mY-(20+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2) {
                     if(gameField.getPlayerMoney() >= NormalTower.instance.getPrice()) curTower = new NormalTower(gameField,null);
-                    System.out.println("Normal");
                 }
                 if(Math.abs(mY -(60+Config.TILE_SIZE/2))<=Config.TILE_SIZE/2) {
                     if(gameField.getPlayerMoney() >= RangerTower.instance.getPrice()) curTower = new RangerTower(gameField,null);
-                    System.out.println("Ranger");
                 }
             }
 
@@ -142,9 +169,13 @@ public class Controller extends AnimationTimer {
             {
                 if(Math.abs(mY-(20+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2) {
                     if(gameField.getPlayerMoney() >= RapidTower.instance.getPrice()) curTower = new RapidTower(gameField,null);
-                    System.out.println("Rapid");
                 }
             }
+
+            if(Math.abs(mX - (Config.GAME_WIDTH+Config.UI_HORIZONTAL/2)) <= 40 && Math.abs(mY - (Config.GAME_HEIGHT/2+15)) <= 25) {
+                spawner.nextWave();
+            }
+
             //
             if(mX <= Config.GAME_WIDTH && gameField.isEmpty(mX,mY) && mouseButton == MouseButton.PRIMARY && curTower != null) {
                 gameField.addTurret(mX,mY,curTower);
@@ -157,15 +188,17 @@ public class Controller extends AnimationTimer {
                 Config.UI_CUR = Config.UI_START;
             }
         }
-
     }
 
     public void pauseMouse(MouseEvent mouseEvent) {
         MouseButton mouseButton = mouseEvent.getButton();
-        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=100 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=50) {
-            System.out.println("Unpause");
+        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=81 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=20) {
             Config.UI_CUR = Config.UI_PLAYING;
-            System.out.println(Config.UI_CUR);
+            gameField.resetTimer();
+        }
+
+        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=81 && Math.abs(mY - Config.SCREEN_HEIGHT/2 - 50)<=20) {
+            Config.UI_CUR = Config.UI_START;
             gameField.resetTimer();
         }
     }

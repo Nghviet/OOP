@@ -1,6 +1,7 @@
 package application;
 
 import application.core.GameField;
+import application.graphic.ImageHolder;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -39,6 +40,7 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+        System.out.println(Config.SCREEN_WIDTH+" "+Config.SCREEN_HEIGHT);
         launch(args);
     }
 }

@@ -48,9 +48,9 @@ public class GameField {
 
         Waypoints.instance.setWaypoints(t);
 
-        for(int i = 0;i < t.size()-1 ;i++) {
-            Vector2 start = t.get(i);
-            Vector2 end = t.get(i+1);
+        for(int i = 0;i < Waypoints.instance.size()-1 ;i++) {
+            Vector2 start = Waypoints.instance.getIndex(i);
+            Vector2 end = Waypoints.instance.getIndex(i+1);
 
             int sX = (int) (Math.min(start.getX(),end.getX()) - Config.TILE_SIZE/2 ) / Config.TILE_SIZE;
             int eX = (int) (Math.max(start.getX(),end.getX()) - Config.TILE_SIZE/2 ) / Config.TILE_SIZE;
@@ -106,8 +106,8 @@ public class GameField {
     }
 
     public void addTurret(int x,int y,Tower tower) {
-        x = (int) (x ) / Config.TILE_SIZE;
-        y = (int) (y ) / Config.TILE_SIZE;
+        x = x / Config.TILE_SIZE;
+        y = y / Config.TILE_SIZE;
         System.out.println(x+" "+y);
         tower.setPosition(x * Config.TILE_SIZE + Config.TILE_SIZE/2,y*Config.TILE_SIZE + Config.TILE_SIZE/2);
         towers.add(tower);
@@ -115,10 +115,9 @@ public class GameField {
     }
 
     public boolean isEmpty(int x,int y) {
-        x = (int) (x ) / Config.TILE_SIZE;
-        y = (int) (y ) / Config.TILE_SIZE;
-        if((map[x][y] instanceof MapTile) && ((MapTile)map[x][y]).isBuildable()) return true;
-        return false;
+        x = x / Config.TILE_SIZE;
+        y = y / Config.TILE_SIZE;
+        return (map[x][y] instanceof MapTile) && ((MapTile) map[x][y]).isBuildable();
     }
 
     public List<Enemy> getEnemies() {
@@ -159,16 +158,38 @@ public class GameField {
         player.buy(charge);
     }
 
+    public GameField(List<Integer> pX,List<Integer> pY) {
+        this.enemies = new ArrayList<>();
+        this.towers = new ArrayList<>();
+        this.bullets = new ArrayList<>();
+        this.map = new GameTile[Config.COUNT_HORIZONTAL][Config.COUNT_VERTICAL];
+        for(int x = 0;x < Config.COUNT_HORIZONTAL;x++) for(int y = 0;y < Config.COUNT_VERTICAL;y++) {
+            map[x][y] = new MapTile(new Vector2(x*Config.TILE_SIZE+Config.TILE_SIZE/2,y*Config.TILE_SIZE+Config.TILE_SIZE/2));
+        }
 
-    public GameField(File file) throws FileNotFoundException {
-        Scanner scanner = new Scanner(file);
-        /*
-        File structure:
-            Integer n -> number of waypoints
-            Next n pair<Integer,Integer> position
+        List<Vector2> waypoints = new ArrayList<>();
 
-            Integer wave -> numberOfWave
-            Each wave have data for number of monsters,type and respective timer
-         */
+        for(int i=0;i<pX.size();i++) {
+            int x = pX.get(i) * Config.TILE_SIZE + Config.TILE_SIZE/2;
+            int y = pY.get(i) * Config.TILE_SIZE + Config.TILE_SIZE/2;
+            waypoints.add(new Vector2(x,y));
+        }
+
+        Waypoints.instance.setWaypoints(waypoints);
+
+        for(int i = 0;i < Waypoints.instance.size()-1 ;i++) {
+            Vector2 start = Waypoints.instance.getIndex(i);
+            Vector2 end = Waypoints.instance.getIndex(i+1);
+
+            int sX = (int) (Math.min(start.getX(),end.getX()) - Config.TILE_SIZE/2 ) / Config.TILE_SIZE;
+            int eX = (int) (Math.max(start.getX(),end.getX()) - Config.TILE_SIZE/2 ) / Config.TILE_SIZE;
+            int sY = (int) (Math.min(start.getY(),end.getY()) - Config.TILE_SIZE/2 ) / Config.TILE_SIZE;
+            int eY = (int) (Math.max(start.getY(),end.getY()) - Config.TILE_SIZE/2 ) / Config.TILE_SIZE;
+
+            for(int x = sX;x<=eX;x++) for(int y = sY;y<=eY;y++) {
+                map[x][y] = new Path(new Vector2(x*Config.TILE_SIZE+Config.TILE_SIZE/2,y*Config.TILE_SIZE+Config.TILE_SIZE/2));
+            }
+        }
     }
+
 }

@@ -2,7 +2,9 @@ package application.core.spawner;
 
 import application.Config;
 import application.core.GameField;
+import application.core.enemy.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Wave {
@@ -29,6 +31,16 @@ public class Wave {
         finished = false;
     }
 
+    public Wave(Wave wave) {
+        this.gameField = wave.gameField;
+        this.enemy = new ArrayList<>(wave.enemy);
+        this.delay = wave.delay;
+        this.no = wave.no;
+        this.isActive = false;
+        curIndex = 0;
+        finished = false;
+    }
+
     public void start() {
         isActive = true;
         lastCall = System.nanoTime() / Config.timeDivide;
@@ -44,8 +56,11 @@ public class Wave {
     }
 
     public void update() {
-        if(curIndex >= enemy.size()) finished = true;
-        if(finished || !isActive) return;
+        if(curIndex >= enemy.size())
+        {
+            if(gameField.getEnemies().isEmpty()) finished = true;
+            return;
+        }
 
         double cur = System.nanoTime()/Config.timeDivide;
         double deltaTime = cur - lastCall;
@@ -53,10 +68,22 @@ public class Wave {
 
         wait -= deltaTime;
         if(wait <=0 ) {
-            switch (enemy.get(curIndex)) {
-
+            Enemy newEnemy;
+            switch(enemy.get(curIndex)) {
+                default: newEnemy = new NormalEnemy();break;
+                case 1: newEnemy = new TankerEnemy();break;
+                case 2: newEnemy = new AssassinEnemy();break;
             }
+            gameField.doSpawn(newEnemy);
+            curIndex++;
+            wait = delay;
         }
 
+        if(curIndex >= enemy.size()) System.out.println("Finish spawning");
+
+    }
+
+    public void resetTimer() {
+        lastCall = System.nanoTime()/Config.timeDivide;
     }
 }

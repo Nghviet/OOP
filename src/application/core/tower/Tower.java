@@ -5,11 +5,11 @@ import application.core.GameField;
 import application.core.tile.GameTile;
 
 public interface Tower extends GameTile {
-    public void update();
+    void update();
 
-    public void resetTimer();
+    void resetTimer();
 
-    public int getPrice();
+    int getPrice();
 
-    public void setPosition(int x,int y);
+    void setPosition(int x, int y);
 }

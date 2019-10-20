@@ -1,59 +1,47 @@
 package application.core.spawner;
-import application.Config;
 import application.core.GameField;
-import application.core.enemy.*;
-import application.core.player.Player;
-import application.core.tile.GameTile;
-import application.core.tile.Waypoints;
-import application.utility.Vector2;
 
 import java.util.List;
 
 public class Spawner {
 
-    private Vector2 pos;
-
-    private List<Integer> enemy;
-    private List<Integer> delay;
-
-    private double lastCall;
-    private double wait;
-    private int curIndex = 0;
-
     private GameField gameField;
+    private List<Wave> waves;
+    private Wave curWave;
+    private int curWaveIndex;
 
-    public Spawner(List<Integer> enemy, List<Integer> delay, GameField gameField) {
-        this.pos = Waypoints.instance.getIndex(0);
-        this.enemy = enemy;
-        this.delay = delay;
-        this.lastCall = System.nanoTime()/ Config.timeDivide;
-        this.wait = 0;
+
+    public Spawner(GameField gameField, List<Wave> waves) {
         this.gameField = gameField;
+        this.waves = waves;
+        curWave = null;
+        curWaveIndex = 0;
     }
 
-    public void update() {
-        double cur = System.nanoTime()/Config.timeDivide;
-        double deltaTime = cur - lastCall;
-        lastCall = cur;
+    public void nextWave() {
+        if(curWaveIndex >= waves.size()) {
+            System.out.println("Finished");
+            return;
+        }
 
-        if(curIndex >= delay.size()) return;
+        if(curWave == null) {
+            System.out.println("Incomming!!!");
+            System.out.println(curWaveIndex);
+            curWave = waves.get(curWaveIndex);
+            System.out.println(curWave);
+        }
+    }
 
-        wait+=deltaTime;
-        if(wait >= delay.get(curIndex) * 5){
-            Enemy newEnemy;
-            switch(enemy.get(curIndex)) {
-                default: newEnemy = new NormalEnemy();break;
-                case 1: newEnemy = new TankerEnemy();break;
-                case 2: newEnemy = new AssassinEnemy();break;
+    public void update(){
+        if(curWave != null) {
+            if(curWave.isFinished()) {
+                System.out.println(" Finished "+curWaveIndex);
+                curWaveIndex++;
+                curWave = null;
             }
-            gameField.doSpawn(newEnemy);
-            curIndex++;
-            wait = 0;
+            else curWave.update();
         }
     }
 
 
-    public Vector2 getPosition() {
-        return pos;
-    }
 }

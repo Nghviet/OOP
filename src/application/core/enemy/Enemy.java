@@ -5,16 +5,16 @@ import application.core.player.Player;
 import application.utility.Vector2;
 
 public interface Enemy extends GameEntity {
-    public int getReward();
+    int getReward();
 
-    public void doDamage(int damage);
-    public void move();
+    void doDamage(int damage);
+    void move();
 
-    public Vector2 getPos();
+    Vector2 getPos();
 
-    public boolean isDestroyed();
+    boolean isDestroyed();
 
-    public void resetTimer();
+    void resetTimer();
 
-    public void setPlayer(Player player);
+    void setPlayer(Player player);
 }
