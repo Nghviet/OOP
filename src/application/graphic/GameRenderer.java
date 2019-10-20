@@ -11,8 +11,10 @@ import application.core.tower.*;
 import application.utility.Vector2;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GameRenderer {
@@ -38,6 +40,10 @@ public class GameRenderer {
                 startRender();
                 break;
             }
+            case Config.UI_STAGE_CHOOSING: {
+                stageRender();
+                break;
+            }
             case Config.UI_PLAYING: {
                 gameRender();
                 if(gameField.isComplete()) {
@@ -56,6 +62,11 @@ public class GameRenderer {
     private void startRender() {
         graphicsContext.drawImage(ImageHolder.instance.backgrounds[0],Config.SCREEN_WIDTH/2-300,Config.SCREEN_HEIGHT/2-180);
         graphicsContext.drawImage(ImageHolder.instance.buttons[0],Config.SCREEN_WIDTH/2-133,Config.SCREEN_HEIGHT/2-25,266,50);
+    }
+
+    private void stageRender() {
+        graphicsContext.setFill(Color.RED);
+        graphicsContext.fillRect(Config.SCREEN_WIDTH/2-100,Config.SCREEN_HEIGHT/2-50,200,100);
     }
 
     private void gameRender() {
@@ -115,6 +126,19 @@ public class GameRenderer {
         graphicsContext.drawImage(ImageHolder.instance.backgrounds[4],Config.SCREEN_WIDTH-Config.UI_HORIZONTAL+35,150);
         graphicsContext.drawImage(ImageHolder.instance.backgrounds[4],Config.SCREEN_WIDTH-Config.UI_HORIZONTAL+35,200);
 
+        List<Integer> health = convert(gameField.getPlayerHealth());
+        for(int i=0;i<health.size();i++) {
+            graphicsContext.drawImage(ImageHolder.instance.numbers[health.get(i)],Config.SCREEN_WIDTH-Config.UI_HORIZONTAL+69+32*i,150);
+        }
+
+        List<Integer> money = convert(gameField.getPlayerMoney());
+        for(int i=0;i<money.size();i++) {
+            graphicsContext.drawImage(ImageHolder.instance.numbers[money.get(i)],Config.SCREEN_WIDTH-Config.UI_HORIZONTAL+69+32*i,200);
+        }
+
+        graphicsContext.drawImage(ImageHolder.instance.buttons[3],Config.SCREEN_WIDTH-Config.UI_HORIZONTAL+5,300);
+
+
         graphicsContext.setFill(Color.BLUE);
         graphicsContext.fillRect(Config.GAME_WIDTH+Config.UI_HORIZONTAL/2 - Config.TILE_SIZE/2,20,Config.TILE_SIZE,Config.TILE_SIZE);
 
@@ -123,13 +147,6 @@ public class GameRenderer {
 
         graphicsContext.setFill(Color.RED);
         graphicsContext.fillRect(Config.GAME_WIDTH+Config.UI_HORIZONTAL/2  - Config.TILE_SIZE/2 + 40,20,Config.TILE_SIZE,Config.TILE_SIZE);
-
-        graphicsContext.setFill(Color.WHITE);
-        graphicsContext.fillRect(Config.GAME_WIDTH+Config.UI_HORIZONTAL/2-40,Config.GAME_HEIGHT/2-10,80,50);
-
-        graphicsContext.setFill(Color.GRAY);
-        graphicsContext.fillRect(Config.GAME_WIDTH+Config.UI_HORIZONTAL/2-35,Config.GAME_HEIGHT/2-7,70,44);
-
 
         //mouse
         int x = gameController.mX;
@@ -161,7 +178,7 @@ public class GameRenderer {
             n/=10;
         }
         if(number.isEmpty()) number.add(n);
-
+        Collections.reverse(number);
         return number;
     }
 }

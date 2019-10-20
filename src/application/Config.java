@@ -23,7 +23,8 @@ public final class Config {
     //UI CONTROL
     public static volatile int UI_CUR = 1;
     public static final int UI_START = 1;
-    public static final int UI_PLAYING = 2;
-    public static final int UI_PAUSE = 3;
+    public static final int UI_STAGE_CHOOSING = 2;
+    public static final int UI_PLAYING = 3;
+    public static final int UI_PAUSE = 4;
     public static final int UI_BASE = 0;
 }

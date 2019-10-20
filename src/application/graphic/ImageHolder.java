@@ -15,7 +15,7 @@ public class ImageHolder {
 
     public Image[] buttons;
     public Image[] backgrounds;
-
+    public Image[] numbers;
 
     static {
         try {
@@ -45,6 +45,12 @@ public class ImageHolder {
             backgrounds[i] = new Image(path);
         }
 
+        int number = scanner.nextInt();
+        numbers = new Image[number];
+        for(int i=0;i<number;i++) {
+            String path = scanner.next();
+            numbers[i] = new Image(path);
+        }
 
     }
 }

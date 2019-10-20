@@ -78,9 +78,6 @@ public class Wave {
             curIndex++;
             wait = delay;
         }
-
-        if(curIndex >= enemy.size()) System.out.println("Finish spawning");
-
     }
 
     public void resetTimer() {

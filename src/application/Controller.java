@@ -81,6 +81,19 @@ public class Controller extends AnimationTimer {
 
         gameField = new GameField(pX,pY);
 
+        gameRenderer.setGameField(gameField);
+        List<Integer> enemy = new ArrayList<>();
+        List<Integer> delay = new ArrayList<>();
+        for(int i=0;i<10;i++) {
+            enemy.add(0);
+            delay.add(i+1);
+        }
+        Wave t = new Wave(gameField,enemy,10,0);
+        List<Wave> w = new ArrayList<>();
+        for(int i=0;i<10;i++) w.add(t);
+        spawner = new Spawner(gameField,w);
+
+
     }
 
     //Update handler
@@ -119,15 +132,20 @@ public class Controller extends AnimationTimer {
         if(keyCode == KeyCode.ESCAPE && Config.UI_CUR == Config.UI_PAUSE) {
             Config.UI_CUR = Config.UI_PLAYING;
             gameField.resetTimer();
+            spawner.resetTimer();
         }
     }
 
 
     //Mouse handling
-    public final void mouseOnKeyPressed(MouseEvent mouseEvent) {
+    public final void mouseOnKeyPressed(MouseEvent mouseEvent) throws FileNotFoundException {
         switch(Config.UI_CUR) {
             case Config.UI_START: {
                 startMouse(mouseEvent);
+                break;
+            }
+            case Config.UI_STAGE_CHOOSING: {
+                stageMouse();
                 break;
             }
             case Config.UI_PLAYING: {
@@ -141,16 +159,25 @@ public class Controller extends AnimationTimer {
         }
     }
 
-    public void startMouse(MouseEvent mouseEvent) {
+    private void startMouse(MouseEvent mouseEvent) {
         MouseButton mouseButton = mouseEvent.getButton();
         if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=133 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=25) {
-            Config.UI_CUR = Config.UI_PLAYING;
-            System.out.println(Config.UI_CUR);
-            initGame();
+            Config.UI_CUR = Config.UI_STAGE_CHOOSING;
         }
     }
 
-    public void playingMouse(MouseEvent mouseEvent) {
+    private void stageMouse() throws FileNotFoundException {
+        File stage;
+
+        if(Math.abs(mX - Config.SCREEN_WIDTH/2)<=100 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=50) {
+            stage = new File("src\\stageInfo\\stage_one_data");
+            initGame(stage);
+            Config.UI_CUR = Config.UI_PLAYING;
+        }
+    }
+
+
+    private void playingMouse(MouseEvent mouseEvent) {
         MouseButton mouseButton = mouseEvent.getButton();
         if(!gameField.isComplete())
         {
@@ -172,7 +199,7 @@ public class Controller extends AnimationTimer {
                 }
             }
 
-            if(Math.abs(mX - (Config.GAME_WIDTH+Config.UI_HORIZONTAL/2)) <= 40 && Math.abs(mY - (Config.GAME_HEIGHT/2+15)) <= 25) {
+            if(Math.abs(mX - (Config.SCREEN_WIDTH-Config.UI_HORIZONTAL+65)) <= 60 && Math.abs(mY - 317) <= 17) {
                 spawner.nextWave();
             }
 
@@ -190,16 +217,18 @@ public class Controller extends AnimationTimer {
         }
     }
 
-    public void pauseMouse(MouseEvent mouseEvent) {
+    private void pauseMouse(MouseEvent mouseEvent) {
         MouseButton mouseButton = mouseEvent.getButton();
         if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=81 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=20) {
             Config.UI_CUR = Config.UI_PLAYING;
             gameField.resetTimer();
+            spawner.resetTimer();
         }
 
         if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=81 && Math.abs(mY - Config.SCREEN_HEIGHT/2 - 50)<=20) {
             Config.UI_CUR = Config.UI_START;
             gameField.resetTimer();
+            spawner.resetTimer();
         }
     }
 

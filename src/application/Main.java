@@ -13,6 +13,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.FontSmoothingType;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
+
 public class Main extends Application {
 
     @Override
@@ -26,7 +28,13 @@ public class Main extends Application {
 
         canvas.setOnKeyPressed(gameController::onKeyDown);
         canvas.setOnMouseMoved(gameController::mouseController);
-        canvas.setOnMouseClicked(gameController::mouseOnKeyPressed);
+        canvas.setOnMouseClicked(mouseEvent -> {
+            try {
+                gameController.mouseOnKeyPressed(mouseEvent);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
 
 
         primaryStage.setResizable(false);

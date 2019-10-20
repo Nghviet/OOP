@@ -9,7 +9,7 @@ assets/Background/UI.png
 assets/Background/Money.png
 assets/Background/HP.png
 assets/Background/Dot.png
-12
+10
 assets/Number/0.png
 assets/Number/1.png
 assets/Number/2.png

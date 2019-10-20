@@ -20,12 +20,10 @@ public class Spawner {
 
     public void nextWave() {
         if(curWaveIndex >= waves.size()) {
-            System.out.println("Finished");
             return;
         }
 
         if(curWave == null) {
-            System.out.println("Incomming!!!");
             System.out.println(curWaveIndex);
             curWave = waves.get(curWaveIndex);
             System.out.println(curWave);
@@ -35,12 +33,15 @@ public class Spawner {
     public void update(){
         if(curWave != null) {
             if(curWave.isFinished()) {
-                System.out.println(" Finished "+curWaveIndex);
                 curWaveIndex++;
                 curWave = null;
             }
             else curWave.update();
         }
+    }
+
+    public void resetTimer() {
+        if(curWave!=null) curWave.resetTimer();
     }
 
 

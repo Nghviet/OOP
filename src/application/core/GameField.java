@@ -166,7 +166,7 @@ public class GameField {
         for(int x = 0;x < Config.COUNT_HORIZONTAL;x++) for(int y = 0;y < Config.COUNT_VERTICAL;y++) {
             map[x][y] = new MapTile(new Vector2(x*Config.TILE_SIZE+Config.TILE_SIZE/2,y*Config.TILE_SIZE+Config.TILE_SIZE/2));
         }
-
+        player = new Player();
         List<Vector2> waypoints = new ArrayList<>();
 
         for(int i=0;i<pX.size();i++) {
