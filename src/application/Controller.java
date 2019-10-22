@@ -191,7 +191,7 @@ public class Controller extends AnimationTimer {
         File stage;
         MouseButton mouseButton = mouseEvent.getButton();
         if(mouseButton == MouseButton.PRIMARY && Math.abs(mX - Config.SCREEN_WIDTH/2)<=100 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=50) {
-            stage = new File("src\\stageInfo\\stage_one_data");
+            stage = new File("src/stageInfo/stage_one_data").getAbsoluteFile();
             initGame(stage);
             Config.UI_CUR = Config.UI_PLAYING;
         }

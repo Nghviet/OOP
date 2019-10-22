@@ -20,4 +20,16 @@ assets/Number/6.png
 assets/Number/7.png
 assets/Number/8.png
 assets/Number/9.png
+9
+assets/Textile/0.png
+assets/Textile/1.png
+assets/Textile/2.png
+assets/Textile/3.png
+assets/Textile/4.png
+assets/Textile/5.png
+assets/Textile/6.png
+assets/Textile/7.png
+assets/Textile/8.png
+
+
 

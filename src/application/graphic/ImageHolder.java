@@ -16,6 +16,7 @@ public class ImageHolder {
     public Image[] buttons;
     public Image[] backgrounds;
     public Image[] numbers;
+    public Image[] textiles;
 
     static {
         try {
@@ -28,7 +29,7 @@ public class ImageHolder {
 
     ImageHolder() throws IOException {
 
-        File fileList = new File("src\\assets\\fileList.txt").getAbsoluteFile();
+        File fileList = new File("src/assets/fileList.txt").getAbsoluteFile();
         Scanner scanner = new Scanner(fileList);
 
         int button = scanner.nextInt();
@@ -50,6 +51,13 @@ public class ImageHolder {
         for(int i=0;i<number;i++) {
             String path = scanner.next();
             numbers[i] = new Image(path);
+        }
+
+        int textile = scanner.nextInt();
+        textiles = new Image[textile];
+        for(int i=0;i<textile;i++) {
+            String path = scanner.next();
+            textiles[i] = new Image(path);
         }
 
     }

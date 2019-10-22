@@ -79,17 +79,20 @@ public class GameRenderer {
 
         for(int x = 0;x < Config.COUNT_HORIZONTAL; x++) for(int y = 0;y < Config.COUNT_VERTICAL; y++) {
             GameTile tile = map[x][y];
-            if(tile instanceof Path) {
-                graphicsContext.setFill(Color.BLACK);
-            }
-            else
-            if(tile instanceof MapTile) {
-                graphicsContext.setFill(Color.GREEN);
-            }
-
             Vector2 p = tile.getPosition();
 
-            graphicsContext.fillRect(p.getX()-Config.TILE_SIZE/2,p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE,Config.TILE_SIZE);
+            if(tile instanceof Path) {
+
+            }
+            else {
+                if(tile instanceof MapTile) {
+                    graphicsContext.drawImage(ImageHolder.instance.textiles[4],
+                             p.getX()-Config.TILE_SIZE/2,p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE,Config.TILE_SIZE);
+                }
+            }
+
+
+
         }
 
         graphicsContext.setFill(Color.RED);
