@@ -80,20 +80,22 @@ public class Controller extends AnimationTimer {
         }
 
         gameField = new GameField(pX,pY);
-
         gameRenderer.setGameField(gameField);
-        List<Integer> enemy = new ArrayList<>();
-        List<Integer> delay = new ArrayList<>();
-        for(int i=0;i<10;i++) {
-            enemy.add(0);
-            delay.add(i+1);
+
+        int noWave = scanner.nextInt();
+        List<Wave> waves = new ArrayList<>();
+        for(int i=0;i<noWave;i++) {
+            int no = scanner.nextInt();
+            List<Integer> enemy = new ArrayList<>();
+            for(int j=0;j<no;j++) {
+                int t = scanner.nextInt();
+                enemy.add(t);
+            }
+            Wave t = new Wave(gameField,enemy,10,i);
+            waves.add(t);
         }
-        Wave t = new Wave(gameField,enemy,10,0);
-        List<Wave> w = new ArrayList<>();
-        for(int i=0;i<10;i++) w.add(t);
-        spawner = new Spawner(gameField,w);
 
-
+        spawner = new Spawner(gameField,waves);
     }
 
     //Update handler
@@ -101,6 +103,12 @@ public class Controller extends AnimationTimer {
     public void handle(long now) {
         if(Config.UI_CUR == Config.UI_PLAYING)
         {
+            if(gameField.isComplete() || spawner.gameComplete()) {
+                Config.UI_CUR = Config.UI_GAME_COMPLETE;
+                return;
+            }
+
+
             spawner.update();
             gameField.update();
         }
@@ -145,11 +153,15 @@ public class Controller extends AnimationTimer {
                 break;
             }
             case Config.UI_STAGE_CHOOSING: {
-                stageMouse();
+                stageMouse(mouseEvent);
                 break;
             }
             case Config.UI_PLAYING: {
                 playingMouse(mouseEvent);
+                break;
+            }
+            case Config.UI_GAME_COMPLETE: {
+                gameCompleteMouse(mouseEvent);
                 break;
             }
             case Config.UI_PAUSE: {
@@ -166,10 +178,19 @@ public class Controller extends AnimationTimer {
         }
     }
 
-    private void stageMouse() throws FileNotFoundException {
-        File stage;
+    private void gameCompleteMouse(MouseEvent mouseEvent) {
+        MouseButton mouseButton = mouseEvent.getButton();
+        if(Math.abs(mX-Config.SCREEN_WIDTH/2)<=60 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=17) {
+            Config.UI_CUR = Config.UI_START;
+            gameField = null;
+            spawner = null;
+        }
+    }
 
-        if(Math.abs(mX - Config.SCREEN_WIDTH/2)<=100 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=50) {
+    private void stageMouse(MouseEvent mouseEvent) throws FileNotFoundException {
+        File stage;
+        MouseButton mouseButton = mouseEvent.getButton();
+        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX - Config.SCREEN_WIDTH/2)<=100 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=50) {
             stage = new File("src\\stageInfo\\stage_one_data");
             initGame(stage);
             Config.UI_CUR = Config.UI_PLAYING;

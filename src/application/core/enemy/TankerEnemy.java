@@ -8,6 +8,6 @@ public class TankerEnemy extends AbstractEnemy {
     }
 
     public TankerEnemy() {
-        super(1000,  4, 5, 2, null);
+        super(100,  4, 5, 2, null);
     }
 }

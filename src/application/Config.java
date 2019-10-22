@@ -26,5 +26,9 @@ public final class Config {
     public static final int UI_STAGE_CHOOSING = 2;
     public static final int UI_PLAYING = 3;
     public static final int UI_PAUSE = 4;
+    public static final int UI_GAME_COMPLETE = 5;
+
+
+
     public static final int UI_BASE = 0;
 }

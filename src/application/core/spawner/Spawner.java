@@ -35,9 +35,14 @@ public class Spawner {
             if(curWave.isFinished()) {
                 curWaveIndex++;
                 curWave = null;
+                System.out.println("Next:" + curWaveIndex);
             }
             else curWave.update();
         }
+    }
+
+    public boolean gameComplete() {
+        return (curWaveIndex == waves.size()) && (curWave == null);
     }
 
     public void resetTimer() {

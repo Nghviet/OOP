@@ -52,6 +52,11 @@ public class GameRenderer {
                 }
                 break;
             }
+            case Config.UI_GAME_COMPLETE: {
+                gameRender();
+                graphicsContext.drawImage(ImageHolder.instance.buttons[2],Config.SCREEN_WIDTH/2-60,Config.SCREEN_HEIGHT/2-17);
+                break;
+            }
             case Config.UI_PAUSE: {
                 pauseRender();
                 break;

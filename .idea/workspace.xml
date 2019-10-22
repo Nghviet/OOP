@@ -5,19 +5,13 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OOP/application/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OOP/application/Config.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OOP/application/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OOP/application/Controller.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OOP/application/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OOP/application/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OOP/application/core/GameField.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OOP/application/core/GameField.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OOP/application/graphic/GameRenderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OOP/application/graphic/GameRenderer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/OOP/assets/fileList.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/OOP/assets/fileList.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/application/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/Config.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/application/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/core/GameField.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/core/GameField.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/core/enemy/TankerEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/core/enemy/TankerEnemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/application/core/spawner/Spawner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/core/spawner/Spawner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/core/spawner/Wave.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/core/spawner/Wave.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/application/graphic/GameRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/graphic/GameRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/graphic/ImageHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/graphic/ImageHolder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/fileList.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/fileList.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stageInfo/stage_one_data" beforeDir="false" afterPath="$PROJECT_DIR$/src/stageInfo/stage_one_data" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
