@@ -14,6 +14,7 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
     private int reward;
     private int speed;
     private int currentWaypoints;
+    private int dir;
 
     private double lastCall;
     private boolean destroyed = false;
@@ -48,6 +49,7 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
         lastCall = System.nanoTime()/Config.timeDivide;
 
         this.player = player;
+        dir = 0;
     }
 
     public void update() {
@@ -74,6 +76,15 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
             return;
         }
         target = Waypoints.instance.getIndex(currentWaypoints);
+        Vector2 cur = Waypoints.instance.getIndex(currentWaypoints-1);
+        if(target.getX() == cur.getX()) {
+            if(target.getY() < cur.getY()) dir = 3;
+            else dir = 1;
+        }
+        else {
+            if(target.getX() > cur.getX()) dir = 0;
+            else dir = 2;
+        }
     }
 
     @Override
@@ -102,5 +113,10 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    @Override
+    public int getDir() {
+        return dir;
     }
 }

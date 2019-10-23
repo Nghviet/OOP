@@ -76,4 +76,9 @@ public abstract class AbstractTower implements Tower {
     public void setPosition(int x,int y) {
         this.position = new Vector2(x, y);
     }
+
+    @Override
+    public double getRange() {
+        return range;
+    }
 }

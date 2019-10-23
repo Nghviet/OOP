@@ -18,6 +18,11 @@ public class ImageHolder {
     public Image[] numbers;
     public Image[] textiles;
 
+    public Image[] normalEnemy;
+    public Image[] tankerEnemy;
+    public Image[] assassinEnemy;
+    public Image[] bossEnemy;
+
     static {
         try {
             instance = new ImageHolder();
@@ -60,5 +65,29 @@ public class ImageHolder {
             textiles[i] = new Image(path);
         }
 
+        int enemySprite = scanner.nextInt();
+        normalEnemy = new Image[4];
+        for(int i=0;i<4;i++) {
+            String path = scanner.next();
+            normalEnemy[i] = new Image(path);
+        }
+
+        tankerEnemy = new Image[4];
+        for(int i=0;i<4;i++) {
+            String path = scanner.next();
+            tankerEnemy[i] = new Image(path);
+        }
+
+        assassinEnemy = new Image[4];
+        for(int i=0;i<4;i++) {
+            String path = scanner.next();
+            assassinEnemy[i] = new Image(path);
+        }
+
+        bossEnemy = new Image[4];
+        for(int i=0;i<4;i++) {
+            String path = scanner.next();
+            bossEnemy[i] = new Image(path);
+        }
     }
 }

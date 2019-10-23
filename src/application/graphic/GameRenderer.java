@@ -2,7 +2,7 @@ package application.graphic;
 
 import application.Config;
 import application.Controller;
-import application.core.enemy.Enemy;
+import application.core.enemy.*;
 import application.core.GameField;
 import application.core.tile.GameTile;
 import application.core.tile.MapTile;
@@ -10,7 +10,10 @@ import application.core.tile.Path;
 import application.core.tower.*;
 import application.utility.Vector2;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
 import javafx.scene.transform.Rotate;
 
 import java.util.ArrayList;
@@ -82,6 +85,158 @@ public class GameRenderer {
             Vector2 p = tile.getPosition();
 
             if(tile instanceof Path) {
+                boolean near[][] = new boolean[3][3];
+
+                if(x-1<0) {
+                    for(int i=0;i<3;i++) near[0][i] = true;
+                }
+                if(x+1>=Config.COUNT_HORIZONTAL) {
+                    for(int i=0;i<3;i++) near[2][i] = true;
+                }
+
+                if(y-1<0) {
+                    for(int i=0;i<3;i++) near[i][0] = true;
+                }
+                if(y+1>=Config.COUNT_VERTICAL) {
+                    for(int i=0;i<3;i++) near[i][2] = true;
+                }
+
+                if(x-1>=0) {
+                    if(y-1>=0 && map[x-1][y-1] instanceof MapTile) near[0][0] = true;
+                    if(map[x-1][y] instanceof MapTile) near[0][1] = true;
+                    if(y+1<Config.COUNT_VERTICAL && map[x-1][y+1] instanceof MapTile) near[0][2] = true;
+                }
+                if(y-1>=0 && map[x][y-1] instanceof MapTile) near[1][0] = true;
+                if(y+1<Config.COUNT_VERTICAL && map[x][y+1] instanceof MapTile) near[1][2] = true;
+                if(x+1<Config.COUNT_HORIZONTAL) {
+                    if(y-1>=0 && map[x+1][y-1] instanceof  MapTile) near[2][0] = true;
+                    if(map[x+1][y] instanceof  MapTile) near[2][1] = true;
+                    if(y+1<Config.COUNT_VERTICAL && map[x+1][y+1] instanceof MapTile) near[2][2] = true;
+                }
+
+                if(near[0][0]) {
+                    if(near[0][1]) {
+                        if(near[1][0]) {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[9],
+                                    p.getX()-Config.TILE_SIZE/2,p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                        else {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[12],
+                                    p.getX()-Config.TILE_SIZE/2,p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                    }
+                    else {
+                        if(near[1][0]) {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[10],
+                                    p.getX()-Config.TILE_SIZE/2,p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                        else {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[8],
+                                    p.getX()-Config.TILE_SIZE/2,p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                    }
+                }
+                else {
+                    if(near[0][1]) graphicsContext.drawImage(ImageHolder.instance.textiles[12],
+                            p.getX()-Config.TILE_SIZE/2,p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                    else graphicsContext.drawImage(ImageHolder.instance.textiles[10],
+                            p.getX()-Config.TILE_SIZE/2,p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                }
+
+                if(near[0][2]) {
+                    if(near[1][2]) {
+                        if(near[0][1]) {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[15],
+                                    p.getX()-Config.TILE_SIZE/2,p.getY(),Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                        else {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[16],
+                                    p.getX()-Config.TILE_SIZE/2,p.getY(),Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                    }
+                    else {
+                        if(near[0][1]) {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[12],
+                                    p.getX()-Config.TILE_SIZE/2,p.getY(),Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                        else {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[2],
+                                    p.getX()-Config.TILE_SIZE/2,p.getY(),Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                    }
+                }
+                else {
+                    if(near[0][1]) graphicsContext.drawImage(ImageHolder.instance.textiles[12],
+                            p.getX()-Config.TILE_SIZE/2,p.getY(),Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                    else graphicsContext.drawImage(ImageHolder.instance.textiles[16],
+                            p.getX()-Config.TILE_SIZE/2,p.getY(),Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                }
+
+                if(near[2][0]) {
+                    if(near[1][0]) {
+                        if(near[2][1]) {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[11],
+                                    p.getX(),p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                        else {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[10],
+                                    p.getX(),p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                    }
+                    else {
+                        if(near[2][1]) {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[14],
+                                    p.getX(),p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                        else {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[6],
+                                    p.getX(),p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                    }
+                }
+                else {
+                    if(near[0][1]) {
+                        graphicsContext.drawImage(ImageHolder.instance.textiles[14],
+                                p.getX(),p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                    }
+                    else {
+                        graphicsContext.drawImage(ImageHolder.instance.textiles[10],
+                                p.getX(),p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                    }
+                }
+
+                if(near[2][2]) {
+                    if(near[2][1]) {
+                        if(near[1][2]) {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[17],
+                                    p.getX(),p.getY(),Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                        else {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[14],
+                                    p.getX(),p.getY(),Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                    }
+                    else {
+                        if(near[1][2]) {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[16],
+                                    p.getX(),p.getY(),Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                        else {
+                            graphicsContext.drawImage(ImageHolder.instance.textiles[0],
+                                    p.getX(),p.getY(),Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                        }
+                    }
+                }
+                else {
+                    if(near[1][2]) {
+                        graphicsContext.drawImage(ImageHolder.instance.textiles[16],
+                                p.getX(),p.getY(),Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                    }
+                    else {
+                        graphicsContext.drawImage(ImageHolder.instance.textiles[14],
+                                p.getX(),p.getY(),Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                    }
+                }
 
             }
             else {
@@ -90,16 +245,25 @@ public class GameRenderer {
                              p.getX()-Config.TILE_SIZE/2,p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE,Config.TILE_SIZE);
                 }
             }
-
-
-
         }
 
         graphicsContext.setFill(Color.RED);
         List<Enemy> enemies = gameField.getEnemies();
         for(Enemy enemy:enemies) {
             Vector2 pos = enemy.getPosition();
-            graphicsContext.fillRect(pos.getX()-8,pos.getY()-8,16,16);
+            int dir = enemy.getDir();
+            if(enemy instanceof NormalEnemy) {
+                graphicsContext.drawImage(ImageHolder.instance.normalEnemy[dir],pos.getX()-Config.TILE_SIZE/2,pos.getY()-Config.TILE_SIZE/2,
+                        Config.TILE_SIZE,Config.TILE_SIZE);
+            }
+            if(enemy instanceof AssassinEnemy) {
+                graphicsContext.drawImage(ImageHolder.instance.assassinEnemy[dir],pos.getX()-Config.TILE_SIZE/2,pos.getY()-Config.TILE_SIZE/2,
+                        Config.TILE_SIZE,Config.TILE_SIZE);
+            }
+            if(enemy instanceof TankerEnemy) {
+                graphicsContext.drawImage(ImageHolder.instance.tankerEnemy[dir],pos.getX()-Config.TILE_SIZE/2,pos.getY()-Config.TILE_SIZE/2,
+                        Config.TILE_SIZE,Config.TILE_SIZE);
+            }
         }
 
         List<Tower> towers = gameField.getTowers();
@@ -157,9 +321,22 @@ public class GameRenderer {
         graphicsContext.fillRect(Config.GAME_WIDTH+Config.UI_HORIZONTAL/2  - Config.TILE_SIZE/2 + 40,20,Config.TILE_SIZE,Config.TILE_SIZE);
 
         //mouse
+        playingMouseRender();
+    }
+
+    private void playingMouseRender() {
         int x = gameController.mX;
         int y = gameController.mY;
         if(gameController.curTower != null) {
+
+            if(0<=x && x<Config.GAME_WIDTH && 0<=y && y<Config.GAME_HEIGHT && gameField.isEmpty(x,y)) {
+                int mX = x / Config.TILE_SIZE;
+                int mY = y / Config.TILE_SIZE;
+                graphicsContext.drawImage(ImageHolder.instance.textiles[18],
+                        mX*Config.TILE_SIZE,mY*Config.TILE_SIZE,Config.TILE_SIZE,Config.TILE_SIZE);
+
+
+            }
             if(gameController.curTower instanceof NormalTower) {
                 graphicsContext.setFill(Color.BLUE);
             }
@@ -170,6 +347,8 @@ public class GameRenderer {
                 graphicsContext.setFill(Color.RED);
             }
             graphicsContext.fillRect(x-8,y-8,16,16);
+
+
         }
     }
 

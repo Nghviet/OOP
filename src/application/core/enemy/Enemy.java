@@ -17,4 +17,6 @@ public interface Enemy extends GameEntity {
     void resetTimer();
 
     void setPlayer(Player player);
+
+    int getDir();
 }
