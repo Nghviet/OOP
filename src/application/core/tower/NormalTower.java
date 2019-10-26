@@ -9,7 +9,7 @@ public class NormalTower extends AbstractTower {
     public static NormalTower instance = new NormalTower(null,null);
 
     public NormalTower(GameField gameField, Vector2 position) {
-        super(gameField, position, 100, 3, 1,1);
+        super(gameField, position,10, 100, 3, 1,1);
     }
 
     public void shoot() {

@@ -14,6 +14,7 @@ public abstract class AbstractTower implements Tower {
     Vector2 position;
     private double rotation;
 
+    private double rotationSpeed;
     private double range;
     private double reloadTimer;
     private double reloadTime;
@@ -22,19 +23,20 @@ public abstract class AbstractTower implements Tower {
 
     private int price;
 
-    public AbstractTower(GameField gameField, Vector2 position, double range, double reloadTime, int damage, int price) {
+    public AbstractTower(GameField gameField, Vector2 position, double rotationSpeed, double range, double reloadTime, int damage, int price) {
         this.gameField = gameField;
         this.position = position;
         this.range = range;
         this.reloadTime = reloadTime;
         this.damage = damage;
-
+        this.rotationSpeed = rotationSpeed;
         rotation = 0;
         reloadTimer = 0;
         target = null;
         lastCall = System.nanoTime()/(1e8);
 
         this.price = price;
+        rotation = 0;
     }
 
     @Override
@@ -50,10 +52,39 @@ public abstract class AbstractTower implements Tower {
         }
 
         reloadTimer -= deltaTime;
-        if(reloadTimer <=0) {
-            shoot();
-            reloadTimer = reloadTime;
+        if(target!=null) {
+            double rotateTo = getTargetRotation();
+            double rotate = deltaTime * rotationSpeed;
+            if(rotation > 180) {
+                if(rotation > rotateTo && rotateTo > rotation - 180) {
+                    if(Math.abs(rotation - rotateTo) < rotate) rotation = rotateTo;
+                    rotation -= rotate;
+                }
+                else {
+                    if(Math.abs(rotation - rotateTo) < rotate) rotation = rotateTo;
+                    rotation += rotate;
+                }
+            }
+            else {
+                if(rotation < rotateTo && rotateTo < rotation + 180) {
+                    if(Math.abs(rotation - rotateTo) < rotate) rotation = rotateTo;
+                    rotation += rotate;
+                }
+                else {
+                    if(Math.abs(rotation - rotateTo) < rotate) rotation = rotateTo;
+                    rotation -= rotate;
+                }
+            }
+
+            if(rotation > 360) rotation -= 360;
+            if(rotation < 0) rotation += 360;
+
+            if(reloadTimer <=0 && Math.abs(rotation - rotateTo) <= 5) {
+                shoot();
+                reloadTimer = reloadTime;
+            }
         }
+
 
     }
 
@@ -80,5 +111,28 @@ public abstract class AbstractTower implements Tower {
     @Override
     public double getRange() {
         return range;
+    }
+
+    @Override
+    public double getRotation() { return rotation; }
+
+    private double getTargetRotation() {
+        Vector2 targetPosition = target.getPosition();
+        double x = targetPosition.getX() - position.getX();
+        double y = targetPosition.getY() - position.getY();
+
+        double baseRotation = Math.abs(Math.toDegrees(Math.asin(y/Math.sqrt(x*x+y*y))));
+        if(x<0 && y<0) baseRotation +=180;
+        if(x<0 && y>0) baseRotation = 180 - baseRotation;
+        if(x>0 && y<0) baseRotation = 360 - baseRotation;
+        if(x==0) {
+            if(y>0) baseRotation = 90;
+            else baseRotation = 270;
+        }
+        if(y==0) {
+            if(x>0) baseRotation = 0;
+            else baseRotation = 180;
+        }
+        return baseRotation;
     }
 }

@@ -16,6 +16,7 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
     private int currentWaypoints;
     private int dir;
 
+
     private double lastCall;
     private boolean destroyed = false;
 
@@ -50,6 +51,7 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
 
         this.player = player;
         dir = 0;
+
     }
 
     public void update() {

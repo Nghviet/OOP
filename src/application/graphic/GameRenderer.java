@@ -280,7 +280,21 @@ public class GameRenderer {
                     graphicsContext.setFill(Color.RED);
                 }
                 Vector2 pos = tower.getPosition();
+                double rotation = tower.getRotation();
                 graphicsContext.fillRect(pos.getX()-8,pos.getY()-8,16,16);
+
+
+                graphicsContext.save();
+                graphicsContext.rotate(rotation);
+                graphicsContext.setFill(Color.GRAY);
+
+
+                double dist = Math.sqrt(pos.getX() * pos.getX() + pos.getY() * pos.getY());
+                double rad = Math.toRadians(rotation);
+                double base = Math.acos(pos.getX() / dist);
+                graphicsContext.fillRect(dist*Math.cos(-rad+base)-6,dist*Math.sin(-rad+base)-6,20,12);
+                graphicsContext.restore();
+
             }
 
         List<Bullet> bullets = gameField.getBullets();

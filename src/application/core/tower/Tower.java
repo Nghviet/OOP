@@ -14,4 +14,6 @@ public interface Tower extends GameTile {
     void setPosition(int x, int y);
 
     double getRange();
+
+    double getRotation();
 }

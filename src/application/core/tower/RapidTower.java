@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 public class RapidTower extends AbstractTower {
     public static RapidTower instance = new RapidTower(null,null);
     public RapidTower(GameField gameField, Vector2 position) {
-        super(gameField, position, 50, 1, 1, 3);
+        super(gameField, position, 15,50, 1, 1, 3);
     }
 
     public void shoot() {

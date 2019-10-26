@@ -23,6 +23,8 @@ public class ImageHolder {
     public Image[] assassinEnemy;
     public Image[] bossEnemy;
 
+    public Image[] stages;
+
     static {
         try {
             instance = new ImageHolder();
@@ -89,5 +91,13 @@ public class ImageHolder {
             String path = scanner.next();
             bossEnemy[i] = new Image(path);
         }
+
+        int stage = scanner.nextInt();
+        stages = new Image[stage];
+        for(int i=0;i<stage;i++) {
+            String path = scanner.next();
+            stages[i] = new Image(path);
+        }
+
     }
 }

@@ -8,7 +8,7 @@ public class RangerTower extends AbstractTower {
     public static RangerTower instance = new RangerTower(null,null);
 
     public RangerTower(GameField gameField, Vector2 position) {
-        super(gameField, position, 250 , 10, 3, 5);
+        super(gameField, position,10, 250 , 10, 3, 5);
     }
 
     public void shoot() {

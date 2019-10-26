@@ -57,4 +57,6 @@ assets/Enemy/Boss/Boss_0.png
 assets/Enemy/Boss/Boss_1.png
 assets/Enemy/Boss/Boss_2.png
 assets/Enemy/Boss/Boss_3.png
+1
+assets/Stage/Stage_1.png
 
