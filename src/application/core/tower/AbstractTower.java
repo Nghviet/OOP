@@ -14,16 +14,18 @@ public abstract class AbstractTower implements Tower {
     Vector2 position;
     private double rotation;
 
-    private double rotationSpeed;
-    private double range;
-    private double reloadTimer;
-    private double reloadTime;
+    protected double rotationSpeed;
+    protected double range;
+    protected double reloadTimer;
+    protected double reloadTime;
     int damage;
-    private double lastCall;
+    protected double lastCall;
 
-    private int price;
+    protected int price;
+    protected Vector2[] firingPoint;
 
-    public AbstractTower(GameField gameField, Vector2 position, double rotationSpeed, double range, double reloadTime, int damage, int price) {
+    public AbstractTower(GameField gameField, Vector2 position, double rotationSpeed, double range, double reloadTime, int damage,
+                         int price) {
         this.gameField = gameField;
         this.position = position;
         this.range = range;
@@ -37,6 +39,8 @@ public abstract class AbstractTower implements Tower {
 
         this.price = price;
         rotation = 0;
+
+        this.firingPoint = null;
     }
 
     @Override
@@ -104,8 +108,11 @@ public abstract class AbstractTower implements Tower {
 
     public abstract void shoot();
 
+    public abstract void setFiringPoint();
+
     public void setPosition(int x,int y) {
         this.position = new Vector2(x, y);
+        setFiringPoint();
     }
 
     @Override
@@ -135,4 +142,6 @@ public abstract class AbstractTower implements Tower {
         }
         return baseRotation;
     }
+
+    public abstract void upgrade();
 }

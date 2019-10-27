@@ -5,11 +5,11 @@ import javafx.scene.paint.Color;
 public final class Config {
     public static final String NAME = "Roon";
 
-    public static final int TILE_SIZE = 32;
+    public static final int TILE_SIZE = 64;
     public static final int COUNT_HORIZONTAL = 20;
     public static final int COUNT_VERTICAL = 12;
 
-    public static final int UI_HORIZONTAL = 200;
+    public static final int UI_HORIZONTAL = 250;
 
     public static final int GAME_WIDTH = TILE_SIZE * COUNT_HORIZONTAL;
     public static final int GAME_HEIGHT = TILE_SIZE * COUNT_VERTICAL;

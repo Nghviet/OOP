@@ -190,8 +190,26 @@ public class Controller extends AnimationTimer {
     private void stageMouse(MouseEvent mouseEvent) throws FileNotFoundException {
         File stage;
         MouseButton mouseButton = mouseEvent.getButton();
-        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX - Config.SCREEN_WIDTH/2)<=100 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=50) {
+        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX - Config.SCREEN_WIDTH/2 + 140)<=100 && Math.abs(mY - Config.SCREEN_HEIGHT/2+80)<=60) {
             stage = new File("src/stageInfo/stage_1_data").getAbsoluteFile();
+            initGame(stage);
+            Config.UI_CUR = Config.UI_PLAYING;
+        }
+
+        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX - Config.SCREEN_WIDTH/2 - 140)<=100 && Math.abs(mY - Config.SCREEN_HEIGHT/2+80)<=60) {
+            stage = new File("src/stageInfo/stage_2_data").getAbsoluteFile();
+            initGame(stage);
+            Config.UI_CUR = Config.UI_PLAYING;
+        }
+
+        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX - Config.SCREEN_WIDTH/2 + 140)<=100 && Math.abs(mY - Config.SCREEN_HEIGHT/2-80)<=60) {
+            stage = new File("src/stageInfo/stage_3_data").getAbsoluteFile();
+            initGame(stage);
+            Config.UI_CUR = Config.UI_PLAYING;
+        }
+
+        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX - Config.SCREEN_WIDTH/2 - 140)<=100 && Math.abs(mY - Config.SCREEN_HEIGHT/2-80)<=60) {
+            stage = new File("src/stageInfo/stage_4_data").getAbsoluteFile();
             initGame(stage);
             Config.UI_CUR = Config.UI_PLAYING;
         }
@@ -203,15 +221,16 @@ public class Controller extends AnimationTimer {
         if(!gameField.isComplete())
         {
             //
-            if(Math.abs(mX - (Config.GAME_WIDTH + Config.UI_HORIZONTAL/2)) <= Config.TILE_SIZE/2)
+            if(Math.abs(mX - (Config.GAME_WIDTH+Config.UI_HORIZONTAL/2-10-Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2)
             {
-                if(Math.abs(mY-(20+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2) {
+                if(Math.abs(mY-(10+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2) {
                     if(gameField.getPlayerMoney() >= NormalTower.instance.getPrice()) curTower = new NormalTower(gameField,null);
                 }
-                if(Math.abs(mY -(60+Config.TILE_SIZE/2))<=Config.TILE_SIZE/2) {
+                if(Math.abs(mY -(40+Config.TILE_SIZE/2))<=Config.TILE_SIZE/2) {
                     if(gameField.getPlayerMoney() >= RangerTower.instance.getPrice()) curTower = new RangerTower(gameField,null);
                 }
             }
+
 
             if(Math.abs(mX - (Config.GAME_WIDTH + Config.UI_HORIZONTAL/2 + 40)) <= Config.TILE_SIZE/2)
             {

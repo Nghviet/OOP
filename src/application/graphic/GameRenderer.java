@@ -73,8 +73,21 @@ public class GameRenderer {
     }
 
     private void stageRender() {
-        graphicsContext.setFill(Color.RED);
-        graphicsContext.fillRect(Config.SCREEN_WIDTH/2-100,Config.SCREEN_HEIGHT/2-50,200,100);
+
+        graphicsContext.setFill(Color.BROWN);
+        graphicsContext.fillRect(0,0,Config.SCREEN_WIDTH,Config.SCREEN_HEIGHT);
+        graphicsContext.setFill(Color.SANDYBROWN);
+        graphicsContext.fillRect(Config.SCREEN_WIDTH/2-250,Config.SCREEN_HEIGHT/2-145,220,130);
+        graphicsContext.fillRect(Config.SCREEN_WIDTH/2-250,Config.SCREEN_HEIGHT/2+ 15,220,130);
+        graphicsContext.fillRect(Config.SCREEN_WIDTH/2+30,Config.SCREEN_HEIGHT/2-145,220,130);
+        graphicsContext.fillRect(Config.SCREEN_WIDTH/2+30,Config.SCREEN_HEIGHT/2+15,220,130);
+
+
+
+        graphicsContext.drawImage(ImageHolder.instance.stages[0],Config.SCREEN_WIDTH/2 - 240,Config.SCREEN_HEIGHT/2-140,200,120);
+        graphicsContext.drawImage(ImageHolder.instance.stages[1],Config.SCREEN_WIDTH/2 + 40 ,Config.SCREEN_HEIGHT/2-140,200,120);
+        graphicsContext.drawImage(ImageHolder.instance.stages[2],Config.SCREEN_WIDTH/2 - 240,Config.SCREEN_HEIGHT/2+20, 200,120);
+        graphicsContext.drawImage(ImageHolder.instance.stages[3],Config.SCREEN_WIDTH/2 + 40, Config.SCREEN_HEIGHT/2+20, 200,120);
     }
 
     private void gameRender() {
@@ -195,7 +208,7 @@ public class GameRenderer {
                     }
                 }
                 else {
-                    if(near[0][1]) {
+                    if(near[2][1]) {
                         graphicsContext.drawImage(ImageHolder.instance.textiles[14],
                                 p.getX(),p.getY()-Config.TILE_SIZE/2,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
                     }
@@ -305,7 +318,7 @@ public class GameRenderer {
         }
 
         //*UI
-        graphicsContext.drawImage(ImageHolder.instance.backgrounds[1],Config.SCREEN_WIDTH-Config.UI_HORIZONTAL,0);
+        graphicsContext.drawImage(ImageHolder.instance.backgrounds[1],Config.SCREEN_WIDTH-Config.UI_HORIZONTAL,0,Config.UI_HORIZONTAL,Config.SCREEN_HEIGHT);
 
         graphicsContext.drawImage(ImageHolder.instance.backgrounds[3],Config.SCREEN_WIDTH-Config.UI_HORIZONTAL+5,150);
         graphicsContext.drawImage(ImageHolder.instance.backgrounds[2],Config.SCREEN_WIDTH-Config.UI_HORIZONTAL+5,200);
@@ -326,13 +339,13 @@ public class GameRenderer {
 
 
         graphicsContext.setFill(Color.BLUE);
-        graphicsContext.fillRect(Config.GAME_WIDTH+Config.UI_HORIZONTAL/2 - Config.TILE_SIZE/2,20,Config.TILE_SIZE,Config.TILE_SIZE);
-
-        graphicsContext.setFill(Color.YELLOW);
-        graphicsContext.fillRect(Config.GAME_WIDTH+Config.UI_HORIZONTAL/2 - Config.TILE_SIZE/2,60,Config.TILE_SIZE,Config.TILE_SIZE);
+        graphicsContext.fillRect(Config.GAME_WIDTH+Config.UI_HORIZONTAL/2-10-Config.TILE_SIZE,10,Config.TILE_SIZE,Config.TILE_SIZE);
 
         graphicsContext.setFill(Color.RED);
-        graphicsContext.fillRect(Config.GAME_WIDTH+Config.UI_HORIZONTAL/2  - Config.TILE_SIZE/2 + 40,20,Config.TILE_SIZE,Config.TILE_SIZE);
+        graphicsContext.fillRect(Config.GAME_WIDTH+Config.UI_HORIZONTAL/2+10,10,Config.TILE_SIZE,Config.TILE_SIZE);
+
+        graphicsContext.setFill(Color.YELLOW);
+        graphicsContext.fillRect(Config.GAME_WIDTH+Config.UI_HORIZONTAL/2-10-Config.TILE_SIZE,90,Config.TILE_SIZE,Config.TILE_SIZE);
 
         //mouse
         playingMouseRender();
@@ -348,7 +361,9 @@ public class GameRenderer {
                 int mY = y / Config.TILE_SIZE;
                 graphicsContext.drawImage(ImageHolder.instance.textiles[18],
                         mX*Config.TILE_SIZE,mY*Config.TILE_SIZE,Config.TILE_SIZE,Config.TILE_SIZE);
-
+                graphicsContext.drawImage(ImageHolder.instance.backgrounds[5],
+                        mX*Config.TILE_SIZE + Config.TILE_SIZE/2 - gameController.curTower.getRange(),mY*Config.TILE_SIZE + Config.TILE_SIZE/2 - gameController.curTower.getRange(),
+                        2 * gameController.curTower.getRange(),2 * gameController.curTower.getRange());
 
             }
             if(gameController.curTower instanceof NormalTower) {
