@@ -24,6 +24,7 @@ public class ImageHolder {
     public Image[] bossEnemy;
 
     public Image[] stages;
+    public Image[] towers;
 
     static {
         try {
@@ -97,6 +98,13 @@ public class ImageHolder {
         for(int i=0;i<stage;i++) {
             String path = scanner.next();
             stages[i] = new Image(path);
+        }
+
+        int tower = scanner.nextInt();
+        towers = new Image[tower];
+        for(int i=0;i<tower;i++) {
+            String path = scanner.next();
+            towers[i] = new Image(path);
         }
 
     }

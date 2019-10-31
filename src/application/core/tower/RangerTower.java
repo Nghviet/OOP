@@ -8,12 +8,12 @@ public class RangerTower extends AbstractTower {
     public static RangerTower instance = new RangerTower(null,null);
 
     public RangerTower(GameField gameField, Vector2 position) {
-        super(gameField, position,10, 250 , 10, 3, 5);
+        super(gameField, position,10, 750 , 50, 3, 5);
     }
 
     public void shoot() {
         for(Vector2 position:firingPoint)
-        gameField.addBullet(new Bullet(position,target,damage,30, Color.LIGHTYELLOW));
+        gameField.addBullet(new Bullet(position,target,damage,30, Color.LIGHTYELLOW,this));
     }
 
     public void setFiringPoint() {

@@ -9,12 +9,12 @@ public class NormalTower extends AbstractTower {
     public static NormalTower instance = new NormalTower(null,null);
 
     public NormalTower(GameField gameField, Vector2 position) {
-        super(gameField, position,10, 100, 3, 1,1);
+        super(gameField, position,10, 550, 3, 1,1);
     }
 
     public void shoot() {
         for(Vector2 position:firingPoint)
-        gameField.addBullet(new Bullet(position,target,damage,10, Color.LIGHTBLUE));
+        gameField.addBullet(new Bullet(position,target,damage,10, Color.LIGHTBLUE,this));
     }
 
     @Override

@@ -16,4 +16,6 @@ public interface Tower extends GameTile {
     double getRange();
 
     double getRotation();
+
+    boolean isReloaded();
 }

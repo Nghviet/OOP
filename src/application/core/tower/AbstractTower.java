@@ -56,6 +56,7 @@ public abstract class AbstractTower implements Tower {
         }
 
         reloadTimer -= deltaTime;
+        if(reloadTimer<0) reloadTimer = 0;
         if(target!=null) {
             double rotateTo = getTargetRotation();
             double rotate = deltaTime * rotationSpeed;
@@ -144,4 +145,9 @@ public abstract class AbstractTower implements Tower {
     }
 
     public abstract void upgrade();
+
+    @Override
+    public boolean isReloaded() {
+        return (reloadTimer==0);
+    }
 }

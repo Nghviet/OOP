@@ -226,15 +226,16 @@ public class Controller extends AnimationTimer {
                 if(Math.abs(mY-(10+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2) {
                     if(gameField.getPlayerMoney() >= NormalTower.instance.getPrice()) curTower = new NormalTower(gameField,null);
                 }
-                if(Math.abs(mY -(40+Config.TILE_SIZE/2))<=Config.TILE_SIZE/2) {
+                if(Math.abs(mY -(90+Config.TILE_SIZE/2))<=Config.TILE_SIZE/2) {
                     if(gameField.getPlayerMoney() >= RangerTower.instance.getPrice()) curTower = new RangerTower(gameField,null);
                 }
             }
 
 
-            if(Math.abs(mX - (Config.GAME_WIDTH + Config.UI_HORIZONTAL/2 + 40)) <= Config.TILE_SIZE/2)
+
+            if(Math.abs(mX - (Config.GAME_WIDTH+Config.UI_HORIZONTAL/2+10+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2)
             {
-                if(Math.abs(mY-(20+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2) {
+                if(Math.abs(mY-(10+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2) {
                     if(gameField.getPlayerMoney() >= RapidTower.instance.getPrice()) curTower = new RapidTower(gameField,null);
                 }
             }

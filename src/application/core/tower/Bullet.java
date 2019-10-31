@@ -17,7 +17,7 @@ public class Bullet implements GameEntity {
 
     private Color color;
 
-    public Bullet(Vector2 position, Enemy target, int damage, double speed,Color color) {
+    public Bullet(Vector2 position, Enemy target, int damage, double speed,Color color,Tower tower) {
         this.position = position;
         this.target = target;
         this.damage = damage;

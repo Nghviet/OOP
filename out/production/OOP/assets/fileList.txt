@@ -63,3 +63,9 @@ assets/Stage/Stage_1.png
 assets/Stage/Stage_2.png
 assets/Stage/Stage_3.png
 assets/Stage/Stage_4.png
+5
+assets/Tower/Base.png
+assets/Tower/Normal.png
+assets/Tower/Machine.png
+assets/Tower/Sniper.png
+assets/Tower/Sniper_Base.png
