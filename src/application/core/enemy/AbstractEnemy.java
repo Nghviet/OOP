@@ -50,7 +50,16 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
         lastCall = System.nanoTime()/Config.timeDivide;
 
         this.player = player;
-        dir = 0;
+
+        Vector2 cur = Waypoints.instance.getIndex(currentWaypoints-1);
+        if(target.getX() == cur.getX()) {
+            if(target.getY() < cur.getY()) dir = 3;
+            else dir = 1;
+        }
+        else {
+            if(target.getX() > cur.getX()) dir = 0;
+            else dir = 2;
+        }
 
     }
 

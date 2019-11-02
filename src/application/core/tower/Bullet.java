@@ -16,8 +16,9 @@ public class Bullet implements GameEntity {
     private double lastCall;
 
     private Color color;
+    private Tower tower;
 
-    public Bullet(Vector2 position, Enemy target, int damage, double speed,Color color,Tower tower) {
+    public Bullet(Vector2 position, Enemy target, int damage, double speed,Tower tower) {
         this.position = position;
         this.target = target;
         this.damage = damage;
@@ -25,7 +26,7 @@ public class Bullet implements GameEntity {
 
         isDestroyed = false;
         lastCall = System.nanoTime()/ Config.timeDivide;
-        this.color = color;
+        this.tower = tower;
     }
 
     public void move() {
@@ -65,5 +66,27 @@ public class Bullet implements GameEntity {
         lastCall = System.nanoTime()/ Config.timeDivide;
     }
 
-    public Color getColor(){return color;}
+    public Tower getTower() {
+        return tower;
+    }
+
+    public double getRotation() {
+        Vector2 targetPosition = target.getPosition();
+        double x = targetPosition.getX() - position.getX();
+        double y = targetPosition.getY() - position.getY();
+
+        double baseRotation = Math.abs(Math.toDegrees(Math.asin(y/Math.sqrt(x*x+y*y))));
+        if(x<0 && y<0) baseRotation +=180;
+        if(x<0 && y>0) baseRotation = 180 - baseRotation;
+        if(x>0 && y<0) baseRotation = 360 - baseRotation;
+        if(x==0) {
+            if(y>0) baseRotation = 90;
+            else baseRotation = 270;
+        }
+        if(y==0) {
+            if(x>0) baseRotation = 0;
+            else baseRotation = 180;
+        }
+        return baseRotation;
+    }
 }

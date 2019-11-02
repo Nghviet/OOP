@@ -120,6 +120,16 @@ public class GameField {
         return (map[x][y] instanceof MapTile) && ((MapTile) map[x][y]).isBuildable();
     }
 
+    public Tower tower(int x,int y) {
+        x = x / Config.TILE_SIZE;
+        y = y / Config.TILE_SIZE;
+        if(map[x][y] instanceof MapTile) {
+            MapTile t = (MapTile) map[x][y];
+            return t.getTower();
+        }
+        return null;
+    }
+
     public List<Enemy> getEnemies() {
         return enemies;
     }

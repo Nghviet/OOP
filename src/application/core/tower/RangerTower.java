@@ -12,17 +12,15 @@ public class RangerTower extends AbstractTower {
     }
 
     public void shoot() {
-        for(Vector2 position:firingPoint)
-        gameField.addBullet(new Bullet(position,target,damage,30, Color.LIGHTYELLOW,this));
+        for(int i=0;i<dist.length;i++) {
+            double a = Math.toRadians(angle[i]+rotation);
+            Vector2 pos = position.minus(new Vector2(-dist[i]*Math.cos(a),-dist[i]*Math.sin(a)));
+            gameField.addBullet(new Bullet(pos,target,damage,30,this));
+        }
     }
 
     public void setFiringPoint() {
-        firingPoint = new Vector2[1];
-        firingPoint[0] = new Vector2(position);
-    }
-
-    @Override
-    public void upgrade() {
 
     }
+
 }

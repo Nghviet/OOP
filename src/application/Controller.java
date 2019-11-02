@@ -35,7 +35,7 @@ public class Controller extends AnimationTimer {
     private boolean haveBuilding;
     public int mX,mY;
     public Tower curTower;
-
+    public Tower showTower;
     public Controller(GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
         this.gameField = null;
@@ -188,6 +188,10 @@ public class Controller extends AnimationTimer {
     }
 
     private void stageMouse(MouseEvent mouseEvent) throws FileNotFoundException {
+
+        curTower = null;
+        showTower = null;
+
         File stage;
         MouseButton mouseButton = mouseEvent.getButton();
         if(mouseButton == MouseButton.PRIMARY && Math.abs(mX - Config.SCREEN_WIDTH/2 + 140)<=100 && Math.abs(mY - Config.SCREEN_HEIGHT/2+80)<=60) {
@@ -231,8 +235,6 @@ public class Controller extends AnimationTimer {
                 }
             }
 
-
-
             if(Math.abs(mX - (Config.GAME_WIDTH+Config.UI_HORIZONTAL/2+10+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2)
             {
                 if(Math.abs(mY-(10+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2) {
@@ -245,11 +247,22 @@ public class Controller extends AnimationTimer {
             }
 
             //
+            if(mX <= Config.GAME_WIDTH && gameField.isEmpty(mX,mY) && curTower == null) {
+                showTower = null;
+            }
+
+            if(mX <= Config.GAME_WIDTH && !gameField.isEmpty(mX,mY)) {
+                curTower = null;
+                showTower = gameField.tower(mX,mY);
+            }
+
             if(mX <= Config.GAME_WIDTH && gameField.isEmpty(mX,mY) && mouseButton == MouseButton.PRIMARY && curTower != null) {
                 gameField.addTurret(mX,mY,curTower);
                 gameField.charge(curTower.getPrice());
                 curTower = null;
             }
+
+
         }
         else {
             if(Math.abs(mX-Config.SCREEN_WIDTH/2)<=100 && Math.abs(mY-Config.SCREEN_HEIGHT/2-20)<=50) {

@@ -298,8 +298,6 @@ public class GameRenderer {
                 double rad = Math.toRadians(rotation);
                 double base = Math.acos(pos.getX() / dist);
 
-                graphicsContext.setFill(Color.GRAY);
-                graphicsContext.fillRect(dist*Math.cos(-rad+base)-6,dist*Math.sin(-rad+base)-6,20,12);
                 if(tower instanceof NormalTower) {
                     graphicsContext.drawImage(ImageHolder.instance.towers[1],
                             dist*Math.cos(-rad+base) + 10 -Config.TILE_SIZE/2,dist*Math.sin(-rad+base)-Config.TILE_SIZE/2,
@@ -332,10 +330,36 @@ public class GameRenderer {
 
         List<Bullet> bullets = gameField.getBullets();
         for(Bullet bullet:bullets) {
-            graphicsContext.setFill(bullet.getColor());
+            Tower tower = bullet.getTower();
             Vector2 pos = bullet.getPosition();
-            graphicsContext.fillRect(pos.getX()-3,pos.getY()-3,6,6);
+
+            double x = pos.getX();
+            double y = pos.getY();
+            double rotation = bullet.getRotation();
+            double dist = Math.sqrt((pos.getX()) * (pos.getX()) + pos.getY() * pos.getY());
+            double rad = Math.toRadians(rotation);
+            double base = Math.acos(pos.getX() / dist);
+
+            graphicsContext.save();
+            graphicsContext.rotate(rotation);
+
+            double rX = dist*Math.cos(-rad+base) -Config.TILE_SIZE/2;
+            double rY = dist*Math.sin(-rad+base)-Config.TILE_SIZE/2;
+
+            if(tower instanceof NormalTower) {
+                graphicsContext.drawImage(ImageHolder.instance.towers[5],rX,rY,Config.TILE_SIZE,Config.TILE_SIZE);
+            }
+            if(tower instanceof RapidTower) {
+                graphicsContext.drawImage(ImageHolder.instance.towers[6],rX,rY,Config.TILE_SIZE,Config.TILE_SIZE);
+            }
+            if(tower instanceof RangerTower) {
+                graphicsContext.drawImage(ImageHolder.instance.towers[7],rX,rY,Config.TILE_SIZE,Config.TILE_SIZE);
+            }
+
+            graphicsContext.restore();
         }
+
+        playingMouseRender();
 
         //*UI
         graphicsContext.drawImage(ImageHolder.instance.backgrounds[1],Config.SCREEN_WIDTH-Config.UI_HORIZONTAL,0,Config.UI_HORIZONTAL,Config.SCREEN_HEIGHT);
@@ -367,15 +391,32 @@ public class GameRenderer {
         graphicsContext.setFill(Color.YELLOW);
         graphicsContext.fillRect(Config.GAME_WIDTH+Config.UI_HORIZONTAL/2-10-Config.TILE_SIZE,90,Config.TILE_SIZE,Config.TILE_SIZE);
 
-        //mouse
-        playingMouseRender();
+        graphicsContext.drawImage(ImageHolder.instance.towers[0],
+                Config.GAME_WIDTH+Config.UI_HORIZONTAL/2-10-Config.TILE_SIZE,10,Config.TILE_SIZE,Config.TILE_SIZE);
+        graphicsContext.drawImage(ImageHolder.instance.towers[1],
+                Config.GAME_WIDTH+Config.UI_HORIZONTAL/2-Config.TILE_SIZE,10,Config.TILE_SIZE,Config.TILE_SIZE);
+
+        graphicsContext.drawImage(ImageHolder.instance.towers[0],
+                Config.GAME_WIDTH+Config.UI_HORIZONTAL/2+10,10,Config.TILE_SIZE,Config.TILE_SIZE);
+        graphicsContext.drawImage(ImageHolder.instance.towers[2],
+                Config.GAME_WIDTH+Config.UI_HORIZONTAL/2+20,10,Config.TILE_SIZE,Config.TILE_SIZE);
+
+        graphicsContext.drawImage(ImageHolder.instance.towers[0],
+                Config.GAME_WIDTH+Config.UI_HORIZONTAL/2-10-Config.TILE_SIZE,90,Config.TILE_SIZE,Config.TILE_SIZE);
+        graphicsContext.drawImage(ImageHolder.instance.towers[3],
+                Config.GAME_WIDTH+Config.UI_HORIZONTAL/2-10-Config.TILE_SIZE,90,Config.TILE_SIZE,Config.TILE_SIZE);
+
+        Tower showTower = gameController.showTower;
+        if(showTower!= null) {
+
+        }
+
     }
 
     private void playingMouseRender() {
         int x = gameController.mX;
         int y = gameController.mY;
         if(gameController.curTower != null) {
-
             if(0<=x && x<Config.GAME_WIDTH && 0<=y && y<Config.GAME_HEIGHT && gameField.isEmpty(x,y)) {
                 int mX = x / Config.TILE_SIZE;
                 int mY = y / Config.TILE_SIZE;
@@ -385,19 +426,51 @@ public class GameRenderer {
                         mX*Config.TILE_SIZE + Config.TILE_SIZE/2 - gameController.curTower.getRange(),mY*Config.TILE_SIZE + Config.TILE_SIZE/2 - gameController.curTower.getRange(),
                         2 * gameController.curTower.getRange(),2 * gameController.curTower.getRange());
 
-            }
-            if(gameController.curTower instanceof NormalTower) {
-                graphicsContext.setFill(Color.BLUE);
-            }
-            if(gameController.curTower instanceof RangerTower) {
-                graphicsContext.setFill(Color.YELLOW);
-            }
-            if(gameController.curTower instanceof RapidTower) {
-                graphicsContext.setFill(Color.RED);
-            }
-            graphicsContext.fillRect(x-8,y-8,16,16);
+                graphicsContext.drawImage(ImageHolder.instance.towers[0],
+                        mX*Config.TILE_SIZE,mY*Config.TILE_SIZE,
+                        Config.TILE_SIZE,Config.TILE_SIZE);
+
+                x = mX * Config.TILE_SIZE + Config.TILE_SIZE/2;
+                y = mY * Config.TILE_SIZE + Config.TILE_SIZE/2;
+
+                double rotation = gameController.curTower.getRotation();
+
+                graphicsContext.save();
+                graphicsContext.rotate(rotation);
+
+                double dist = Math.sqrt(x*x + y*y);
+                double rad = Math.toRadians(rotation);
+                double base = Math.acos(x / dist);
+
+                graphicsContext.setFill(Color.GRAY);
+                graphicsContext.fillRect(dist*Math.cos(-rad+base)-6,dist*Math.sin(-rad+base)-6,20,12);
+                if(gameController.curTower instanceof NormalTower) {
+                    graphicsContext.drawImage(ImageHolder.instance.towers[1],
+                            dist*Math.cos(-rad+base) + 10 -Config.TILE_SIZE/2,dist*Math.sin(-rad+base)-Config.TILE_SIZE/2,
+                            Config.TILE_SIZE,Config.TILE_SIZE);
+                }
+
+                if(gameController.curTower instanceof RapidTower) {
+                    graphicsContext.drawImage(ImageHolder.instance.towers[2],
+                            dist*Math.cos(-rad+base) + 10 -Config.TILE_SIZE/2,dist*Math.sin(-rad+base)-Config.TILE_SIZE/2,
+                            Config.TILE_SIZE,Config.TILE_SIZE);
+                }
+
+                if(gameController.curTower instanceof RangerTower) {
+                    graphicsContext.drawImage(ImageHolder.instance.towers[3],
+                            dist*Math.cos(-rad+base) -Config.TILE_SIZE/2,dist*Math.sin(-rad+base)-Config.TILE_SIZE/2,
+                            Config.TILE_SIZE,Config.TILE_SIZE);
+                }
 
 
+                graphicsContext.restore();
+            }
+        }
+
+        if(gameController.showTower != null) {
+            double range = gameController.showTower.getRange();
+            Vector2 pos = gameController.showTower.getPosition();
+            graphicsContext.drawImage(ImageHolder.instance.backgrounds[5],pos.getX()-range,pos.getY()-range,range*2,range*2);
         }
     }
 

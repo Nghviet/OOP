@@ -35,4 +35,8 @@ public class MapTile implements GameTile {
     public void setBuildable(boolean buildable) {
         this.buildable = buildable;
     }
+
+    public Tower getTower() {
+        return tower;
+    }
 }
