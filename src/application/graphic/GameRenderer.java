@@ -408,8 +408,29 @@ public class GameRenderer {
 
         Tower showTower = gameController.showTower;
         if(showTower!= null) {
+            graphicsContext.drawImage(ImageHolder.instance.buttons[4],Config.GAME_WIDTH+10,Config.SCREEN_HEIGHT-150);
+            graphicsContext.drawImage(ImageHolder.instance.buttons[5],Config.SCREEN_WIDTH-64,Config.SCREEN_HEIGHT-150);
 
+
+            List<Integer> damage = convert(showTower.getDamage());
+            for(int i=0;i<damage.size();i++) {
+                graphicsContext.drawImage(ImageHolder.instance.numbers[damage.get(i)],
+                        Config.GAME_WIDTH+10+Config.TILE_SIZE*i,Config.GAME_HEIGHT-350);
+            }
+
+            List<Integer> level = convert(showTower.getLevel());
+            for(int i=0;i<level.size();i++)
+                graphicsContext.drawImage(ImageHolder.instance.numbers[level.get(i)],
+                        Config.GAME_WIDTH+10+Config.TILE_SIZE*i,Config.GAME_HEIGHT-300);
+
+            List<Integer> price = convert(showTower.getPrice());
+            for(int i=0;i<price.size();i++) {
+                graphicsContext.drawImage(ImageHolder.instance.numbers[price.get(i)],
+                        Config.GAME_WIDTH+10+Config.TILE_SIZE*i,Config.GAME_HEIGHT-250);
+            }
         }
+
+
 
     }
 

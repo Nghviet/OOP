@@ -202,4 +202,11 @@ public class GameField {
         }
     }
 
+    public void removeTower(Tower tower) {
+        Vector2 pos = tower.getPosition();
+        towers.remove(tower);
+        int x = (int)(pos.getX() - Config.TILE_SIZE/2) / Config.TILE_SIZE;
+        int y = (int)(pos.getY() - Config.TILE_SIZE/2) / Config.TILE_SIZE;
+        map[x][y] = new MapTile(pos);
+    }
 }

@@ -18,4 +18,10 @@ public interface Tower extends GameTile {
     double getRotation();
 
     boolean isReloaded();
+
+    int getLevel();
+
+    int getDamage();
+
+    void upgrade();
 }

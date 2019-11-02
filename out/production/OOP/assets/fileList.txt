@@ -1,8 +1,10 @@
-4
+6
 assets/Buttons/Play.png
 assets/Buttons/Cancel.png
 assets/Buttons/Main_Menu.png
 assets/Buttons/Next_Level.png
+assets/Buttons/Sell.png
+assets/Buttons/Upgrade.png
 6
 assets/Background/Roon.jpg
 assets/Background/UI.png

@@ -269,6 +269,21 @@ public class Controller extends AnimationTimer {
                 Config.UI_CUR = Config.UI_START;
             }
         }
+
+        if(showTower!=null) {
+            if(Math.abs(mX - (Config.SCREEN_WIDTH-64) - 29) <= 29 && Math.abs(mY - (Config.SCREEN_HEIGHT-150) - 15) <= 15
+                    && gameField.getPlayerMoney()>=4 && showTower.getLevel()<3) {
+                showTower.upgrade();
+                gameField.charge(4);
+            }
+
+            if(Math.abs(mX - (Config.GAME_WIDTH+10)-21) <=21 && Math.abs(mY - (Config.SCREEN_HEIGHT-150) - 15) <=15 ) {
+                gameField.charge(-showTower.getPrice());
+                gameField.removeTower(showTower);
+                showTower = null;
+            }
+
+        }
     }
 
     private void pauseMouse(MouseEvent mouseEvent) {
@@ -276,11 +291,11 @@ public class Controller extends AnimationTimer {
         if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=81 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=20) {
             Config.UI_CUR = Config.UI_PLAYING;
             gameField.resetTimer();
-            spawner.resetTimer();
-        }
+                spawner.resetTimer();
 
-        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=81 && Math.abs(mY - Config.SCREEN_HEIGHT/2 - 50)<=20) {
-            Config.UI_CUR = Config.UI_START;
+            }
+            if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=81 && Math.abs(mY - Config.SCREEN_HEIGHT/2 - 50)<=20) {
+                    Config.UI_CUR = Config.UI_START;
             gameField.resetTimer();
             spawner.resetTimer();
         }

@@ -150,10 +150,14 @@ public abstract class AbstractTower implements Tower {
         return baseRotation;
     }
 
+
+    @Override
     public void upgrade() {
         if(level < 3) {
             level ++;
             setFiringPoint();
+            price += 2;
+            damage++;
         }
     }
 
@@ -162,5 +166,15 @@ public abstract class AbstractTower implements Tower {
     @Override
     public boolean isReloaded() {
         return (reloadTimer==0);
+    }
+
+    @Override
+    public int getLevel() {
+        return level;
+    }
+
+    @Override
+    public int getDamage() {
+        return damage;
     }
 }
