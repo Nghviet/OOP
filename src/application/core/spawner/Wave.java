@@ -73,6 +73,7 @@ public class Wave {
                 default: newEnemy = new NormalEnemy();break;
                 case 1: newEnemy = new TankerEnemy();break;
                 case 2: newEnemy = new AssassinEnemy();break;
+                case 3: newEnemy = new BossEnemy();break;
             }
             gameField.doSpawn(newEnemy);
             curIndex++;

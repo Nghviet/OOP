@@ -97,8 +97,6 @@ public abstract class AbstractTower implements Tower {
                 reloadTimer = reloadTime;
             }
         }
-
-
     }
 
     @Override

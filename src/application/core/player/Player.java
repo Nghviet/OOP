@@ -6,7 +6,7 @@ public class Player {
     private int health;
 
     public Player() {
-        money = 10;
+        money = 100000;
         health = 10;
     }
 

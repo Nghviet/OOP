@@ -23,8 +23,16 @@ public class NormalTower extends AbstractTower {
 
     @Override
     public void setFiringPoint() {
+        if(level > 1) {
+            dist = new int[2];
+            angle = new int[2];
 
+            dist[0] = 34;
+            dist[1] = 34;
 
+            angle[0] = 20;
+            angle[1] = -20;
+        }
     }
 
 }

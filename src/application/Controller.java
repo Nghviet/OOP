@@ -229,9 +229,11 @@ public class Controller extends AnimationTimer {
             {
                 if(Math.abs(mY-(10+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2) {
                     if(gameField.getPlayerMoney() >= NormalTower.instance.getPrice()) curTower = new NormalTower(gameField,null);
+                    showTower = null;
                 }
                 if(Math.abs(mY -(90+Config.TILE_SIZE/2))<=Config.TILE_SIZE/2) {
                     if(gameField.getPlayerMoney() >= RangerTower.instance.getPrice()) curTower = new RangerTower(gameField,null);
+                    showTower = null;
                 }
             }
 
@@ -239,6 +241,7 @@ public class Controller extends AnimationTimer {
             {
                 if(Math.abs(mY-(10+Config.TILE_SIZE/2)) <= Config.TILE_SIZE/2) {
                     if(gameField.getPlayerMoney() >= RapidTower.instance.getPrice()) curTower = new RapidTower(gameField,null);
+                    showTower = null;
                 }
             }
 
@@ -260,6 +263,7 @@ public class Controller extends AnimationTimer {
                 gameField.addTurret(mX,mY,curTower);
                 gameField.charge(curTower.getPrice());
                 curTower = null;
+                showTower = null;
             }
 
 

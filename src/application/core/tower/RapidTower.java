@@ -19,7 +19,29 @@ public class RapidTower extends AbstractTower {
     }
 
     public void setFiringPoint() {
+        if(level == 2) {
+            dist = new int[2];
+            angle = new int[2];
 
+            dist[0] = 34;
+            dist[1] = 34;
+
+            angle[0] = 20;
+            angle[1] = -20;
+        }
+        if(level == 3) {
+            dist = new int[3];
+            angle = new int[3];
+
+            dist[0] = 34;
+            dist[1] = 32;
+            dist[2] = 34;
+
+            angle[0] = 20;
+            angle[1] = 0;
+            angle[2] = -20;
+            range += 100;
+        }
     }
 
 }

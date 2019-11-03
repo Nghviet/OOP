@@ -5,13 +5,14 @@ assets/Buttons/Main_Menu.png
 assets/Buttons/Next_Level.png
 assets/Buttons/Sell.png
 assets/Buttons/Upgrade.png
-6
+7
 assets/Background/Roon.jpg
 assets/Background/UI.png
 assets/Background/Money.png
 assets/Background/HP.png
 assets/Background/Dot.png
 assets/Tower/Range.png
+assets/Background/Atk.png
 10
 assets/Number/0.png
 assets/Number/1.png
@@ -65,7 +66,7 @@ assets/Stage/Stage_1.png
 assets/Stage/Stage_2.png
 assets/Stage/Stage_3.png
 assets/Stage/Stage_4.png
-8
+14
 assets/Tower/Base.png
 assets/Tower/Normal.png
 assets/Tower/Machine.png
@@ -74,3 +75,9 @@ assets/Tower/Sniper_Base.png
 assets/Tower/Normal_Bullet.png
 assets/Tower/Machine_Bullet.png
 assets/Tower/Sniper_Bullet.png
+assets/Tower/Normal_2.png
+assets/Tower/Normal_3.png
+assets/Tower/Machine_2.png
+assets/Tower/Machine_3.png
+assets/Tower/Sniper_Base_2.png
+assets/Tower/Sniper_Bullet_2.png

@@ -24,7 +24,7 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
 
     @Override
     public void doDamage(int damage) {
-        health -= damage *(5 - armor);
+        health -= Math.max(damage *(7 - armor),0);
         if(health<=0) {
             System.out.println("Add reward:"+reward);
             player.addReward(reward);
@@ -76,6 +76,8 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
         pos = new Vector2(  pos.getX() + dir.getX() * deltaTime * speed ,
                             pos.getY() + dir.getY() * deltaTime * speed  );
         if(pos.distanceTo(target) <= 0.1) changeWaypoints();
+
+        if(this instanceof BossEnemy) System.out.println(health);
     }
 
     private void changeWaypoints() {
