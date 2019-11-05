@@ -8,6 +8,6 @@ public class NormalEnemy extends AbstractEnemy {
     }
 
     public NormalEnemy() {
-        super(10000, 1,1, 3, null);
+        super(1000, 1,1, 3, null);
     }
 }

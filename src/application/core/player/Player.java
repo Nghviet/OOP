@@ -6,7 +6,7 @@ public class Player {
     private int health;
 
     public Player() {
-        money = 100000;
+        money = 10;
         health = 10;
     }
 
@@ -15,7 +15,7 @@ public class Player {
     }
 
     public void addReward(int reward) {
-        money = money + reward;
+        money = money + reward * 10;
     }
 
     public void buy(int b) {

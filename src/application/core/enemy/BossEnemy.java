@@ -8,7 +8,7 @@ public class BossEnemy extends  AbstractEnemy {
     }
 
     public BossEnemy(Player player) {
-        super(1000000,  3, 10, 1, player);
+        super(100000,  3, 10, 1, player);
 
     }
 }

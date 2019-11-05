@@ -8,6 +8,6 @@ public class AssassinEnemy extends AbstractEnemy {
     }
 
     public AssassinEnemy() {
-        super(5000, 1, 3, 10, null);
+        super(500, 1, 3, 10, null);
     }
 }
