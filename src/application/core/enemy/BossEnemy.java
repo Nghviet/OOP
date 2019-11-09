@@ -11,4 +11,5 @@ public class BossEnemy extends  AbstractEnemy {
         super(100000,  3, 10, 1, player);
 
     }
+
 }

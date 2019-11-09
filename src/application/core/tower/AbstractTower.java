@@ -148,14 +148,21 @@ public abstract class AbstractTower implements Tower {
         return baseRotation;
     }
 
-
     @Override
     public void upgrade() {
         if(level < 3) {
             level ++;
             setFiringPoint();
             price += 2;
-            damage++;
+            if(this instanceof NormalTower) {
+                damage += 3;
+            }
+            if(this instanceof RapidTower) {
+                damage += 1;
+            }
+            if(this instanceof RangerTower) {
+                damage += 4;
+            }
         }
     }
 

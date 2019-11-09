@@ -76,8 +76,6 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
         pos = new Vector2(  pos.getX() + dir.getX() * deltaTime * speed ,
                             pos.getY() + dir.getY() * deltaTime * speed  );
         if(pos.distanceTo(target) <= 0.1) changeWaypoints();
-
-        if(this instanceof BossEnemy) System.out.println(health);
     }
 
     private void changeWaypoints() {
