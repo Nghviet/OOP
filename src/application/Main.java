@@ -14,6 +14,7 @@ import javafx.scene.text.FontSmoothingType;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Main extends Application {
 
@@ -32,6 +33,8 @@ public class Main extends Application {
             try {
                 gameController.mouseOnKeyPressed(mouseEvent);
             } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         });

@@ -8,6 +8,7 @@ import application.core.tower.RangerTower;
 import application.core.tower.RapidTower;
 import application.core.tower.Tower;
 import application.graphic.GameRenderer;
+import application.network.Network;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -18,9 +19,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
+import java.io.*;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -36,7 +36,9 @@ public class Controller extends AnimationTimer {
     public int mX,mY;
     public Tower curTower;
     public Tower showTower;
-    public Controller(GraphicsContext graphicsContext) {
+    private Network net = new Network();
+
+    public Controller(GraphicsContext graphicsContext) throws IOException, InterruptedException, ClassNotFoundException {
         this.graphicsContext = graphicsContext;
         this.gameField = null;
         gameRenderer = new GameRenderer(graphicsContext,this);
@@ -146,7 +148,7 @@ public class Controller extends AnimationTimer {
 
 
     //Mouse handling
-    public final void mouseOnKeyPressed(MouseEvent mouseEvent) throws FileNotFoundException {
+    public final void mouseOnKeyPressed(MouseEvent mouseEvent) throws IOException {
         switch(Config.UI_CUR) {
             case Config.UI_START: {
                 startMouse(mouseEvent);
@@ -171,10 +173,11 @@ public class Controller extends AnimationTimer {
         }
     }
 
-    private void startMouse(MouseEvent mouseEvent) {
+    private void startMouse(MouseEvent mouseEvent) throws IOException {
         MouseButton mouseButton = mouseEvent.getButton();
         if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=133 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=25) {
             Config.UI_CUR = Config.UI_STAGE_CHOOSING;
+            net.update();
         }
     }
 
@@ -312,4 +315,6 @@ public class Controller extends AnimationTimer {
         mX = x;
         mY = y;
     }
+
+
 }
