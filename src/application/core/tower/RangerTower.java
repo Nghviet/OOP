@@ -1,6 +1,7 @@
 package application.core.tower;
 
 import application.core.GameField;
+import application.core.enemy.Enemy;
 import application.utility.Vector2;
 import javafx.scene.paint.Color;
 
@@ -8,7 +9,13 @@ public class RangerTower extends AbstractTower {
     public static RangerTower instance = new RangerTower(null,null);
 
     public RangerTower(GameField gameField, Vector2 position) {
-        super(gameField, position,10, 750 , 50, 3, 5);
+        super(gameField, position,10, 750 , 150, 3, 5);
+    }
+
+    @Override
+    public void updateTarget() {
+        for(Enemy enemy: gameField.getEnemies()) if(position.distanceTo(enemy.getPos()) < range) { target = enemy; return; }
+        for(Enemy enemy: gameField.getAircraft()) if(position.distanceTo(enemy.getPos()) < range) { target = enemy; return; }
     }
 
     public void shoot() {

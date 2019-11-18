@@ -59,8 +59,7 @@ public abstract class AbstractTower implements Tower {
 
         if(target == null || (target!=null && (target.getPos().distanceTo(position) > range || target.isDestroyed()))) {
             target = null;
-            for(int i = gameField.getEnemies().size()-1;i>=0;i--) if(gameField.getEnemies().get(i).getPos().distanceTo(position)<range)
-                target = gameField.getEnemies().get(i);
+            updateTarget();
         }
 
         reloadTimer -= deltaTime;
@@ -98,6 +97,8 @@ public abstract class AbstractTower implements Tower {
             }
         }
     }
+
+    public abstract void updateTarget();
 
     @Override
     public Vector2 getPosition() {

@@ -2,6 +2,7 @@ package application.core.tower;
 
 import application.core.GameField;
 import application.core.enemy.AbstractEnemy;
+import application.core.enemy.Enemy;
 import application.utility.Vector2;
 import javafx.scene.paint.Color;
 
@@ -9,7 +10,13 @@ public class NormalTower extends AbstractTower {
     public static NormalTower instance = new NormalTower(null,null);
 
     public NormalTower(GameField gameField, Vector2 position) {
-        super(gameField, position,10, 550, 3, 1,1);
+        super(gameField, position,10, 550, 30, 1,1);
+    }
+
+    @Override
+    public void updateTarget() {
+        for(Enemy enemy: gameField.getEnemies()) if(position.distanceTo(enemy.getPos()) < range) { target = enemy; return; }
+        for(Enemy enemy: gameField.getAircraft()) if(position.distanceTo(enemy.getPos()) < range) { target = enemy; return; }
     }
 
     public void shoot() {

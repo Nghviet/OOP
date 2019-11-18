@@ -16,6 +16,9 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
     private int currentWaypoints;
     private int dir;
 
+    private int maxHP;
+    private double distance;
+
 
     private double lastCall;
     private boolean destroyed = false;
@@ -43,7 +46,8 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
         this.armor = armor;
         this.reward = reward;
         this.speed = speed;
-
+        this.maxHP = health;
+        this.distance = 0;
         this.pos = Waypoints.instance.getIndex(0);
         this.target = Waypoints.instance.getIndex(1);
         currentWaypoints = 1;
@@ -76,6 +80,7 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
         pos = new Vector2(  pos.getX() + dir.getX() * deltaTime * speed ,
                             pos.getY() + dir.getY() * deltaTime * speed  );
         if(pos.distanceTo(target) <= 0.1) changeWaypoints();
+        distance += deltaTime * speed;
     }
 
     private void changeWaypoints() {
@@ -129,5 +134,10 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
     @Override
     public int getDir() {
         return dir;
+    }
+
+    @Override
+    public double getPercentage() {
+        return health * 100 / maxHP;
     }
 }

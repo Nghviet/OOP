@@ -18,6 +18,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
+import sun.nio.ch.Net;
 
 import java.io.*;
 import java.net.Socket;
@@ -36,7 +37,7 @@ public class Controller extends AnimationTimer {
     public int mX,mY;
     public Tower curTower;
     public Tower showTower;
-    private Network net = new Network();
+    public Network net;
 
     public Controller(GraphicsContext graphicsContext) throws IOException, InterruptedException, ClassNotFoundException {
         this.graphicsContext = graphicsContext;
@@ -44,6 +45,15 @@ public class Controller extends AnimationTimer {
         gameRenderer = new GameRenderer(graphicsContext,this);
         haveBuilding = false;
         curTower = null;
+        net = new Network();
+
+        try {
+            net.update();
+            Config.connected = true;
+        }
+        catch(IOException io) {
+            System.out.println(io);
+        }
     }
 
     //Game init
@@ -170,14 +180,28 @@ public class Controller extends AnimationTimer {
                 pauseMouse(mouseEvent);
                 break;
             }
+            case Config.UI_HIGHSCORE: {
+                highscoreMouse(mouseEvent);
+                break;
+            }
         }
     }
 
     private void startMouse(MouseEvent mouseEvent) throws IOException {
         MouseButton mouseButton = mouseEvent.getButton();
-        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=133 && Math.abs(mY - Config.SCREEN_HEIGHT/2)<=25) {
+        if(mouseButton == MouseButton.PRIMARY && Math.abs(mX-Config.SCREEN_WIDTH/2) <=133 && Math.abs(mY - Config.SCREEN_HEIGHT/2 + 50)<=25) {
             Config.UI_CUR = Config.UI_STAGE_CHOOSING;
-            net.update();
+        }
+        if(Math.abs(mX-Config.SCREEN_WIDTH/2)<=133 && Math.abs(mY - Config.SCREEN_HEIGHT/2 - 20) <=25) {
+            Config.UI_CUR = Config.UI_HIGHSCORE;
+            if(!Config.connected)
+            try {
+                net.update();
+                Config.connected = true;
+            }
+            catch (IOException io) {
+                Config.connected = false;
+            }
         }
     }
 
@@ -221,7 +245,6 @@ public class Controller extends AnimationTimer {
             Config.UI_CUR = Config.UI_PLAYING;
         }
     }
-
 
     private void playingMouse(MouseEvent mouseEvent) {
         MouseButton mouseButton = mouseEvent.getButton();
@@ -305,6 +328,12 @@ public class Controller extends AnimationTimer {
                     Config.UI_CUR = Config.UI_START;
             gameField.resetTimer();
             spawner.resetTimer();
+        }
+    }
+
+    private void highscoreMouse(MouseEvent mouseEvent) {
+        if(Math.abs(mX - 150) <= 133 && Math.abs(mY - Config.SCREEN_HEIGHT + 45) <= 25) {
+            Config.UI_CUR = Config.UI_START;
         }
     }
 

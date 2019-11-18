@@ -22,6 +22,7 @@ public class ImageHolder {
     public Image[] tankerEnemy;
     public Image[] assassinEnemy;
     public Image[] bossEnemy;
+    public Image[] airEnemy;
 
     public Image[] stages;
     public Image[] towers;
@@ -91,6 +92,12 @@ public class ImageHolder {
         for(int i=0;i<4;i++) {
             String path = scanner.next();
             bossEnemy[i] = new Image(path);
+        }
+
+        {
+            airEnemy = new Image[2];
+            String path = scanner.next();
+            airEnemy[0] = new Image(path);
         }
 
         int stage = scanner.nextInt();

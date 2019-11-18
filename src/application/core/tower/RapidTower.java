@@ -1,13 +1,19 @@
 package application.core.tower;
 
 import application.core.GameField;
+import application.core.enemy.Enemy;
 import application.utility.Vector2;
 import javafx.scene.paint.Color;
 
 public class RapidTower extends AbstractTower {
     public static RapidTower instance = new RapidTower(null,null);
     public RapidTower(GameField gameField, Vector2 position) {
-        super(gameField, position, 15,150, 1, 1, 3);
+        super(gameField, position, 15,150, 15, 1, 3);
+    }
+
+    @Override
+    public void updateTarget() {
+        for(Enemy enemy: gameField.getEnemies()) if(position.distanceTo(enemy.getPos()) < range) { target = enemy; return; }
     }
 
     public void shoot() {

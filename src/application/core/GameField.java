@@ -1,29 +1,28 @@
 package application.core;
 
 import application.Config;
+import application.core.enemy.AbstractEnemy;
+import application.core.enemy.Aircraft;
 import application.core.enemy.Enemy;
-import application.core.enemy.NormalEnemy;
-import application.core.enemy.TankerEnemy;
 import application.core.player.Player;
 import application.core.tile.GameTile;
 import application.core.tile.MapTile;
 import application.core.tile.Path;
 import application.core.tower.Bullet;
-import application.core.tower.NormalTower;
+import application.core.tower.Missle;
 import application.core.tower.Tower;
 import application.utility.Vector2;
 import application.core.tile.Waypoints;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class GameField {
     private List<Enemy> enemies;
     private List<Tower> towers;
     private List<Bullet> bullets;
+    private List<Enemy> aircraft;
+    private List<Missle> missles;
     private GameTile[][] map;
     private Player player;
 
@@ -64,6 +63,9 @@ public class GameField {
 
         player = new Player();
 
+        aircraft = new ArrayList<>();
+        missles = new ArrayList<>();
+
         //Debug
     }
 
@@ -75,7 +77,8 @@ public class GameField {
         }
         for(Enemy enemy:enemies) enemy.move();
         for(Tower tower:towers) tower.update();
-        for(Bullet bullet:bullets) bullet.move();
+        for(Bullet bullet:bullets) bullet.update();
+        for(Enemy air:aircraft) air.move();
 
         int i = enemies.size() - 1;
         while(i>=0) {
@@ -87,18 +90,29 @@ public class GameField {
         i = bullets.size() - 1;
         while(i>=0) {
             Bullet bullet = bullets.get(i);
-            if(bullet.isDestroyed()) bullets.remove(i);
+            if(bullet.isCompleted()) bullets.remove(i);
+            i--;
+        }
+
+        i = aircraft.size() - 1;
+        while(i>= 0) {
+            Enemy enemy = aircraft.get(i);
+            if(enemy.isDestroyed()) aircraft.remove(i);
             i--;
         }
     }
 
     public void doSpawn() {
-        enemies.add(new TankerEnemy(player));
+        Vector2 start = new Vector2(0,0);
+        Vector2 end = new Vector2(Config.SCREEN_WIDTH,Config.SCREEN_HEIGHT);
+        aircraft.add(new Aircraft(player,start,end));
     }
 
     public void doSpawn(Enemy enemy) {
         enemy.setPlayer(player);
+        if(enemy instanceof AbstractEnemy)
         enemies.add(enemy);
+        else aircraft.add(enemy);
     }
 
     public void addBullet(Bullet bullet) {
@@ -137,6 +151,8 @@ public class GameField {
     public List<Tower> getTowers() {
         return towers;
     }
+
+    public List<Enemy> getAircraft() { return aircraft; }
 
     public GameTile[][] getMap() {
         return map;
@@ -200,6 +216,9 @@ public class GameField {
                 map[x][y] = new Path(new Vector2(x*Config.TILE_SIZE+Config.TILE_SIZE/2,y*Config.TILE_SIZE+Config.TILE_SIZE/2));
             }
         }
+
+        aircraft = new ArrayList<>();
+        missles = new ArrayList<>();
     }
 
     public void removeTower(Tower tower) {

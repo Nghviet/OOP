@@ -12,9 +12,6 @@ import application.utility.Vector2;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
-import javafx.scene.transform.Rotate;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,12 +60,17 @@ public class GameRenderer {
                 pauseRender();
                 break;
             }
+            case Config.UI_HIGHSCORE: {
+                highscoreRender();
+                break;
+            }
         }
     }
 
     private void startRender() {
         graphicsContext.drawImage(ImageHolder.instance.backgrounds[0], Config.SCREEN_WIDTH / 2 - 300, Config.SCREEN_HEIGHT / 2 - 180);
-        graphicsContext.drawImage(ImageHolder.instance.buttons[0], Config.SCREEN_WIDTH / 2 - 133, Config.SCREEN_HEIGHT / 2 - 25, 266, 50);
+        graphicsContext.drawImage(ImageHolder.instance.buttons[0], Config.SCREEN_WIDTH / 2 - 133, Config.SCREEN_HEIGHT / 2 - 75, 266, 50);
+        graphicsContext.drawImage(ImageHolder.instance.buttons[6],Config.SCREEN_WIDTH / 2 - 133,Config.SCREEN_HEIGHT / 2 - 10, 266, 50);
     }
 
     private void stageRender() {
@@ -240,33 +242,10 @@ public class GameRenderer {
                 }
             }
 
-        graphicsContext.setFill(Color.RED);
-        List<Enemy> enemies = gameField.getEnemies();
-        for (Enemy enemy : enemies) {
-            Vector2 pos = enemy.getPosition();
-            int dir = enemy.getDir();
-            if (enemy instanceof NormalEnemy) {
-                graphicsContext.drawImage(ImageHolder.instance.normalEnemy[dir], pos.getX() - Config.TILE_SIZE / 2, pos.getY() - Config.TILE_SIZE / 2,
-                        Config.TILE_SIZE, Config.TILE_SIZE);
-            }
-            if (enemy instanceof AssassinEnemy) {
-                graphicsContext.drawImage(ImageHolder.instance.assassinEnemy[dir], pos.getX() - Config.TILE_SIZE / 2, pos.getY() - Config.TILE_SIZE / 2,
-                        Config.TILE_SIZE, Config.TILE_SIZE);
-            }
-            if (enemy instanceof TankerEnemy) {
-                graphicsContext.drawImage(ImageHolder.instance.tankerEnemy[dir], pos.getX() - Config.TILE_SIZE / 2, pos.getY() - Config.TILE_SIZE / 2,
-                        Config.TILE_SIZE, Config.TILE_SIZE);
-            }
-            if (enemy instanceof BossEnemy) {
-                graphicsContext.drawImage(ImageHolder.instance.bossEnemy[dir],
-                        pos.getX() - Config.TILE_SIZE / 2 - 10, pos.getY() - Config.TILE_SIZE / 2 -10,
-                        Config.TILE_SIZE+20, Config.TILE_SIZE+20);
-            }
-        }
 
         List<Tower> towers = gameField.getTowers();
 
-        if (towers != null)
+        if (towers != null) {
             for (Tower tower : towers) {
                 Vector2 pos = tower.getPosition();
                 int lv = tower.getLevel();
@@ -344,38 +323,93 @@ public class GameRenderer {
                 graphicsContext.restore();
 
             }
+        }
 
-        List<Bullet> bullets = gameField.getBullets();
-        for (Bullet bullet : bullets) {
-            Tower tower = bullet.getTower();
-            Vector2 pos = bullet.getPosition();
+        graphicsContext.setFill(Color.RED);
+        List<Enemy> enemies = gameField.getEnemies();
+        for (Enemy enemy : enemies) {
+            Vector2 pos = enemy.getPosition();
+            int dir = enemy.getDir();
+            if (enemy instanceof NormalEnemy) {
+                graphicsContext.drawImage(ImageHolder.instance.normalEnemy[dir], pos.getX() - Config.TILE_SIZE / 2, pos.getY() - Config.TILE_SIZE / 2,
+                        Config.TILE_SIZE, Config.TILE_SIZE);
+            }
+            if (enemy instanceof AssassinEnemy) {
+                graphicsContext.drawImage(ImageHolder.instance.assassinEnemy[dir], pos.getX() - Config.TILE_SIZE / 2, pos.getY() - Config.TILE_SIZE / 2,
+                        Config.TILE_SIZE, Config.TILE_SIZE);
+            }
+            if (enemy instanceof TankerEnemy) {
+                graphicsContext.drawImage(ImageHolder.instance.tankerEnemy[dir], pos.getX() - Config.TILE_SIZE / 2, pos.getY() - Config.TILE_SIZE / 2,
+                        Config.TILE_SIZE, Config.TILE_SIZE);
+            }
+            if (enemy instanceof BossEnemy) {
+                graphicsContext.drawImage(ImageHolder.instance.bossEnemy[dir],
+                        pos.getX() - Config.TILE_SIZE / 2 - 10, pos.getY() - Config.TILE_SIZE / 2 -10,
+                        Config.TILE_SIZE+20, Config.TILE_SIZE+20);
+            }
 
-            double x = pos.getX();
-            double y = pos.getY();
-            double rotation = bullet.getRotation();
+            graphicsContext.setFill(Color.RED);
+            graphicsContext.fillRect(pos.getX() - Config.TILE_SIZE/2,pos.getY() - Config.TILE_SIZE/2,
+                    Config.TILE_SIZE * enemy.getPercentage() / 100,3);
+
+        }
+
+        List<Enemy> aircrafts = gameField.getAircraft();
+        for (Enemy enemy : aircrafts) {
+            Vector2 pos = enemy.getPos();
+            double rotation = ((Aircraft) enemy).getRotation();
             double dist = Math.sqrt((pos.getX()) * (pos.getX()) + pos.getY() * pos.getY());
             double rad = Math.toRadians(rotation);
             double base = Math.acos(pos.getX() / dist);
-
             graphicsContext.save();
             graphicsContext.rotate(rotation);
-
-            double rX = dist * Math.cos(-rad + base) - Config.TILE_SIZE / 2;
-            double rY = dist * Math.sin(-rad + base) - Config.TILE_SIZE / 2;
-
-            int level = tower.getLevel();
-
-            if (tower instanceof NormalTower) {
-                graphicsContext.drawImage(ImageHolder.instance.towers[5], rX, rY, Config.TILE_SIZE, Config.TILE_SIZE);
-            }
-            if (tower instanceof RapidTower) {
-                graphicsContext.drawImage(ImageHolder.instance.towers[6], rX, rY, Config.TILE_SIZE, Config.TILE_SIZE);
-            }
-            if (tower instanceof RangerTower) {
-                graphicsContext.drawImage(ImageHolder.instance.towers[7], rX, rY, Config.TILE_SIZE, Config.TILE_SIZE);
-            }
-
+            graphicsContext.drawImage(ImageHolder.instance.airEnemy[0], dist * Math.cos(-rad + base) + 10 - Config.TILE_SIZE / 2, dist * Math.sin(-rad + base) - Config.TILE_SIZE / 2,
+                    Config.TILE_SIZE, Config.TILE_SIZE);
             graphicsContext.restore();
+
+            graphicsContext.setFill(Color.RED);
+            graphicsContext.fillRect(pos.getX() - Config.TILE_SIZE/2,pos.getY() - Config.TILE_SIZE/2,
+                    Config.TILE_SIZE * enemy.getPercentage() / 100,3);
+        }
+
+        List<Bullet> bullets = gameField.getBullets();
+        for (Bullet bullet : bullets)
+        {
+            Tower tower = bullet.getTower();
+            Vector2 pos = bullet.getPosition();
+            if(!bullet.isDestroyed()) {
+
+                double x = pos.getX();
+                double y = pos.getY();
+                double rotation = bullet.getRotation();
+                double dist = Math.sqrt((pos.getX()) * (pos.getX()) + pos.getY() * pos.getY());
+                double rad = Math.toRadians(rotation);
+                double base = Math.acos(pos.getX() / dist);
+
+                graphicsContext.save();
+                graphicsContext.rotate(rotation);
+
+                double rX = dist * Math.cos(-rad + base) - Config.TILE_SIZE / 2;
+                double rY = dist * Math.sin(-rad + base) - Config.TILE_SIZE / 2;
+
+                int level = tower.getLevel();
+
+                if (tower instanceof NormalTower) {
+                    graphicsContext.drawImage(ImageHolder.instance.towers[5], rX, rY, Config.TILE_SIZE, Config.TILE_SIZE);
+                }
+                if (tower instanceof RapidTower) {
+                    graphicsContext.drawImage(ImageHolder.instance.towers[6], rX, rY, Config.TILE_SIZE, Config.TILE_SIZE);
+                }
+                if (tower instanceof RangerTower) {
+                    graphicsContext.drawImage(ImageHolder.instance.towers[7], rX, rY, Config.TILE_SIZE, Config.TILE_SIZE);
+                }
+
+                graphicsContext.restore();
+            }
+            else if(!bullet.isCompleted()) {
+                graphicsContext.setFill(Color.AZURE);
+                graphicsContext.fillRect(pos.getX()-Config.TILE_SIZE/4,pos.getY() - Config.TILE_SIZE/4,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+            }
         }
 
         playingMouseRender();
@@ -522,6 +556,21 @@ public class GameRenderer {
         gameRender();
         graphicsContext.drawImage(ImageHolder.instance.buttons[1], Config.SCREEN_WIDTH / 2 - 81, Config.SCREEN_HEIGHT / 2 - 20, 162, 40);
         graphicsContext.drawImage(ImageHolder.instance.buttons[2], Config.SCREEN_WIDTH / 2 - 81, Config.SCREEN_HEIGHT / 2 + 30, 162, 40);
+    }
+
+    private void highscoreRender() {
+        graphicsContext.drawImage(ImageHolder.instance.buttons[7],35,Config.SCREEN_HEIGHT - 70,266,50);
+
+
+        graphicsContext.setFill(Color.BLACK);
+        if(Config.connected)
+        for(int i=0;i<10;i++) {
+                graphicsContext.fillText(gameController.net.name[i],Config.SCREEN_WIDTH/2 - 450,10 + 40 * i, 450);
+                graphicsContext.fillText(String.valueOf(gameController.net.score[i]),Config.SCREEN_WIDTH/2,10+40 * i ,200);
+        }
+        else {
+            graphicsContext.fillText("No internet connection",Config.SCREEN_WIDTH/2,100,200);
+        }
     }
 
     private List<Integer> convert(int n) {

@@ -13,7 +13,11 @@ public class Bullet implements GameEntity {
     private double speed;
 
     private boolean isDestroyed;
+    private boolean isCompleted;
     private double lastCall;
+    private double effectTimer;
+
+    private double AOE;
 
     private Color color;
     private Tower tower;
@@ -25,8 +29,39 @@ public class Bullet implements GameEntity {
         this.speed = speed;
 
         isDestroyed = false;
+        isCompleted = false;
         lastCall = System.nanoTime()/ Config.timeDivide;
         this.tower = tower;
+        AOE = 20;
+
+        if(tower instanceof RangerTower) {
+            effectTimer = 15;
+        }
+        if(tower instanceof FlakTower) {
+            effectTimer = 30;
+        }
+    }
+
+    public void update() {
+        if(!isDestroyed) move();
+        else {
+            if(!isCompleted) {
+                effect();
+            }
+        }
+    }
+
+    public void effect() {
+        double cur = System.nanoTime()/ Config.timeDivide;
+        double deltaTime = cur - lastCall;
+        lastCall = cur;
+
+        if(effectTimer <= 0) {
+            isCompleted = true;
+            return;
+        }
+
+        effectTimer -= deltaTime;
     }
 
     public void move() {
@@ -39,8 +74,12 @@ public class Bullet implements GameEntity {
         double deltaTime = cur - lastCall;
         lastCall = cur;
 
-        if(position.distanceTo(target.getPos()) <= 3) {
+        if(position.distanceTo(target.getPos()) <= AOE) {
             isDestroyed = true;
+            if(tower instanceof FlakTower) {
+
+            }
+            else
             target.doDamage(damage);
             return;
         }
@@ -60,6 +99,10 @@ public class Bullet implements GameEntity {
 
     public boolean isDestroyed(){
         return isDestroyed;
+    }
+
+    public boolean isCompleted() {
+        return  isCompleted;
     }
 
     public void resetTimer() {

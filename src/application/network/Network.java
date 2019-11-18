@@ -9,63 +9,43 @@ public class Network {
     private DataInputStream  input  = null;
     private DataOutputStream output = null;
 
-    public Network() throws IOException, ClassNotFoundException, InterruptedException {
-        socket = new Socket("localhost", 3000);
-        System.out.println("Connected");
+    public String[] name = new String[10];
+    public int[] score = new int[10];
 
-        input  = new DataInputStream(System.in);
-        output = new DataOutputStream(socket.getOutputStream());
-
-        output.writeUTF("1234567789");
-        output.writeUTF("over");
-
-        input.close();
-        output.close();
-        socket.close();
+    public Network() throws IOException {
     }
 
-    //get all highscore in server
     public void update() throws IOException {
         socket = new Socket("localhost", 3000);
+
+
 
         input = new DataInputStream(socket.getInputStream());
         output = new DataOutputStream(socket.getOutputStream());
 
         output.writeUTF("update");
-        String line = "";
-        while(!line.equals("over")) {
-            try {
-                line = input.readUTF();
-                System.out.println(line);
-            } catch (IOException io) {
-                System.out.println(io);
-            }
+        String line;
+        for(int i=0;i<10;i++) {
+            line = input.readUTF();
+            String[] split = line.split("\\s");
+            name[i] = split[0];
+            score[i] = Integer.parseInt(split[1]);
         }
 
-        output.writeUTF("over");
+        for(int i=0;i<10;i++) System.out.println(name[i]+" "+score[i]);
 
         input.close();
         output.close();
         socket.close();
     }
 
-    public void post(String name,int score) throws IOException {
+    public void add(String name,int score) throws IOException {
         socket = new Socket("localhost", 3000);
 
         input = new DataInputStream(socket.getInputStream());
         output = new DataOutputStream(socket.getOutputStream());
 
-        output.writeUTF("post");
-        String line = "";
-        while(!line.equals("over")) {
-            try {
-                line = input.readUTF();
-                System.out.println(line);
-            } catch (IOException io) {
-                System.out.println(io);
-            }
-        }
-
+        output.writeUTF("add");
         output.writeUTF("over");
 
         input.close();
