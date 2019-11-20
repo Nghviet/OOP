@@ -10,7 +10,7 @@ public class NormalTower extends AbstractTower {
     public static NormalTower instance = new NormalTower(null,null);
 
     public NormalTower(GameField gameField, Vector2 position) {
-        super(gameField, position,10, 550, 30, 1,1);
+        super(gameField, position,10, 550, 10, 1,1);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class NormalTower extends AbstractTower {
         for(int i=0;i<dist.length;i++) {
             double a = Math.toRadians(angle[i]+rotation);
             Vector2 pos = position.minus(new Vector2(-dist[i]*Math.cos(a),-dist[i]*Math.sin(a)));
-            gameField.addBullet(new Bullet(pos,target,damage,40,this));
+            gameField.addBullet(new Bullet(pos,target,damage,40,this,gameField));
         }
         //gameField.addBullet(new Bullet(position,target,10,10,this));
     }

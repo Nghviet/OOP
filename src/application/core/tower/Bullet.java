@@ -2,6 +2,7 @@ package application.core.tower;
 
 import application.Config;
 import application.core.GameEntity;
+import application.core.GameField;
 import application.core.enemy.Enemy;
 import application.utility.Vector2;
 import javafx.scene.paint.Color;
@@ -22,7 +23,9 @@ public class Bullet implements GameEntity {
     private Color color;
     private Tower tower;
 
-    public Bullet(Vector2 position, Enemy target, int damage, double speed,Tower tower) {
+    private GameField gameField;
+
+    public Bullet(Vector2 position, Enemy target, int damage, double speed,Tower tower,GameField gameField) {
         this.position = position;
         this.target = target;
         this.damage = damage;
@@ -32,13 +35,14 @@ public class Bullet implements GameEntity {
         isCompleted = false;
         lastCall = System.nanoTime()/ Config.timeDivide;
         this.tower = tower;
-        AOE = 20;
+        this.gameField = gameField;
 
         if(tower instanceof RangerTower) {
             effectTimer = 15;
         }
         if(tower instanceof FlakTower) {
             effectTimer = 30;
+            AOE = 70;
         }
     }
 
@@ -74,10 +78,12 @@ public class Bullet implements GameEntity {
         double deltaTime = cur - lastCall;
         lastCall = cur;
 
-        if(position.distanceTo(target.getPos()) <= AOE) {
+        if(position.distanceTo(target.getPos()) <= 10) {
             isDestroyed = true;
             if(tower instanceof FlakTower) {
-
+                for(Enemy enemy:gameField.getAircraft()) {
+                    if(position.distanceTo(enemy.getPos()) <= 30) enemy.doDamage(damage);
+                }
             }
             else
             target.doDamage(damage);
@@ -90,7 +96,6 @@ public class Bullet implements GameEntity {
                                position.getY() + dir.getY() * deltaTime * speed  );
 
     }
-
 
     @Override
     public Vector2 getPosition() {

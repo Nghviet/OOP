@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 public class RapidTower extends AbstractTower {
     public static RapidTower instance = new RapidTower(null,null);
     public RapidTower(GameField gameField, Vector2 position) {
-        super(gameField, position, 15,150, 15, 1, 3);
+        super(gameField, position, 15,150, 5, 1, 3);
     }
 
     @Override
@@ -20,7 +20,7 @@ public class RapidTower extends AbstractTower {
         for(int i=0;i<dist.length;i++) {
             double a = Math.toRadians(angle[i]+rotation);
             Vector2 pos = position.minus(new Vector2(-dist[i]*Math.cos(a),-dist[i]*Math.sin(a)));
-            gameField.addBullet(new Bullet(pos,target,damage,50,this));
+            gameField.addBullet(new Bullet(pos,target,damage,50,this,gameField));
         }
     }
 

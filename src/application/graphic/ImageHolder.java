@@ -27,6 +27,8 @@ public class ImageHolder {
     public Image[] stages;
     public Image[] towers;
 
+    public Image grayout;
+
     static {
         try {
             instance = new ImageHolder();
@@ -117,6 +119,11 @@ public class ImageHolder {
             catch (IllegalArgumentException t){
                 System.out.println("ERR");
             }
+        }
+
+        {
+            String path = scanner.next();
+            grayout = new Image(path);
         }
 
     }

@@ -84,3 +84,4 @@ assets/Tower/Machine_2.png
 assets/Tower/Machine_3.png
 assets/Tower/Sniper_Base_2.png
 assets/Tower/Sniper_Bullet_2.png
+assets/Tower/Grayout.png

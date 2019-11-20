@@ -17,9 +17,6 @@ public class Network {
 
     public void update() throws IOException {
         socket = new Socket("localhost", 3000);
-
-
-
         input = new DataInputStream(socket.getInputStream());
         output = new DataOutputStream(socket.getOutputStream());
 

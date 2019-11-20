@@ -23,7 +23,7 @@ public class FlakTower extends AbstractTower {
         for(int i=0;i<dist.length;i++) {
             double a = Math.toRadians(angle[i]+rotation);
             Vector2 pos = position.minus(new Vector2(-dist[i]*Math.cos(a),-dist[i]*Math.sin(a)));
-            gameField.addBullet(new Bullet(pos,target,damage,40,this));
+            gameField.addBullet(new Bullet(pos,target,damage,40,this,gameField));
         }
     }
 

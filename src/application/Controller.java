@@ -30,7 +30,7 @@ public class Controller extends AnimationTimer {
 
     private GraphicsContext graphicsContext;
     private GameRenderer gameRenderer;
-    private GameField gameField;
+    public GameField gameField;
     private Spawner spawner;
     //Mouse handler
     private boolean haveBuilding;
@@ -46,14 +46,6 @@ public class Controller extends AnimationTimer {
         haveBuilding = false;
         curTower = null;
         net = new Network();
-
-        try {
-            net.update();
-            Config.connected = true;
-        }
-        catch(IOException io) {
-            System.out.println(io);
-        }
     }
 
     //Game init
@@ -155,7 +147,6 @@ public class Controller extends AnimationTimer {
             spawner.resetTimer();
         }
     }
-
 
     //Mouse handling
     public final void mouseOnKeyPressed(MouseEvent mouseEvent) throws IOException {
