@@ -1,52 +1,42 @@
 package application.network;
 
-import java.io.*;
-import java.net.Socket;
+
+import org.glassfish.tyrus.client.ClientManager;
+import sun.nio.ch.Net;
+
+import javax.websocket.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class Network {
+    public String[] name;
+    public int[] score;
 
-    private Socket socket           = null;
-    private DataInputStream  input  = null;
-    private DataOutputStream output = null;
 
-    public String[] name = new String[10];
-    public int[] score = new int[10];
+    public Network() throws URISyntaxException, IOException, DeploymentException {
+        ClientManager cm = ClientManager.createClient();
 
-    public Network() throws IOException {
+        cm.connectToServer(Client.class, new URI("ws://localhost:3000"));
     }
 
-    public void update() throws IOException {
-        socket = new Socket("localhost", 3000);
-        input = new DataInputStream(socket.getInputStream());
-        output = new DataOutputStream(socket.getOutputStream());
+    @ClientEndpoint
+    public static class Client {
 
-        output.writeUTF("update");
-        String line;
-        for(int i=0;i<10;i++) {
-            line = input.readUTF();
-            String[] split = line.split("\\s");
-            name[i] = split[0];
-            score[i] = Integer.parseInt(split[1]);
+        @OnOpen
+        public void onOpen(Session session) {
+            System.out.println(session);
         }
 
-        for(int i=0;i<10;i++) System.out.println(name[i]+" "+score[i]);
+        @OnMessage
+        public void onMessage(String message, Session session) {
 
-        input.close();
-        output.close();
-        socket.close();
-    }
+        }
 
-    public void add(String name,int score) throws IOException {
-        socket = new Socket("localhost", 3000);
+        @OnClose
+        public void onClose(Session session, CloseReason closeReason) {
 
-        input = new DataInputStream(socket.getInputStream());
-        output = new DataOutputStream(socket.getOutputStream());
+        }
 
-        output.writeUTF("add");
-        output.writeUTF("over");
-
-        input.close();
-        output.close();
-        socket.close();
     }
 }

@@ -20,11 +20,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 import sun.nio.ch.Net;
 
+import javax.websocket.*;
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.Principal;
+import java.util.*;
 
 public class Controller extends AnimationTimer {
 
@@ -39,7 +41,7 @@ public class Controller extends AnimationTimer {
     public Tower showTower;
     public Network net;
 
-    public Controller(GraphicsContext graphicsContext) throws IOException, InterruptedException, ClassNotFoundException {
+    public Controller(GraphicsContext graphicsContext) throws IOException, InterruptedException, ClassNotFoundException, URISyntaxException, DeploymentException {
         this.graphicsContext = graphicsContext;
         this.gameField = null;
         gameRenderer = new GameRenderer(graphicsContext,this);
@@ -185,14 +187,6 @@ public class Controller extends AnimationTimer {
         }
         if(Math.abs(mX-Config.SCREEN_WIDTH/2)<=133 && Math.abs(mY - Config.SCREEN_HEIGHT/2 - 20) <=25) {
             Config.UI_CUR = Config.UI_HIGHSCORE;
-            if(!Config.connected)
-            try {
-                net.update();
-                Config.connected = true;
-            }
-            catch (IOException io) {
-                Config.connected = false;
-            }
         }
     }
 
