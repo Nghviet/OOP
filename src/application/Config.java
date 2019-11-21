@@ -6,10 +6,10 @@ public final class Config {
     public static final String NAME = "Roon";
 
     public static final int TILE_SIZE = 64;
-    public static final int COUNT_HORIZONTAL = 22;
-    public static final int COUNT_VERTICAL = 15;
+    public static final int COUNT_HORIZONTAL = 20;
+    public static final int COUNT_VERTICAL = 11;
 
-    public static final int UI_HORIZONTAL = 450;
+    public static final int UI_HORIZONTAL = 300;
 
     public static final int GAME_WIDTH = TILE_SIZE * COUNT_HORIZONTAL;
     public static final int GAME_HEIGHT = TILE_SIZE * COUNT_VERTICAL;

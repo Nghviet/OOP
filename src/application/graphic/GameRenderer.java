@@ -434,13 +434,6 @@ public class GameRenderer {
 
         graphicsContext.drawImage(ImageHolder.instance.buttons[3], Config.SCREEN_WIDTH - Config.UI_HORIZONTAL + 5, 300);
 
-
-
-
-
-
-
-
         graphicsContext.setFill(Color.BLUE);
         graphicsContext.fillRect(Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 - 20 - 2 * Config.TILE_SIZE, 10, Config.TILE_SIZE, Config.TILE_SIZE);
         graphicsContext.drawImage(ImageHolder.instance.towers[0],
@@ -451,25 +444,27 @@ public class GameRenderer {
                 Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 - 20 - 2 * Config.TILE_SIZE, 10, Config.TILE_SIZE, Config.TILE_SIZE);
 
         graphicsContext.setFill(Color.RED);
-        graphicsContext.fillRect(Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 + 10, 10, Config.TILE_SIZE, Config.TILE_SIZE);
+        graphicsContext.fillRect(Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 - 10 - Config.TILE_SIZE, 10, Config.TILE_SIZE, Config.TILE_SIZE);
         graphicsContext.drawImage(ImageHolder.instance.towers[0],
-                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 + 10, 10, Config.TILE_SIZE, Config.TILE_SIZE);
+                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 - 10 - Config.TILE_SIZE, 10, Config.TILE_SIZE, Config.TILE_SIZE);
         graphicsContext.drawImage(ImageHolder.instance.towers[2],
-                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 + 20, 10, Config.TILE_SIZE, Config.TILE_SIZE);
+                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2  - Config.TILE_SIZE, 10, Config.TILE_SIZE, Config.TILE_SIZE);
         if(curMoney < RapidTower.instance.getPrice()) graphicsContext.drawImage(ImageHolder.instance.grayout,
-                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 + 10, 10, Config.TILE_SIZE, Config.TILE_SIZE);
+                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 - 10 - Config.TILE_SIZE, 10, Config.TILE_SIZE, Config.TILE_SIZE);
 
         graphicsContext.setFill(Color.YELLOW);
-        graphicsContext.fillRect(Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 - 10 - Config.TILE_SIZE, 90, Config.TILE_SIZE, Config.TILE_SIZE);
+        graphicsContext.fillRect(Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2, 10, Config.TILE_SIZE, Config.TILE_SIZE);
         graphicsContext.drawImage(ImageHolder.instance.towers[0],
-                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 - 10 - Config.TILE_SIZE, 90, Config.TILE_SIZE, Config.TILE_SIZE);
+                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 , 10, Config.TILE_SIZE, Config.TILE_SIZE);
         graphicsContext.drawImage(ImageHolder.instance.towers[4],
-                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 - 10 - Config.TILE_SIZE, 90, Config.TILE_SIZE, Config.TILE_SIZE);
+                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 , 10, Config.TILE_SIZE, Config.TILE_SIZE);
         graphicsContext.drawImage(ImageHolder.instance.towers[13],
-                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 - 5 - Config.TILE_SIZE, 90, Config.TILE_SIZE, Config.TILE_SIZE);
+                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 , 10, Config.TILE_SIZE, Config.TILE_SIZE);
         if(curMoney < RangerTower.instance.getPrice()) graphicsContext.drawImage(ImageHolder.instance.grayout,
-                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 - 10 - Config.TILE_SIZE, 90, Config.TILE_SIZE, Config.TILE_SIZE);
+                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 , 10, Config.TILE_SIZE, Config.TILE_SIZE);
 
+        graphicsContext.setFill(Color.LIGHTBLUE);
+        graphicsContext.fillRect(Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 + 10 + Config.TILE_SIZE,10,Config.TILE_SIZE,Config.TILE_SIZE);
 
         Tower showTower = gameController.showTower;
         if (showTower != null) {
