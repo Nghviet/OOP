@@ -41,13 +41,13 @@ public class Controller extends AnimationTimer {
     public Tower showTower;
     public Network net;
 
-    public Controller(GraphicsContext graphicsContext) throws IOException, InterruptedException, ClassNotFoundException, URISyntaxException, DeploymentException {
+    public Controller(GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
         this.gameField = null;
         gameRenderer = new GameRenderer(graphicsContext,this);
         haveBuilding = false;
         curTower = null;
-        net = new Network();
+        net = null;
     }
 
     //Game init
@@ -187,6 +187,13 @@ public class Controller extends AnimationTimer {
         }
         if(Math.abs(mX-Config.SCREEN_WIDTH/2)<=133 && Math.abs(mY - Config.SCREEN_HEIGHT/2 - 20) <=25) {
             Config.UI_CUR = Config.UI_HIGHSCORE;
+            if(net == null) {
+                try {
+                    net = new Network();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

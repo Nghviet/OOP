@@ -11,54 +11,42 @@ import java.net.URISyntaxException;
 import java.util.concurrent.Callable;
 
 public class Network {
-    public String[] name;
-    public int[] score;
-    private Client client;
+    public String[] names;
+    public int[] scores;
+    private ClientEndpoint client;
+    private boolean isConnected = false;
 
-    public Network() throws URISyntaxException, IOException, DeploymentException {
-        client = new Client(new URI("ws://localhost:3000"));
+    public Network() throws URISyntaxException {
+        try {
+            client = new ClientEndpoint(new URI("ws://localhost:3000"));
+            isConnected = true;
+        } catch (DeploymentException e) {
+            e.printStackTrace();
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+    }
+    public void update() {
+        if(!isConnected) return;
+        client.sendMessage("update");
+        String data = client.getData();
+        while(data == null) data = client.getData();
     }
 
-    @ClientEndpoint
-    public class Client {
-        Session session = null;
-        private MessageHandler messageHandler = null;
-        String pending = null;
-        private boolean connected = false;
+    public boolean isHighscore(int score) {
+        if(score > scores[9]) return true;
+        else return false;
+    }
 
-        public Client(URI uri) {
-            connected = true;
-            try {
-                WebSocketContainer webSocketContainer = ContainerProvider.getWebSocketContainer();
-                webSocketContainer.connectToServer(this,uri);
-            } catch (DeploymentException e) {
-                connected = false;
-                return;
-            } catch (IOException e) {
-                connected = false;
-                return;
-            }
-        }
+    public void sendScore(String name,int score) {
+        if(!isConnected) return;
+        client.sendMessage("add " + name + " " + score);
+    }
 
-        @OnOpen
-        public void onOpen(Session session) {
-            System.out.println(session.isOpen());
-            this.session = session;
-        }
-
-        @OnMessage
-        public void onMessage(String message) {
-            System.out.println(message);
-            pending = message;
-        }
-
-        @OnClose
-        public void onClose(CloseReason closeReason) {
-            this.session = null;
-        }
-
-        public void sendMessage(String message) {
-            session.getAsyncRemote().sendText(message);
-        }
+    public boolean isConnected() {
+        return isConnected;
     }
 }

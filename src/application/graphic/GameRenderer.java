@@ -568,10 +568,10 @@ public class GameRenderer {
 
 
         graphicsContext.setFill(Color.BLACK);
-        if(Config.connected)
+        if(gameController.net!=null && gameController.net.isConnected())
         for(int i=0;i<10;i++) {
-                graphicsContext.fillText(gameController.net.name[i],Config.SCREEN_WIDTH/2 - 450,10 + 40 * i, 450);
-                graphicsContext.fillText(String.valueOf(gameController.net.score[i]),Config.SCREEN_WIDTH/2,10+40 * i ,200);
+                graphicsContext.fillText(gameController.net.names[i],Config.SCREEN_WIDTH/2 - 450,10 + 40 * i, 450);
+                graphicsContext.fillText(String.valueOf(gameController.net.scores[i]),Config.SCREEN_WIDTH/2,10+40 * i ,200);
         }
         else {
             graphicsContext.fillText("No internet connection",Config.SCREEN_WIDTH/2,100,200);

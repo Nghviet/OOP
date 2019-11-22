@@ -1,10 +1,12 @@
-6
+8
 assets/Buttons/Play.png
 assets/Buttons/Cancel.png
 assets/Buttons/Main_Menu.png
 assets/Buttons/Next_Level.png
 assets/Buttons/Sell.png
 assets/Buttons/Upgrade.png
+assets/Buttons/Highscore.png
+assets/Buttons/Back.png
 7
 assets/Background/Roon.jpg
 assets/Background/UI.png
@@ -44,7 +46,7 @@ assets/Textile/15.png
 assets/Textile/16.png
 assets/Textile/17.png
 assets/Textile/18.png
-16
+17
 assets/Enemy/Normal/Normal_0.png
 assets/Enemy/Normal/Normal_1.png
 assets/Enemy/Normal/Normal_2.png
@@ -61,6 +63,7 @@ assets/Enemy/Boss/Boss_0.png
 assets/Enemy/Boss/Boss_1.png
 assets/Enemy/Boss/Boss_2.png
 assets/Enemy/Boss/Boss_3.png
+assets/Enemy/Aircraft/1.png
 4
 assets/Stage/Stage_1.png
 assets/Stage/Stage_2.png
@@ -81,3 +84,4 @@ assets/Tower/Machine_2.png
 assets/Tower/Machine_3.png
 assets/Tower/Sniper_Base_2.png
 assets/Tower/Sniper_Bullet_2.png
+assets/Tower/Grayout.png
