@@ -106,9 +106,6 @@ public class Controller extends AnimationTimer {
         name = null;
     }
 
-    final Media media = new Media(new File("src/audio/unity.mp3").toURI().toString());
-    final MediaPlayer mediaPlayer = new MediaPlayer(media);
-
     //Update handler
     @Override
     public void handle(long now) {
@@ -124,12 +121,11 @@ public class Controller extends AnimationTimer {
             gameField.update();
         }
         gameRenderer.render();
-        if(mediaPlayer.getBufferProgressTime().greaterThanOrEqualTo(mediaPlayer.getTotalDuration())) mediaPlayer.play();
+
     }
 
     public void start() {
         super.start();
-        mediaPlayer.play();
     }
 
     void closeHandle(WindowEvent windowEvent) {

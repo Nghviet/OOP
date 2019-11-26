@@ -43,11 +43,6 @@ public class Main extends Application {
             }
         });
 
-        final Media media = new Media(new File("src/audio/unity.mp3").toURI().toString());
-        final MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setAutoPlay(true);
-        System.out.println(mediaPlayer.getBufferProgressTime());
-
         primaryStage.setResizable(false);
         primaryStage.setTitle(Config.NAME);
         primaryStage.setOnCloseRequest(gameController::closeHandle);
