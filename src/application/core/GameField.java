@@ -176,6 +176,8 @@ public class GameField {
         return player.getMoney();
     }
 
+    public int getScore() { return player.getScore(); }
+
     public boolean isComplete() {
         return complete;
     }

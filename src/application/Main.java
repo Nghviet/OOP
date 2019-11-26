@@ -10,9 +10,13 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.FontSmoothingType;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -39,6 +43,10 @@ public class Main extends Application {
             }
         });
 
+        final Media media = new Media(new File("src/audio/unity.mp3").toURI().toString());
+        final MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setAutoPlay(true);
+        System.out.println(mediaPlayer.getBufferProgressTime());
 
         primaryStage.setResizable(false);
         primaryStage.setTitle(Config.NAME);

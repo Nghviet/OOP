@@ -113,12 +113,7 @@ public class ImageHolder {
         towers = new Image[tower];
         for(int i=0;i<tower;i++) {
             String path = scanner.next();
-            try {
-                towers[i] = new Image(path);
-            }
-            catch (IllegalArgumentException t){
-                System.out.println("ERR");
-            }
+            towers[i] = new Image(path);
         }
 
         {

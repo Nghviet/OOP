@@ -15,7 +15,6 @@ public class ClientEndpoint {
         connected = true;
         WebSocketContainer webSocketContainer = ContainerProvider.getWebSocketContainer();
         webSocketContainer.connectToServer(this,uri);
-
     }
 
     @OnOpen
@@ -25,7 +24,7 @@ public class ClientEndpoint {
 
     @OnMessage
     public void onMessage(String message) {
-        System.out.println(message);
+        System.out.println("Message incomming");
         pending = message;
     }
 

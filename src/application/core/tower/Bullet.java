@@ -42,7 +42,7 @@ public class Bullet implements GameEntity {
         }
         if(tower instanceof FlakTower) {
             effectTimer = 30;
-            AOE = 70;
+            AOE = 1000;
         }
     }
 
@@ -74,6 +74,11 @@ public class Bullet implements GameEntity {
             return;
         }
 
+        if(position.distanceTo(tower.getPosition()) > tower.getRange()) {
+            isDestroyed = true;
+            return;
+        }
+
         double cur = System.nanoTime()/ Config.timeDivide;
         double deltaTime = cur - lastCall;
         lastCall = cur;
@@ -82,7 +87,7 @@ public class Bullet implements GameEntity {
             isDestroyed = true;
             if(tower instanceof FlakTower) {
                 for(Enemy enemy:gameField.getAircraft()) {
-                    if(position.distanceTo(enemy.getPos()) <= 30) enemy.doDamage(damage);
+                    if(position.distanceTo(enemy.getPos()) <= AOE) enemy.doDamage(damage);
                 }
             }
             else

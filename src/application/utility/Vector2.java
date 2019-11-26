@@ -35,4 +35,23 @@ public class Vector2 {
         x = x/Math.sqrt(l);
         y = y/Math.sqrt(l);
     }
+
+    public double angleTo(Vector2 that) {
+        double x = this.getX() - that.getX();
+        double y = this.getY() - that.getY();
+
+        double baseRotation = Math.abs(Math.toDegrees(Math.asin(y/Math.sqrt(x*x+y*y))));
+        if(x<0 && y<0) baseRotation +=180;
+        if(x<0 && y>0) baseRotation = 180 - baseRotation;
+        if(x>0 && y<0) baseRotation = 360 - baseRotation;
+        if(x==0) {
+            if(y>0) baseRotation = 90;
+            else baseRotation = 270;
+        }
+        if(y==0) {
+            if(x>0) baseRotation = 0;
+            else baseRotation = 180;
+        }
+        return baseRotation;
+    }
 }

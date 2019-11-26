@@ -8,6 +8,7 @@ import application.core.tile.GameTile;
 import application.core.tile.MapTile;
 import application.core.tile.Path;
 import application.core.tower.*;
+import application.network.Score;
 import application.utility.Vector2;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -54,8 +55,22 @@ public class GameRenderer {
             case Config.UI_GAME_COMPLETE: {
                 gameRender();
                 graphicsContext.drawImage(ImageHolder.instance.buttons[2], Config.SCREEN_WIDTH / 2 - 60, Config.SCREEN_HEIGHT / 2 - 17);
+                if(gameController.net.isConnected() && gameController.net.isHighscore(gameField.getScore())) {
+                    graphicsContext.drawImage(ImageHolder.instance.buttons[8],Config.SCREEN_WIDTH/2 - 60,Config.SCREEN_HEIGHT/2 + 35);
+                }
                 break;
             }
+
+            case Config.UI_ADDSCORE: {
+                gameRender();
+                graphicsContext.setFill(Color.WHITE);
+                graphicsContext.fillRect(Config.SCREEN_WIDTH/2 - 100,Config.SCREEN_HEIGHT/2 - 20,200,20);
+                graphicsContext.setFill(Color.BLACK);
+                if(gameController.name!=null) graphicsContext.fillText(gameController.name,Config.SCREEN_WIDTH/2 - 95,Config.SCREEN_HEIGHT/2,180);
+                graphicsContext.drawImage(ImageHolder.instance.buttons[9],Config.SCREEN_WIDTH/2 - 60,Config.SCREEN_HEIGHT/2 + 30);
+                break;
+            }
+
             case Config.UI_PAUSE: {
                 pauseRender();
                 break;
@@ -317,6 +332,14 @@ public class GameRenderer {
 
                 }
 
+                if(tower instanceof FlakTower) {
+                    Image r = null;
+                    if (lv == 1) r = ImageHolder.instance.towers[14];
+                    if (lv == 2) r = ImageHolder.instance.towers[15];
+                    if (lv == 3) r = ImageHolder.instance.towers[16];
+                    graphicsContext.drawImage(r, dist * Math.cos(-rad + base) + 10 - Config.TILE_SIZE / 2, dist * Math.sin(-rad + base) - Config.TILE_SIZE / 2,
+                            Config.TILE_SIZE, Config.TILE_SIZE);
+                }
 
                 graphicsContext.restore();
 
@@ -402,12 +425,19 @@ public class GameRenderer {
                     graphicsContext.drawImage(ImageHolder.instance.towers[7], rX, rY, Config.TILE_SIZE, Config.TILE_SIZE);
                 }
 
+                if(tower instanceof FlakTower) {
+                    graphicsContext.drawImage(ImageHolder.instance.towers[17],rX,rY,Config.TILE_SIZE,Config.TILE_SIZE);
+                }
+
                 graphicsContext.restore();
             }
+            /*
             else if(!bullet.isCompleted()) {
                 graphicsContext.setFill(Color.AZURE);
                 graphicsContext.fillRect(pos.getX()-Config.TILE_SIZE/4,pos.getY() - Config.TILE_SIZE/4,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
             }
+
+            */
         }
 
         playingMouseRender();
@@ -465,6 +495,13 @@ public class GameRenderer {
 
         graphicsContext.setFill(Color.LIGHTBLUE);
         graphicsContext.fillRect(Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 + 10 + Config.TILE_SIZE,10,Config.TILE_SIZE,Config.TILE_SIZE);
+        graphicsContext.drawImage(ImageHolder.instance.towers[0],
+                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 + 10 + Config.TILE_SIZE,10,Config.TILE_SIZE,Config.TILE_SIZE);
+        graphicsContext.drawImage(ImageHolder.instance.towers[14],
+                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 + 10 + Config.TILE_SIZE,10,Config.TILE_SIZE,Config.TILE_SIZE);
+        if(curMoney < FlakTower.instance.getPrice()) graphicsContext.drawImage(ImageHolder.instance.grayout,
+                Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 + 10 + Config.TILE_SIZE,10,Config.TILE_SIZE,Config.TILE_SIZE);
+
 
         Tower showTower = gameController.showTower;
         if (showTower != null) {
@@ -545,6 +582,11 @@ public class GameRenderer {
                             Config.TILE_SIZE, Config.TILE_SIZE);
                 }
 
+                if(gameController.curTower instanceof FlakTower) {
+                    graphicsContext.drawImage(ImageHolder.instance.towers[14],
+                            dist * Math.cos(-rad + base) - Config.TILE_SIZE / 2, dist * Math.sin(-rad + base) - Config.TILE_SIZE / 2,
+                            Config.TILE_SIZE, Config.TILE_SIZE);
+                }
 
                 graphicsContext.restore();
             }
@@ -569,12 +611,17 @@ public class GameRenderer {
 
         graphicsContext.setFill(Color.BLACK);
         if(gameController.net!=null && gameController.net.isConnected())
-        for(int i=0;i<10;i++) {
-                graphicsContext.fillText(gameController.net.names[i],Config.SCREEN_WIDTH/2 - 450,10 + 40 * i, 450);
-                graphicsContext.fillText(String.valueOf(gameController.net.scores[i]),Config.SCREEN_WIDTH/2,10+40 * i ,200);
+        {
+            int i = 0;
+            List<Score> scores = gameController.net.getScores();
+            for(Score score:scores) {
+                graphicsContext.fillText(score.getName(),Config.SCREEN_WIDTH/2 - 450,10 + 40 * i, 450);
+                graphicsContext.fillText(Integer.valueOf(score.getScore()).toString(),Config.SCREEN_WIDTH/2,10+40 * i ,200);
+                i++;
+            }
         }
         else {
-            graphicsContext.fillText("No internet connection",Config.SCREEN_WIDTH/2,100,200);
+            graphicsContext.fillText("No network connection !!",Config.SCREEN_WIDTH/2,Config.SCREEN_HEIGHT/2,Config.SCREEN_WIDTH);
         }
     }
 

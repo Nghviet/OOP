@@ -7,7 +7,7 @@ public final class Config {
 
     public static final int TILE_SIZE = 64;
     public static final int COUNT_HORIZONTAL = 20;
-    public static final int COUNT_VERTICAL = 11;
+    public static final int COUNT_VERTICAL = 12;
 
     public static final int UI_HORIZONTAL = 300;
 
@@ -27,7 +27,7 @@ public final class Config {
     public static final int UI_PAUSE = 4;
     public static final int UI_GAME_COMPLETE = 5;
     public static final int UI_HIGHSCORE = 6;
-
+    public static final int UI_ADDSCORE = 7;
     public static final int UI_BASE = 0;
 
     //Network

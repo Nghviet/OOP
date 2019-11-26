@@ -1,4 +1,4 @@
-8
+10
 assets/Buttons/Play.png
 assets/Buttons/Cancel.png
 assets/Buttons/Main_Menu.png
@@ -7,6 +7,8 @@ assets/Buttons/Sell.png
 assets/Buttons/Upgrade.png
 assets/Buttons/Highscore.png
 assets/Buttons/Back.png
+assets/Buttons/AddHS.png
+assets/Buttons/Add.png
 7
 assets/Background/Roon.jpg
 assets/Background/UI.png
@@ -69,7 +71,7 @@ assets/Stage/Stage_1.png
 assets/Stage/Stage_2.png
 assets/Stage/Stage_3.png
 assets/Stage/Stage_4.png
-14
+18
 assets/Tower/Base.png
 assets/Tower/Normal.png
 assets/Tower/Machine.png
@@ -84,4 +86,8 @@ assets/Tower/Machine_2.png
 assets/Tower/Machine_3.png
 assets/Tower/Sniper_Base_2.png
 assets/Tower/Sniper_Bullet_2.png
+assets/Tower/Flak.png
+assets/Tower/Flak_2.png
+assets/Tower/Flak_3.png
+assets/Tower/Flak_Bullet.png
 assets/Tower/Grayout.png

@@ -3,10 +3,7 @@ package application;
 import application.core.GameField;
 import application.core.spawner.Spawner;
 import application.core.spawner.Wave;
-import application.core.tower.NormalTower;
-import application.core.tower.RangerTower;
-import application.core.tower.RapidTower;
-import application.core.tower.Tower;
+import application.core.tower.*;
 import application.graphic.GameRenderer;
 import application.network.Network;
 
@@ -17,6 +14,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.WindowEvent;
 import sun.nio.ch.Net;
 
@@ -41,13 +40,15 @@ public class Controller extends AnimationTimer {
     public Tower showTower;
     public Network net;
 
-    public Controller(GraphicsContext graphicsContext) {
+    public String name = null;
+
+    public Controller(GraphicsContext graphicsContext) throws URISyntaxException {
         this.graphicsContext = graphicsContext;
         this.gameField = null;
         gameRenderer = new GameRenderer(graphicsContext,this);
         haveBuilding = false;
         curTower = null;
-        net = null;
+        net = new Network();
     }
 
     //Game init
@@ -102,7 +103,11 @@ public class Controller extends AnimationTimer {
         }
 
         spawner = new Spawner(gameField,waves);
+        name = null;
     }
+
+    final Media media = new Media(new File("src/audio/unity.mp3").toURI().toString());
+    final MediaPlayer mediaPlayer = new MediaPlayer(media);
 
     //Update handler
     @Override
@@ -119,10 +124,12 @@ public class Controller extends AnimationTimer {
             gameField.update();
         }
         gameRenderer.render();
+        if(mediaPlayer.getBufferProgressTime().greaterThanOrEqualTo(mediaPlayer.getTotalDuration())) mediaPlayer.play();
     }
 
     public void start() {
         super.start();
+        mediaPlayer.play();
     }
 
     void closeHandle(WindowEvent windowEvent) {
@@ -137,6 +144,7 @@ public class Controller extends AnimationTimer {
         KeyCode keyCode = keyEvent.getCode();
         if(keyCode == KeyCode.S && Config.UI_CUR == Config.UI_PLAYING) {
             gameField.doSpawn();
+            System.out.println(keyCode.getName());
         }
         else
         if(keyCode == KeyCode.ESCAPE && Config.UI_CUR == Config.UI_PLAYING) {
@@ -147,6 +155,13 @@ public class Controller extends AnimationTimer {
             Config.UI_CUR = Config.UI_PLAYING;
             gameField.resetTimer();
             spawner.resetTimer();
+        }
+        if(Config.UI_CUR == Config.UI_ADDSCORE) {
+            if(keyCode.isLetterKey()) {
+                if(name != null)
+                name += keyCode.name();
+                else name = keyCode.name();
+            }
         }
     }
 
@@ -177,6 +192,17 @@ public class Controller extends AnimationTimer {
                 highscoreMouse(mouseEvent);
                 break;
             }
+            case Config.UI_ADDSCORE: {
+                addScoreMouse(mouseEvent);
+                break;
+            }
+        }
+    }
+
+    private void addScoreMouse(MouseEvent mouseEvent) {
+        if(Math.abs(mX - Config.SCREEN_WIDTH/2) <= 60 && Math.abs(mY - Config.SCREEN_HEIGHT/2 - 47) <= 17) {
+            net.addHighscore(name,gameField.getScore());
+            Config.UI_CUR = Config.UI_START;
         }
     }
 
@@ -190,10 +216,12 @@ public class Controller extends AnimationTimer {
             if(net == null) {
                 try {
                     net = new Network();
+
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
             }
+            if(net!=null) net.update();
         }
     }
 
@@ -203,6 +231,11 @@ public class Controller extends AnimationTimer {
             Config.UI_CUR = Config.UI_START;
             gameField = null;
             spawner = null;
+        }
+        if(net.isConnected() && net.isHighscore(gameField.getScore())) {
+            if(Math.abs(mX - Config.SCREEN_WIDTH/2) <= 60 && Math.abs(mY - Config.SCREEN_HEIGHT/2 - 52) <= 17) {
+                Config.UI_CUR = Config.UI_ADDSCORE;
+            }
         }
     }
 
@@ -257,6 +290,12 @@ public class Controller extends AnimationTimer {
                     if(gameField.getPlayerMoney() >= RangerTower.instance.getPrice()) curTower = new RangerTower(gameField,null);
                     showTower = null;
                 }
+
+                if(Math.abs(mX - (Config.GAME_WIDTH + Config.UI_HORIZONTAL / 2 + 10 + Config.TILE_SIZE * 3/2)) <= Config.TILE_SIZE/2) {
+                    if(gameField.getPlayerMoney() >= FlakTower.instance.getPrice()) curTower = new FlakTower(gameField,null);
+                    showTower = null;
+                }
+
             }
 
             if(Math.abs(mX - (Config.SCREEN_WIDTH-Config.UI_HORIZONTAL+65)) <= 60 && Math.abs(mY - 317) <= 17) {
