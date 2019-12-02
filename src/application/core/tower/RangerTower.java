@@ -1,6 +1,7 @@
 package application.core.tower;
 
 import application.core.GameField;
+import application.core.audio.Audio;
 import application.core.enemy.Enemy;
 import application.utility.Vector2;
 import javafx.scene.paint.Color;
@@ -9,7 +10,7 @@ public class RangerTower extends AbstractTower {
     public static RangerTower instance = new RangerTower(null,null);
 
     public RangerTower(GameField gameField, Vector2 position) {
-        super(gameField, position,10, 750 , 30, 3, 5);
+        super(gameField, position,10, 750 , 30, 3, 5,2);
     }
 
     @Override
@@ -49,6 +50,7 @@ public class RangerTower extends AbstractTower {
             Vector2 pos = position.minus(new Vector2(-dist[i]*Math.cos(a),-dist[i]*Math.sin(a)));
             gameField.addBullet(new Bullet(pos,target,damage,30,this,gameField));
         }
+        Audio.instance.lunch();
     }
 
     public void setFiringPoint() {

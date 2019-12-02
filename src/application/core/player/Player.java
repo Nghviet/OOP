@@ -11,6 +11,11 @@ public class Player {
         score = 0;
     }
 
+    public String toString() {
+        String data = money + " " + health + " " + score;
+        return data;
+    }
+
     public void doDamage() {
         health--;
     }
@@ -34,5 +39,17 @@ public class Player {
 
     public int getScore() {
         return score;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

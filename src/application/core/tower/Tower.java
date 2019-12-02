@@ -24,4 +24,5 @@ public interface Tower extends GameTile {
     int getDamage();
 
     void upgrade();
+
 }

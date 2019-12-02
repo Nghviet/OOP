@@ -32,4 +32,6 @@ public final class Config {
 
     //Network
     public static boolean connected = false;
+
+    public static boolean saved = false;
 }

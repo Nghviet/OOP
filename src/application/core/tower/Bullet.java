@@ -3,6 +3,8 @@ package application.core.tower;
 import application.Config;
 import application.core.GameEntity;
 import application.core.GameField;
+import application.core.audio.Audio;
+import application.core.enemy.AbstractEnemy;
 import application.core.enemy.Enemy;
 import application.utility.Vector2;
 import javafx.scene.paint.Color;
@@ -92,6 +94,7 @@ public class Bullet implements GameEntity {
             }
             else
             target.doDamage(damage);
+            if(tower instanceof RangerTower) Audio.instance.explode();
             return;
         }
 
@@ -141,5 +144,17 @@ public class Bullet implements GameEntity {
             else baseRotation = 180;
         }
         return baseRotation;
+    }
+
+    public String toString() {
+        String data = position.getX() + " " + position.getY() + " " + damage + " " + speed + " " + gameField.getTowers().indexOf(tower);
+        if(target instanceof AbstractEnemy) data += " 1 "+gameField.getEnemies().indexOf(target);
+        else data += " 2 " + gameField.getAircraft().indexOf(target);
+
+        return data;
+    }
+
+    public void setTarget(Enemy target) {
+        this.target = target;
     }
 }

@@ -21,4 +21,6 @@ public interface Enemy extends GameEntity {
     int getDir();
 
     double getPercentage();
+
+    void setHealth(int health);
 }

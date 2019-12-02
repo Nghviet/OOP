@@ -1,6 +1,7 @@
 package application.core.tower;
 
 import application.core.GameField;
+import application.core.audio.Audio;
 import application.core.enemy.AbstractEnemy;
 import application.core.enemy.Enemy;
 import application.utility.Vector2;
@@ -10,7 +11,7 @@ public class NormalTower extends AbstractTower {
     public static NormalTower instance = new NormalTower(null,null);
 
     public NormalTower(GameField gameField, Vector2 position) {
-        super(gameField, position,10, 550, 5, 1,1);
+        super(gameField, position,10, 550, 5, 1,1,0);
     }
 
     @Override
@@ -50,6 +51,7 @@ public class NormalTower extends AbstractTower {
             Vector2 pos = position.minus(new Vector2(-dist[i]*Math.cos(a),-dist[i]*Math.sin(a)));
             gameField.addBullet(new Bullet(pos,target,damage,40,this,gameField));
         }
+        Audio.instance.normal();
         //gameField.addBullet(new Bullet(position,target,10,10,this));
     }
 

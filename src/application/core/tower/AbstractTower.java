@@ -1,6 +1,8 @@
 package application.core.tower;
 
 import application.Config;
+import application.core.audio.Audio;
+import application.core.enemy.AbstractEnemy;
 import application.core.enemy.Enemy;
 import application.core.GameField;
 import application.utility.Vector2;
@@ -27,8 +29,10 @@ public abstract class AbstractTower implements Tower {
     protected int[] angle;
     protected int level;
 
+    private int type;
+
     public AbstractTower(GameField gameField, Vector2 position, double rotationSpeed, double range, double reloadTime, int damage,
-                         int price) {
+                         int price, int type) {
         this.gameField = gameField;
         this.position = position;
         this.range = range;
@@ -49,6 +53,8 @@ public abstract class AbstractTower implements Tower {
         dist[0] = Config.TILE_SIZE/2;
         angle[0] = 0;
         level = 1;
+
+        this.type = type;
     }
 
     @Override
@@ -151,6 +157,7 @@ public abstract class AbstractTower implements Tower {
 
     @Override
     public void upgrade() {
+        Audio.instance.upgrade();
         if(level < 3) {
             level ++;
             setFiringPoint();
@@ -182,5 +189,32 @@ public abstract class AbstractTower implements Tower {
     @Override
     public int getDamage() {
         return damage;
+    }
+
+    public String toString() {
+        String data = type + " " + position.getX() + " " + position.getY() + " " + level + " " + rotation + " " + reloadTimer;
+        if(target == null) {
+            data +=" 0";
+        }
+        else
+        if(target instanceof AbstractEnemy) {
+            data += " 1 " + gameField.getEnemies().indexOf(target);
+        }
+        else {
+            data += " 2 " + gameField.getAircraft().indexOf(target);
+        }
+        return data;
+    }
+
+    public void setRotation(double rotation) {
+        this.rotation = rotation;
+    }
+
+    public void setReloadTimer(double reloadTimer) {
+        this.reloadTimer = reloadTimer;
+    }
+
+    public void setTarget(Enemy target) {
+        this.target = target;
     }
 }

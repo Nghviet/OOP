@@ -1,17 +1,10 @@
 package application.network;
 
-
-import org.glassfish.tyrus.client.ClientManager;
-import sun.nio.ch.Net;
-
-import javax.websocket.*;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 public class Network {
     private List<Score> scores = new ArrayList<>();
@@ -33,8 +26,12 @@ public class Network {
         }
 
         client.sendMessage("get");
+        int n = 0;
+        while(client.getData() == null) {
+            n = (n + 1) % 2;
+        }
         String data = client.getData();
-        while(data == null) data = client.getData();
+
         scores = new ArrayList<>();
         String[] lines = data.split("\\s?\\n");
         for(String line:lines) scores.add(new Score(line));

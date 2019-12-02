@@ -21,6 +21,12 @@ public class Wave {
     private int curIndex;
 
 
+    public String toString() {
+        String data = enemy.size() - curIndex + "";
+        for(int i= curIndex;i<enemy.size();i++) data += " " +enemy.get(i);
+        return data;
+    }
+
     public Wave(GameField gameField, List<Integer> enemy, int delay, int no) {
         this.gameField = gameField;
         this.enemy = enemy;

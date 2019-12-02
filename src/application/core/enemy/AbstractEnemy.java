@@ -19,7 +19,7 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
     private int maxHP;
     private double distance;
 
-
+    private int type;
     private double lastCall;
     private boolean destroyed = false;
 
@@ -41,7 +41,7 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
         return pos;
     }
 
-    public AbstractEnemy(int health, int armor, int reward, int speed, Player player) {
+    public AbstractEnemy(int health, int armor, int reward, int speed, Player player,int type) {
         this.health = health;
         this.armor = armor;
         this.reward = reward;
@@ -64,6 +64,8 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
             if(target.getX() > cur.getX()) dir = 0;
             else dir = 2;
         }
+
+        this.type = type;
 
     }
 
@@ -139,5 +141,34 @@ public abstract class AbstractEnemy implements Enemy, Destroyable, Updatable {
     @Override
     public double getPercentage() {
         return health * 100 / maxHP;
+    }
+
+    public String toString() {
+        String data = type + " " + pos.getX() + " " + pos.getY() + " " + health + " " + currentWaypoints;
+        return data;
+    }
+
+    @Override
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setCurrentWaypoints(int curWp) {
+        System.out.println(curWp);
+        this.currentWaypoints = curWp;
+        target = Waypoints.instance.getIndex(currentWaypoints);
+        Vector2 cur = Waypoints.instance.getIndex(currentWaypoints-1);
+        if(target.getX() == cur.getX()) {
+            if(target.getY() < cur.getY()) dir = 3;
+            else dir = 1;
+        }
+        else {
+            if(target.getX() > cur.getX()) dir = 0;
+            else dir = 2;
+        }
+    }
+
+    public void setPos(Vector2 pos) {
+        this.pos = pos;
     }
 }

@@ -2,6 +2,7 @@ package application.graphic;
 
 import application.Config;
 import application.Controller;
+import application.core.audio.Audio;
 import application.core.enemy.*;
 import application.core.GameField;
 import application.core.tile.GameTile;
@@ -80,12 +81,15 @@ public class GameRenderer {
                 break;
             }
         }
+
+        if(Config.UI_CUR != Config.UI_PLAYING) audioRender();
     }
 
     private void startRender() {
         graphicsContext.drawImage(ImageHolder.instance.backgrounds[0], Config.SCREEN_WIDTH / 2 - 300, Config.SCREEN_HEIGHT / 2 - 180);
         graphicsContext.drawImage(ImageHolder.instance.buttons[0], Config.SCREEN_WIDTH / 2 - 133, Config.SCREEN_HEIGHT / 2 - 75, 266, 50);
         graphicsContext.drawImage(ImageHolder.instance.buttons[6],Config.SCREEN_WIDTH / 2 - 133,Config.SCREEN_HEIGHT / 2 - 10, 266, 50);
+        graphicsContext.drawImage(ImageHolder.instance.buttons[15],Config.SCREEN_WIDTH / 2 - 133,Config.SCREEN_HEIGHT / 2 + 50, 266, 50);
     }
 
     private void stageRender() {
@@ -103,6 +107,8 @@ public class GameRenderer {
         graphicsContext.drawImage(ImageHolder.instance.stages[1], Config.SCREEN_WIDTH / 2 + 40, Config.SCREEN_HEIGHT / 2 - 140, 200, 120);
         graphicsContext.drawImage(ImageHolder.instance.stages[2], Config.SCREEN_WIDTH / 2 - 240, Config.SCREEN_HEIGHT / 2 + 20, 200, 120);
         graphicsContext.drawImage(ImageHolder.instance.stages[3], Config.SCREEN_WIDTH / 2 + 40, Config.SCREEN_HEIGHT / 2 + 20, 200, 120);
+
+        graphicsContext.drawImage(ImageHolder.instance.buttons[7],35,Config.SCREEN_HEIGHT - 70,266,50);
     }
 
     private void gameRender() {
@@ -603,11 +609,11 @@ public class GameRenderer {
         gameRender();
         graphicsContext.drawImage(ImageHolder.instance.buttons[1], Config.SCREEN_WIDTH / 2 - 81, Config.SCREEN_HEIGHT / 2 - 20, 162, 40);
         graphicsContext.drawImage(ImageHolder.instance.buttons[2], Config.SCREEN_WIDTH / 2 - 81, Config.SCREEN_HEIGHT / 2 + 30, 162, 40);
+        graphicsContext.drawImage(ImageHolder.instance.buttons[14], Config.SCREEN_WIDTH / 2 - 81, Config.SCREEN_HEIGHT / 2 + 80, 162, 40);
     }
 
     private void highscoreRender() {
         graphicsContext.drawImage(ImageHolder.instance.buttons[7],35,Config.SCREEN_HEIGHT - 70,266,50);
-
 
         graphicsContext.setFill(Color.BLACK);
         if(gameController.net!=null && gameController.net.isConnected())
@@ -623,6 +629,23 @@ public class GameRenderer {
         else {
             graphicsContext.fillText("No network connection !!",Config.SCREEN_WIDTH/2,Config.SCREEN_HEIGHT/2,Config.SCREEN_WIDTH);
         }
+    }
+
+    private void audioRender() {
+        if(Audio.instance.isMuted())
+            graphicsContext.drawImage(ImageHolder.instance.buttons[13],
+                    Config.SCREEN_WIDTH - Config.TILE_SIZE - 25,Config.SCREEN_HEIGHT - Config.TILE_SIZE - 10,Config.TILE_SIZE,Config.TILE_SIZE);
+        else
+            graphicsContext.drawImage(ImageHolder.instance.buttons[12],
+                    Config.SCREEN_WIDTH - Config.TILE_SIZE - 25,Config.SCREEN_HEIGHT - Config.TILE_SIZE - 10,Config.TILE_SIZE,Config.TILE_SIZE);
+
+
+        if(Audio.instance.isBackgroundMuted())
+            graphicsContext.drawImage(ImageHolder.instance.buttons[11],
+                    Config.SCREEN_WIDTH - Config.TILE_SIZE - 25,Config.SCREEN_HEIGHT - 2 * Config.TILE_SIZE - 20,Config.TILE_SIZE,Config.TILE_SIZE);
+        else
+            graphicsContext.drawImage(ImageHolder.instance.buttons[10],
+                    Config.SCREEN_WIDTH - Config.TILE_SIZE - 25,Config.SCREEN_HEIGHT - 2 * Config.TILE_SIZE - 20,Config.TILE_SIZE,Config.TILE_SIZE);
     }
 
     private List<Integer> convert(int n) {

@@ -137,4 +137,19 @@ public abstract class  AbstractAircraft implements Enemy {
     public double getPercentage() {
          return health * 100 / maxHP;
     }
+
+    public String toString() {
+        String data = pos.getX() + " " + pos.getY() + " " + health + " " + target.getX() + " "+ target.getY();
+        return data;
+    }
+
+    @Override
+    public int getDir() {
+        return 0;
+    }
+
+    @Override
+    public void setHealth(int health) {
+        this.health = health;
+    }
 }

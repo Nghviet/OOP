@@ -1,4 +1,4 @@
-10
+16
 assets/Buttons/Play.png
 assets/Buttons/Cancel.png
 assets/Buttons/Main_Menu.png
@@ -9,6 +9,12 @@ assets/Buttons/Highscore.png
 assets/Buttons/Back.png
 assets/Buttons/AddHS.png
 assets/Buttons/Add.png
+assets/Buttons/Music.png
+assets/Buttons/Music_Mute.png
+assets/Buttons/Unmute.png
+assets/Buttons/Mute.png
+assets/Buttons/Save.png
+assets/Buttons/Load.png
 7
 assets/Background/Roon.jpg
 assets/Background/UI.png

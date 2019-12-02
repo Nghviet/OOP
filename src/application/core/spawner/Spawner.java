@@ -49,5 +49,11 @@ public class Spawner {
         if(curWave!=null) curWave.resetTimer();
     }
 
+    public String toString() {
+        String data = waves.size() - curWaveIndex +"\n";
+        for(int i=curWaveIndex;i<waves.size();i++) data += waves.get(i).toString() + "\n";
+        return data;
+    }
+
 
 }
