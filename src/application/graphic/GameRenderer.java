@@ -437,13 +437,11 @@ public class GameRenderer {
 
                 graphicsContext.restore();
             }
-            /*
             else if(!bullet.isCompleted()) {
                 graphicsContext.setFill(Color.AZURE);
-                graphicsContext.fillRect(pos.getX()-Config.TILE_SIZE/4,pos.getY() - Config.TILE_SIZE/4,Config.TILE_SIZE/2,Config.TILE_SIZE/2);
+                double AOE = Config.TILE_SIZE * 1.5;
+                graphicsContext.fillRect(pos.getX()-AOE/2,pos.getY() - AOE/2,AOE,AOE);
             }
-
-            */
         }
 
         playingMouseRender();

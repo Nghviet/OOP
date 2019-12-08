@@ -25,11 +25,23 @@ public class Network {
             }
         }
 
+        if(!client.isConnected())
+            try {
+                client = new ClientEndpoint(server);
+                isConnected = true;
+            } catch(Exception e) {
+                return;
+            }
+
         client.sendMessage("get");
+        System.out.println("Sended");
         int n = 0;
         while(client.getData() == null) {
             n = (n + 1) % 2;
+            System.out.println(client.getData());
         }
+
+        System.out.println("Resolve");
         String data = client.getData();
 
         scores = new ArrayList<>();

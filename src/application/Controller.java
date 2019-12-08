@@ -109,7 +109,7 @@ public class Controller extends AnimationTimer {
     public void handle(long now) {
         if(Config.UI_CUR == Config.UI_PLAYING)
         {
-            if(gameField.isComplete() || spawner.gameComplete()) {
+            if(gameField.isComplete() || (spawner.gameComplete() && gameField.getEnemies().isEmpty() && gameField.getAircraft().isEmpty())) {
                 Config.UI_CUR = Config.UI_GAME_COMPLETE;
                 return;
             }
@@ -245,7 +245,7 @@ public class Controller extends AnimationTimer {
             if(net!=null) net.update();
         }
 
-        if(Math.abs(mX-Config.SCREEN_WIDTH/2)<=133 && Math.abs(mY - Config.SCREEN_HEIGHT/2 - 75) <=25) {
+        if(Math.abs(mX-Config.SCREEN_WIDTH/2)<=133 && Math.abs(mY - Config.SCREEN_HEIGHT/2 - 75) <=25 && Config.saved) {
             loadFile();
             Config.UI_CUR = Config.UI_PLAYING;
         }
@@ -258,7 +258,9 @@ public class Controller extends AnimationTimer {
             gameField = null;
             spawner = null;
         }
-        if(net.isConnected() && net.isHighscore(gameField.getScore())) {
+
+
+        if(net !=null && net.isConnected() && net.isHighscore(gameField.getScore())) {
             if(Math.abs(mX - Config.SCREEN_WIDTH/2) <= 60 && Math.abs(mY - Config.SCREEN_HEIGHT/2 - 52) <= 17) {
                 Config.UI_CUR = Config.UI_ADDSCORE;
             }
@@ -415,6 +417,7 @@ public class Controller extends AnimationTimer {
     }
 
     private void saveFile() throws FileNotFoundException {
+        Config.saved = true;
         FileOutputStream file = new FileOutputStream("src/application/loadData");
         PrintStream out = new PrintStream(file);
         System.setOut(out);
@@ -436,12 +439,17 @@ public class Controller extends AnimationTimer {
         System.out.println(spawner.toString());
 
         Config.UI_CUR = Config.UI_START;
+
+        System.setOut(System.out);
     }
 
     private void loadFile() throws FileNotFoundException {
         File file = new File("src/application/loadData");
         Scanner scanner = new Scanner(file);
         boolean state = scanner.nextBoolean();
+
+        if(!state) return;
+        Config.saved = true;
 
         List<Integer> pX = new ArrayList<>();
         List<Integer> pY = new ArrayList<>();
@@ -527,14 +535,17 @@ public class Controller extends AnimationTimer {
 
             int haveTarget = scanner.nextInt();
 
+
             if(haveTarget == 1) {
                 int no = scanner.nextInt();
-                tower.setTarget(gameField.getEnemies().get(no));
+                if(no != -1) tower.setTarget(gameField.getEnemies().get(no));
             }
             if(haveTarget == 2) {
                 int no = scanner.nextInt();
-                tower.setTarget(gameField.getAircraft().get(no));
+                if(no != -1) tower.setTarget(gameField.getAircraft().get(no));
             }
+
+            for(int j = 2;j<=level;j++) tower.upgrade();
 
             gameField.addTurret((int)posX,(int)posY,tower);
         }
@@ -552,10 +563,13 @@ public class Controller extends AnimationTimer {
             int have = scanner.nextInt();
             no = scanner.nextInt();
 
-            if(have == 1) bullet.setTarget(gameField.getEnemies().get(no));
-            if(have == 2) bullet.setTarget(gameField.getAircraft().get(no));
-
-            gameField.addBullet(bullet);
+            if(no == -1) bullet.setDestroyed(true);
+            else
+            {
+                if (have == 1) bullet.setTarget(gameField.getEnemies().get(no));
+                if (have == 2) bullet.setTarget(gameField.getAircraft().get(no));
+                gameField.addBullet(bullet);
+            }
         }
 
         int noWave = scanner.nextInt();
@@ -572,5 +586,9 @@ public class Controller extends AnimationTimer {
         }
 
         spawner = new Spawner(gameField,waves);
+        gameRenderer.setGameField(gameField);
+        name = null;
+        curTower = null;
+        showTower = null;
     }
 }

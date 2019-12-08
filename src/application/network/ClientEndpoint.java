@@ -37,6 +37,10 @@ public class ClientEndpoint {
         session.getAsyncRemote().sendText(message);
     }
 
+    public boolean isConnected() {
+        return session != null;
+    }
+
     public String getData() {
         return pending;
     }

@@ -44,7 +44,7 @@ public class Bullet implements GameEntity {
         }
         if(tower instanceof FlakTower) {
             effectTimer = 30;
-            AOE = 1000;
+            AOE = Config.TILE_SIZE * 1.5;
         }
     }
 
@@ -73,11 +73,13 @@ public class Bullet implements GameEntity {
     public void move() {
         if(target == null || target.isDestroyed()) {
             isDestroyed = true;
+            isCompleted = true;
             return;
         }
 
         if(position.distanceTo(tower.getPosition()) > tower.getRange()) {
             isDestroyed = true;
+            if(tower instanceof NormalTower || tower instanceof RapidTower) isCompleted = true;
             return;
         }
 
@@ -87,6 +89,7 @@ public class Bullet implements GameEntity {
 
         if(position.distanceTo(target.getPos()) <= 10) {
             isDestroyed = true;
+            if(tower instanceof NormalTower || tower instanceof RapidTower) isCompleted = true;
             if(tower instanceof FlakTower) {
                 for(Enemy enemy:gameField.getAircraft()) {
                     if(position.distanceTo(enemy.getPos()) <= AOE) enemy.doDamage(damage);
@@ -156,5 +159,13 @@ public class Bullet implements GameEntity {
 
     public void setTarget(Enemy target) {
         this.target = target;
+    }
+
+    public double getAOE() {
+        return AOE;
+    }
+
+    public void setDestroyed(boolean destroyed) {
+        isDestroyed = destroyed;
     }
 }

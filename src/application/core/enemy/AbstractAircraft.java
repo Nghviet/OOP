@@ -63,26 +63,6 @@ public abstract class  AbstractAircraft implements Enemy {
         if(seed == 2) {
             setDes(new Vector2(0,Config.GAME_HEIGHT),new Vector2(Config.GAME_WIDTH,0));
         }
-
-        Vector2 targetPosition = target;
-        double x = targetPosition.getX() - pos.getX();
-        double y = targetPosition.getY() - pos.getY();
-
-        double baseRotation = Math.abs(Math.toDegrees(Math.asin(y/Math.sqrt(x*x+y*y))));
-        if(x<0 && y<0) baseRotation +=180;
-        if(x<0 && y>0) baseRotation = 180 - baseRotation;
-        if(x>0 && y<0) baseRotation = 360 - baseRotation;
-        if(x==0) {
-            if(y>0) baseRotation = 90;
-            else baseRotation = 270;
-        }
-        if(y==0) {
-            if(x>0) baseRotation = 0;
-            else baseRotation = 180;
-        }
-
-        this.rotation = baseRotation;
-
     }
 
     public void update() {
@@ -98,6 +78,12 @@ public abstract class  AbstractAircraft implements Enemy {
         pos = new Vector2(  pos.getX() + dir.getX() * deltaTime * speed ,
                 pos.getY() + dir.getY() * deltaTime * speed  );
         distance += deltaTime * speed;
+
+        if(pos.distanceTo(target) < 0.5) {
+            destroyed = true;
+            player.doDamage();
+            return;
+        }
     }
 
 
@@ -131,6 +117,25 @@ public abstract class  AbstractAircraft implements Enemy {
     public void setDes(Vector2 pos,Vector2 target) {
         this.pos = pos;
         this.target = target;
+
+        Vector2 targetPosition = target;
+        double x = targetPosition.getX() - pos.getX();
+        double y = targetPosition.getY() - pos.getY();
+
+        double baseRotation = Math.abs(Math.toDegrees(Math.asin(y/Math.sqrt(x*x+y*y))));
+        if(x<0 && y<0) baseRotation +=180;
+        if(x<0 && y>0) baseRotation = 180 - baseRotation;
+        if(x>0 && y<0) baseRotation = 360 - baseRotation;
+        if(x==0) {
+            if(y>0) baseRotation = 90;
+            else baseRotation = 270;
+        }
+        if(y==0) {
+            if(x>0) baseRotation = 0;
+            else baseRotation = 180;
+        }
+
+        this.rotation = baseRotation;
     }
 
     @Override
